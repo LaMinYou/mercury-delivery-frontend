@@ -4,6 +4,7 @@ import HomeView from '../views/HomeView.vue'
 import AdminHome from '@/views/AdminHome.vue'
 import LoginForm from '@/views/LoginForm.vue';
 import RestaurantDetails from '@/views/RestaurantDetails.vue';
+import Restaurants from '@/views/Restaurants.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -28,6 +29,12 @@ const routes = [
     name: 'newRestaurant',
     component: RestaurantDetails,
     props: true,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/restaurants',
+    name: 'restaurants',
+    component: Restaurants,
     meta: { requiresAuth: true, role: 1 }
   }
 ]

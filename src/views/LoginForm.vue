@@ -44,6 +44,7 @@
           color="green-darken-3"
           size="large"
           variant="elevated"
+          :loading="loading"
         >
           Login
         </v-btn>
@@ -63,8 +64,10 @@ const router = useRouter();
 const username = ref("");
 const password = ref("");
 const errorMessage = ref("");
+const loading = ref(false);
 
 const handleLogin = async () => {
+  loading.value = true;
   try {
     const res = await api.post("login", {
       username: username.value,
@@ -87,6 +90,7 @@ const handleLogin = async () => {
     } else {
       errorMessage.value = "Network Error: ဆာဗာနှင့် ချိတ်ဆက်၍မရပါ။";
     }
+    loading.value = false;
   }
 };
 </script>

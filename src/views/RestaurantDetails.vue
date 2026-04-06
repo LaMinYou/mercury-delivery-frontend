@@ -78,9 +78,9 @@
             color="green-darken-3"
             size="large"
             variant="elevated"
-            prepend-icon="mdi-plus"
+            :loading="loading"
             >
-        CREATE
+        {{ id == 'new' ? 'CREATE' : 'EDIT' }}
       </v-btn>
 
     </v-form>
@@ -91,17 +91,18 @@
 
 <script setup>
   import AdminNavbar from '@/components/AdminNavbar.vue';
-  import { reactive, ref, watch } from 'vue'
+  import { computed, onMounted, reactive, ref, watch } from 'vue'
   import { rules } from '@/services/rules';
   import api from '@/services/api';
   import { useRouter } from 'vue-router';
-import Alert from '@/components/Alert.vue';
+  import Alert from '@/components/Alert.vue';
 
   const props = defineProps(['id']);
   const router = useRouter();
   const errorMessage = ref('');
+  const loading = ref(false);
 
-  const restaurant = reactive({
+  let restaurant = reactive({
     name: '',
     username: '',
     email: '',
@@ -121,6 +122,7 @@ import Alert from '@/components/Alert.vue';
   });
 
   const addNew = async() =>{
+    loading.value = true;
     try{
       const res = await api.post('auth/admin/restaurant/new', restaurant);
       router.push('/');
@@ -142,6 +144,17 @@ import Alert from '@/components/Alert.vue';
         errorMessage.value = "Unable to connect to the server.";
       }
       }
+      loading.value = false;
+
+  }
+
+  const update = async() =>{
+   try{
+     const res = await api.post('auth/admin/restaurants/'+ props.id, restaurant);
+     router.push('/restaurants');
+   }catch(err){
+    console.log(err);
+   }
 
   }
 
@@ -152,6 +165,16 @@ import Alert from '@/components/Alert.vue';
       //
     }
   }
+
+  onMounted(async() =>{
+    if(props.id == 'new'){
+      //
+    }else{
+      const res = await api.get('auth/admin/restaurant/' + props.id);
+      restaurant = res.data;
+      console.log(res.data);
+    }
+  });
 
 </script>
 <style scoped>
