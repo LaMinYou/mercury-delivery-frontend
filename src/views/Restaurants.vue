@@ -1,5 +1,19 @@
 <template>
   <admin-navbar>
+    <v-row>
+      <v-col cols="12">
+        <v-btn class="my-2 float-right ma-4"  
+            color="green-darken-3"
+            size="large"
+            variant="elevated"
+            prepend-icon="mdi-plus"
+            :loading="loading"
+            @click="router.push('/restaurant/' + 'new')"
+            >
+        Add New
+      </v-btn>
+      </v-col>
+    </v-row>
     <v-card class="ma-4">
       <v-row class="pa-4" dense>
         <v-col cols="12" md="4">
@@ -23,7 +37,7 @@
         <v-col cols="12" md="4">
           <v-select
             v-model="filters.status"
-            :items="['active', 'inactive']"
+            :items="['active', 'inactive', 'all']"
             label="Status"
             density="compact"
             hide-details
@@ -151,5 +165,14 @@ const debouncedFetch = () => {
 const editRestaurant = (item) =>{
     const id = item.id;
     router.push('/restaurant/' + id);
+}
+
+const toggleBlockRestaurant = async(item) =>{
+  try{
+    const res = await api.post('auth/admin/restaurants/updatestatus/' + item.id);
+    fetchData();
+  }catch(err){
+    console.log(err);
+  }
 }
 </script>

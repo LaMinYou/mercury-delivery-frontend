@@ -1,5 +1,17 @@
 <template>
   <admin-navbar>
+    <div class="d-flex justify-start">
+      <v-btn
+        variant="text"
+        color="blue-accent-3"
+        prepend-icon="mdi-arrow-left"
+        @click="router.push('/restaurants')"
+        size="large"
+        class="text-none"
+      >
+        Back
+      </v-btn>
+    </div>
     <v-container class="d-flex align-center justify-center flex-column" style="min-height: 100vh;">
     <div v-if="errorMessage">
         <alert :message="errorMessage" type="warning" color="red-accent-4" />
@@ -41,6 +53,7 @@
       ></v-text-field>
 
       <v-text-field
+        v-if="id == 'new'"
         v-model="restaurant.password"
         type="password"
         :rules="[rules.required('password'), rules.min(8)]"
@@ -102,7 +115,7 @@
   const errorMessage = ref('');
   const loading = ref(false);
 
-  let restaurant = reactive({
+  let restaurant = ref({
     name: '',
     username: '',
     email: '',
@@ -111,13 +124,13 @@
     address: ''
   });
 
-  watch(() => restaurant.email, (newEmail) => {
+  watch(() => restaurant.value.email, (newEmail) => {
     if (newEmail && newEmail.includes('@')) {
       // Split by @ and take the first part
-      restaurant.username = newEmail.split('@')[0];
+      restaurant.value.username = newEmail.split('@')[0];
     } else {
       // Optional: keep username synced even before the @ is typed
-      restaurant.username = newEmail;
+      restaurant.value.username = newEmail;
     }
   });
 
@@ -149,12 +162,14 @@
   }
 
   const update = async() =>{
+    loading.value = true;
    try{
-     const res = await api.post('auth/admin/restaurants/'+ props.id, restaurant);
+     const res = await api.post('auth/admin/restaurants/'+ props.id, restaurant.value);
      router.push('/restaurants');
    }catch(err){
     console.log(err);
    }
+   loading.value = false;
 
   }
 
@@ -162,7 +177,7 @@
     if(props.id == 'new'){
       addNew();
     }else{
-      //
+      update();
     }
   }
 
@@ -171,8 +186,7 @@
       //
     }else{
       const res = await api.get('auth/admin/restaurant/' + props.id);
-      restaurant = res.data;
-      console.log(res.data);
+      restaurant.value = res.data;
     }
   });
 
