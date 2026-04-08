@@ -2,16 +2,17 @@
   <admin-navbar>
     <v-row>
       <v-col cols="12">
-        <v-btn class="my-2 float-right ma-4"  
-            color="green-darken-3"
-            size="large"
-            variant="elevated"
-            prepend-icon="mdi-plus"
-            :loading="loading"
-            @click="router.push('/restaurant/' + 'new')"
-            >
-        Add New
-      </v-btn>
+        <v-btn
+          class="my-2 float-right ma-4"
+          color="green-darken-3"
+          size="large"
+          variant="elevated"
+          prepend-icon="mdi-plus"
+          :loading="loading"
+          @click="router.push('/restaurant/' + 'new')"
+        >
+          Add New
+        </v-btn>
       </v-col>
     </v-row>
     <v-card class="ma-4">
@@ -74,8 +75,8 @@
               size="small"
               @click="editRestaurant(item)"
             >
-                <v-icon>mdi-pencil</v-icon>
-                <v-tooltip activator="parent" location="top">Edit</v-tooltip>
+              <v-icon>mdi-pencil</v-icon>
+              <v-tooltip activator="parent" location="top">Edit</v-tooltip>
             </v-btn>
 
             <v-btn
@@ -87,7 +88,9 @@
               size="small"
               @click="toggleBlockRestaurant(item)"
             >
-                <v-icon>{{ item.status === 'active' ? 'mdi-lock' : 'mdi-lock-open' }}</v-icon>
+              <v-icon>{{
+                item.status === "active" ? "mdi-lock" : "mdi-lock-open"
+              }}</v-icon>
               <v-tooltip activator="parent" location="top">
                 {{ item.status === "active" ? "Block" : "Unblock" }}
               </v-tooltip>
@@ -98,15 +101,21 @@
               variant="text"
               color="red-darken-2"
               size="small"
-              @click="deleteRestaurant(item)"
+              @click="prepareDelete(item)"
             >
-                <v-icon>mdi-delete</v-icon>
+              <v-icon>mdi-delete</v-icon>
               <v-tooltip activator="parent" location="top">Delete</v-tooltip>
             </v-btn>
           </div>
         </template>
       </v-data-table-server>
     </v-card>
+    <delete-dialog
+      v-model="openDialog"
+      :item="selectedItem"
+      @close="openDialog = false"
+      @confirm="confirmDelete"
+    />
   </admin-navbar>
 </template>
 
@@ -115,14 +124,17 @@ import AdminNavbar from "@/components/AdminNavbar.vue";
 import { ref, reactive } from "vue";
 import api from "@/services/api";
 import { useRouter } from "vue-router";
+import DeleteDialog from "@/components/DeleteDialog.vue";
 
 const router = useRouter();
+const openDialog = ref(false);
+const selectedItem = ref(null);
 
 const headers = [
   { title: "Restaurant", key: "name", sortable: true },
   { title: "Address", key: "address", sortable: true },
   { title: "Status", key: "status", align: "center", sortable: true },
-  { title: "Actions", key: "actions", align: "center", sortable: false }
+  { title: "Actions", key: "actions", align: "center", sortable: false },
 ];
 
 const serverItems = ref([]);
@@ -162,17 +174,28 @@ const debouncedFetch = () => {
   timer = setTimeout(() => fetchData(), 500);
 };
 
-const editRestaurant = (item) =>{
-    const id = item.id;
-    router.push('/restaurant/' + id);
-}
+const editRestaurant = (item) => {
+  const id = item.id;
+  router.push("/restaurant/" + id);
+};
 
-const toggleBlockRestaurant = async(item) =>{
-  try{
-    const res = await api.post('auth/admin/restaurants/updatestatus/' + item.id);
+const toggleBlockRestaurant = async (item) => {
+  try {
+    const res = await api.post(
+      "auth/admin/restaurants/updatestatus/" + item.id
+    );
     fetchData();
-  }catch(err){
+  } catch (err) {
     console.log(err);
   }
+};
+
+const prepareDelete = (item) =>{
+  selectedItem.value = item;
+  openDialog.value = true;
+}
+
+const confirmDelete = async() =>{
+
 }
 </script>
