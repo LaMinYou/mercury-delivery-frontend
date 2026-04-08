@@ -196,6 +196,14 @@ const prepareDelete = (item) =>{
 }
 
 const confirmDelete = async() =>{
-
+  loading.value = true;
+  try{
+    const res = await api.delete(`auth/admin/restaurants/${selectedItem.value.id}`);
+    openDialog.value = false;
+    await fetchData();
+  }catch(err){
+    console.error("Delete failed:", err);
+  }
+  loading.value = false;
 }
 </script>

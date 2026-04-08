@@ -137,8 +137,8 @@
   const addNew = async() =>{
     loading.value = true;
     try{
-      const res = await api.post('auth/admin/restaurant/new', restaurant);
-      router.push('/');
+      const res = await api.post('auth/admin/restaurant/new', restaurant.value);
+      router.push('/restaurants');
       
     }catch(err){
       console.error("Full Error Object:", err);
