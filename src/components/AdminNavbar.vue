@@ -4,8 +4,10 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>
         <div class="logo">
-          <v-img src="@/assets/images/momo.png" width="50" height="50" />
-          <span class="logo-title">Momo</span>
+          <router-link to="/admin">
+            <v-img src="@/assets/images/momo.png" width="50" height="50" />
+          <span class="logo-title text-white">Momo</span>
+          </router-link>
         </div>
       </v-toolbar-title>
       <v-spacer></v-spacer>

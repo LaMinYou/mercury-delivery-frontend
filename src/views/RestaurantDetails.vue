@@ -5,7 +5,7 @@
         variant="text"
         color="blue-accent-3"
         prepend-icon="mdi-arrow-left"
-        @click="router.push('/restaurants')"
+        @click="router.push('/admin/restaurants')"
         size="large"
         class="text-none"
       >
@@ -138,7 +138,7 @@
     loading.value = true;
     try{
       const res = await api.post('auth/admin/restaurant/new', restaurant.value);
-      router.push('/restaurants');
+      router.push('/admin/restaurants');
       
     }catch(err){
       console.error("Full Error Object:", err);
@@ -165,7 +165,7 @@
     loading.value = true;
    try{
      const res = await api.post('auth/admin/restaurants/'+ props.id, restaurant.value);
-     router.push('/restaurants');
+     router.push('/admin/restaurants');
    }catch(err){
     console.log(err);
    }

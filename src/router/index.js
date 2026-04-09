@@ -25,14 +25,14 @@ const routes = [
     component: LoginForm
   },
   {
-    path: '/restaurant/:id',
+    path: '/admin/restaurant/:id',
     name: 'newRestaurant',
     component: RestaurantDetails,
     props: true,
     meta: { requiresAuth: true, role: 1 }
   },
   {
-    path: '/restaurants',
+    path: '/admin/restaurants',
     name: 'restaurants',
     component: Restaurants,
     meta: { requiresAuth: true, role: 1 }

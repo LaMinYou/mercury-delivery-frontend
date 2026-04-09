@@ -9,7 +9,7 @@
           variant="elevated"
           prepend-icon="mdi-plus"
           :loading="loading"
-          @click="router.push('/restaurant/' + 'new')"
+          @click="router.push('/admin/restaurant/' + 'new')"
         >
           Add New
         </v-btn>
@@ -176,7 +176,7 @@ const debouncedFetch = () => {
 
 const editRestaurant = (item) => {
   const id = item.id;
-  router.push("/restaurant/" + id);
+  router.push("/admin/restaurant/" + id);
 };
 
 const toggleBlockRestaurant = async (item) => {
