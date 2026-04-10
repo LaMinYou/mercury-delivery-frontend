@@ -8,7 +8,6 @@
           size="large"
           variant="elevated"
           prepend-icon="mdi-plus"
-          :loading="loading"
           @click="router.push('/admin/restaurant/' + 'new')"
         >
           Add New
