@@ -12,10 +12,7 @@
         Back
       </v-btn>
     </div>
-    <v-container
-      class="d-flex align-center justify-center flex-column"
-      style="min-height: 100vh"
-    >
+    <v-container>
       <div v-if="errorMessage">
         <alert :message="errorMessage" type="warning" color="red-accent-4" />
       </div>

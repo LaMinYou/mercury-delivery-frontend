@@ -5,6 +5,9 @@ import AdminHome from '@/views/AdminHome.vue'
 import LoginForm from '@/views/LoginForm.vue';
 import RestaurantDetails from '@/views/RestaurantDetails.vue';
 import Restaurants from '@/views/Restaurants.vue';
+import RestaurantHome from '@/views/RestaurantHome.vue';
+import Categories from '@/views/Categories.vue';
+import CategoryDetails from '@/views/CategoryDetails.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -36,6 +39,25 @@ const routes = [
     name: 'restaurants',
     component: Restaurants,
     meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/menu-categories',
+    name: 'categories',
+    component: Categories,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/menu-category/:id',
+    name: 'categoryDetails',
+    component: CategoryDetails,
+    props: true,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/restaurant',
+    name: 'restaurant',
+    component: RestaurantHome,
+    meta: { requiresAuth: true, role: 2 }
   }
 ]
 
@@ -55,7 +77,7 @@ router.beforeEach((to, from, next) => {
     } 
     // Role မကိုက်ရင် တားမယ်
     else if (to.meta.role && to.meta.role != user.role_id) {
-        next(from.path);
+        next('/login');
     }
     else {
         next();
