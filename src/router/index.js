@@ -8,6 +8,7 @@ import Restaurants from '@/views/Restaurants.vue';
 import RestaurantHome from '@/views/RestaurantHome.vue';
 import Categories from '@/views/Categories.vue';
 import CategoryDetails from '@/views/CategoryDetails.vue';
+import MenuDetails from '@/views/MenuDetails.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -58,7 +59,14 @@ const routes = [
     name: 'restaurant',
     component: RestaurantHome,
     meta: { requiresAuth: true, role: 2 }
-  }
+  },
+  {
+    path: '/restaurant/menu/:id',
+    name: 'newmenu',
+    component: MenuDetails,
+    props: true,
+    meta: { requiresAuth: true, role: 2 }
+  },
 ]
 
 const router = createRouter({

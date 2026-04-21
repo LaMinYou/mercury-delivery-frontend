@@ -15,5 +15,6 @@ export const adminMenuItems = [
 export const restaurantMenuItems = [
   { title: 'Pending Orders', icon: 'mdi-cart-plus', route: '' },
   { title: 'Available Menus', icon: 'mdi-silverware', route: '' },
-  { title: 'Order History', icon: 'mdi-history', route: '' }
+  { title: 'Order History', icon: 'mdi-history', route: '' },
+  { title: 'Create Menu', icon: 'mdi-history', route: { name: 'newmenu', params: { id: 'new' } } },
 ];
