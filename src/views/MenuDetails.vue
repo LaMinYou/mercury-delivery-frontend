@@ -5,7 +5,7 @@
         variant="text"
         color="blue-accent-3"
         prepend-icon="mdi-arrow-left"
-        @click="router.push('')"
+        @click="router.push('/restaurant/menus')"
         size="large"
         class="text-none"
       >
@@ -99,6 +99,15 @@
             </v-col>
 
             <v-col cols="12">
+              <div v-if="props.id !== 'new' && !menu.image" class="mb-4">
+                <p class="text-caption">Current Photo:</p>
+                <v-img
+                  :src="menu.image_url"
+                  width="150"
+                  class="rounded border"
+                  cover
+                ></v-img>
+              </div>
               <v-file-input
                 v-model="menu.image"
                 label="Upload Menu Photo"
@@ -106,7 +115,7 @@
                 variant="solo"
                 bg-color="#fff"
                 prepend-inner-icon="mdi-camera"
-                :rules="[rules.required('menu photo')]"
+                :rules="id === 'new' ? [rules.required('menu photo')] : []"
                 show-size
               ></v-file-input>
             </v-col>
@@ -177,7 +186,7 @@ const menu = ref({
   available_count: 1,
   is_available: true,
   image: null,
-  description: null
+  description: null,
 });
 
 const allCategories = async () => {
@@ -211,16 +220,70 @@ const createMenu = async () => {
   loading.value = false;
 };
 
+const updateMenu = async () => {
+  loading.value = true;
+  const formData = new FormData();
+
+  // Method Spoofing for Laravel
+  formData.append("_method", "PUT");
+
+  formData.append("category_id", menu.value.category_id);
+  formData.append("title", menu.value.title);
+  formData.append("subtitle", menu.value.subtitle);
+  formData.append("price", menu.value.price);
+  formData.append("discount_price", menu.value.discount_price || "");
+  formData.append("available_count", menu.value.available_count);
+  formData.append("description", menu.value.description);
+  formData.append("is_available", menu.value.is_available ? 1 : 0);
+
+  // ပုံအသစ် ရွေးထားမှသာ formData ထဲ ထည့်မယ်
+  if (menu.value.image instanceof File) {
+    formData.append("image", menu.value.image);
+  }
+
+  try {
+    await api.post(`auth/restaurant/menus/${props.id}`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    router.push("/restaurant/menus");
+  } catch (err) {
+    errorMessage.value = "Update failed";
+  }
+  loading.value = false;
+};
+
 const handleSubmit = () => {
   if (props.id == "new") {
     createMenu();
   } else {
-    //
+    updateMenu();
+  }
+};
+
+const getMenuDetails = async () => {
+  try {
+    const res = await api.get(`auth/restaurant/menus/${props.id}`);
+    const data = res.data;
+    menu.value = {
+      ...data,
+      price: data.price ? Number(data.price) : null,
+      discount_price: data.discount_price ? Number(data.discount_price) : null,
+      available_count: data.available_count ? Number(data.available_count) : 0,
+      image: null,
+      is_available: data.is_available == 1 ? true : false,
+    };
+  } catch (err) {
+    errorMessage.value = "Could not load menu details";
   }
 };
 
 onMounted(() => {
   allCategories();
+  if (props.id == "new") {
+    //
+  } else {
+    getMenuDetails();
+  }
 });
 </script>
 <style scoped>

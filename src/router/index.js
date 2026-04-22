@@ -9,6 +9,7 @@ import RestaurantHome from '@/views/RestaurantHome.vue';
 import Categories from '@/views/Categories.vue';
 import CategoryDetails from '@/views/CategoryDetails.vue';
 import MenuDetails from '@/views/MenuDetails.vue';
+import Menus from '@/views/Menus.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -65,6 +66,12 @@ const routes = [
     name: 'newmenu',
     component: MenuDetails,
     props: true,
+    meta: { requiresAuth: true, role: 2 }
+  },
+  {
+    path: '/restaurant/menus',
+    name: 'menus',
+    component: Menus,
     meta: { requiresAuth: true, role: 2 }
   },
 ]
