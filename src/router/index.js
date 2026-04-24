@@ -10,6 +10,8 @@ import Categories from '@/views/Categories.vue';
 import CategoryDetails from '@/views/CategoryDetails.vue';
 import MenuDetails from '@/views/MenuDetails.vue';
 import Menus from '@/views/Menus.vue';
+import RiderDetails from '@/views/RiderDetails.vue';
+import Riders from '@/views/Riders.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -40,6 +42,19 @@ const routes = [
     path: '/admin/restaurants',
     name: 'restaurants',
     component: Restaurants,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/riders',
+    name: 'riders',
+     component: Riders,
+     meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/rider/:id',
+    name: 'rider',
+    component: RiderDetails,
+    props: true,
     meta: { requiresAuth: true, role: 1 }
   },
   {

@@ -34,7 +34,7 @@
           <v-card
             color="deep-purple-darken-1 py-3"
             theme="dark"
-            href="/reports"
+            href="/admin/riders"
             elevation="3"
           >
             <v-card-text class="d-flex align-center justify-center">

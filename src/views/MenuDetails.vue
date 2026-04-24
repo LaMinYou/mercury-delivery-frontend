@@ -213,7 +213,7 @@ const createMenu = async () => {
         "Content-Type": "multipart/form-data",
       },
     });
-    router.push("/restaurant");
+    router.push("/restaurant/menus");
   } catch (err) {
     errorMessage.value = err;
   }
