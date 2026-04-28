@@ -12,6 +12,8 @@ import MenuDetails from '@/views/MenuDetails.vue';
 import Menus from '@/views/Menus.vue';
 import RiderDetails from '@/views/RiderDetails.vue';
 import Riders from '@/views/Riders.vue';
+import TagDetails from '@/views/TagDetails.vue';
+import Tags from '@/views/Tags.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -68,6 +70,19 @@ const routes = [
     name: 'categoryDetails',
     component: CategoryDetails,
     props: true,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/tag/:id',
+    name: 'tag',
+    component: TagDetails,
+    props: true,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/tags',
+    name: 'tags',
+    component: Tags,
     meta: { requiresAuth: true, role: 1 }
   },
   {

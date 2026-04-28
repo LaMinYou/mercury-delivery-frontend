@@ -4,6 +4,7 @@ export const adminMenuItems = [
   { title: 'Home', icon: 'mdi-home', route: '/admin' },
   { title: 'Pending Orders', icon: 'mdi-cart-plus', route: '' },
   { title: 'Menu Categories', icon: 'mdi-layers-triple', route: '/admin/menu-categories' },
+  { title: 'Tags', icon: 'mdi-tag-outline', route: '/admin/tags' },
   { title: 'Customers', icon: 'mdi-account', route: '' },
   { title: 'Restaurants', icon: 'mdi-store-marker', route: '/admin/restaurants' },
   { title: 'Riders', icon: 'mdi-bike', route: '/admin/riders' },
