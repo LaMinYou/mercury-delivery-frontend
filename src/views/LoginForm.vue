@@ -82,6 +82,10 @@ const handleLogin = async () => {
     const roleId = res.data.user.role_id;
     if (roleId == 1) {
       router.push("/admin");
+    }else if(roleId == 2){
+      router.push("/restaurant");
+    }else if(roleId == 4){
+      router.push("/rider");
     }
   } catch (err) {
     console.error(err);

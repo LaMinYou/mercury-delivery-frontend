@@ -8,8 +8,7 @@
           size="large"
           variant="elevated"
           prepend-icon="mdi-plus"
-          :loading="loading"
-          @click="router.push('/restaurant/' + 'new')"
+          @click="router.push('/admin/restaurant/' + 'new')"
         >
           Add New
         </v-btn>
@@ -53,6 +52,7 @@
         :items="serverItems"
         :items-length="totalItems"
         :loading="loading"
+        @click:row="handleRowClick"
         :items-per-page-options="[5, 10, 15]"
         @update:options="fetchData"
       >
@@ -116,6 +116,12 @@
       @close="openDialog = false"
       @confirm="confirmDelete"
     />
+
+    <restaurant-orders-picker 
+      :openPicker="openPicker" 
+      :restaurant="restaurant" 
+      @closePicker="openPicker=false" 
+    />
   </admin-navbar>
 </template>
 
@@ -125,6 +131,7 @@ import { ref, reactive } from "vue";
 import api from "@/services/api";
 import { useRouter } from "vue-router";
 import DeleteDialog from "@/components/DeleteDialog.vue";
+import RestaurantOrdersPicker from "@/components/RestaurantOrdersPicker.vue";
 
 const router = useRouter();
 const openDialog = ref(false);
@@ -134,6 +141,7 @@ const headers = [
   { title: "Restaurant", key: "name", sortable: true },
   { title: "Address", key: "address", sortable: true },
   { title: "Status", key: "status", align: "center", sortable: true },
+  { title: "No. of Orders in week", key: "weekly_order_count", align: "center", sortable: true },
   { title: "Actions", key: "actions", align: "center", sortable: false },
 ];
 
@@ -142,6 +150,8 @@ const totalItems = ref(0);
 const loading = ref(false);
 const itemsPerPage = ref(5);
 const filters = reactive({ name: "", address: "", status: null });
+const openPicker = ref(false);
+const restaurant = ref();
 
 let timer = null;
 
@@ -176,7 +186,7 @@ const debouncedFetch = () => {
 
 const editRestaurant = (item) => {
   const id = item.id;
-  router.push("/restaurant/" + id);
+  router.push("/admin/restaurant/" + id);
 };
 
 const toggleBlockRestaurant = async (item) => {
@@ -205,5 +215,13 @@ const confirmDelete = async() =>{
     console.error("Delete failed:", err);
   }
   loading.value = false;
+}
+
+const handleRowClick = (event, { item }) => {
+  if(event.target.closest('button')) return;
+
+  restaurant.value = item;
+  openPicker.value = true;
+
 }
 </script>

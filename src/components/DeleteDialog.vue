@@ -13,7 +13,7 @@
         ></v-icon>
       </v-card-item>
       <v-card-text class="text-warning">
-        Are you sure you want to delete <strong>{{ item?.name }}</strong
+        Are you sure you want to delete <strong>{{ item?.name || 'this item' }}</strong
         >?
       </v-card-text>
       <v-card-actions>
