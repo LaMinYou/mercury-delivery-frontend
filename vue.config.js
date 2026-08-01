@@ -1,17 +1,20 @@
 const { defineConfig } = require('@vue/cli-service')
+
 module.exports = defineConfig({
-  transpileDependencies: true,
+  transpileDependencies: [
+    'vuetify'
+  ],
   pluginOptions: {
     vuetify: {
-      styles: 'expose' 
+      // Vuetify 3 အတွက် Auto Import နှင့် Styles Config 
+      // 'expose' အစား true သို့မဟုတ် { transformAssetUrls: true } သုံးပေးရပါမည်
+      autoImport: true,
     }
   },
   publicPath: '/',
   devServer: {
     client: {
       overlay: {
-        // Runtime errors တွေကို handle လုပ်တဲ့နေရာမှာ
-        // ResizeObserver loop error တစ်ခုတည်းကိုပဲ overlay မပြအောင် ပိတ်ထားမယ်
         runtimeErrors: (error) => {
           const ignoreErrors = [
             "ResizeObserver loop limit exceeded",
