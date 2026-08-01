@@ -6,9 +6,7 @@ module.exports = defineConfig({
   ],
   pluginOptions: {
     vuetify: {
-      // Vuetify 3 အတွက် Auto Import နှင့် Styles Config 
-      // 'expose' အစား true သို့မဟုတ် { transformAssetUrls: true } သုံးပေးရပါမည်
-      autoImport: true,
+      styles: 'auto'
     }
   },
   publicPath: '/',
