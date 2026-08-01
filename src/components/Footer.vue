@@ -1,5 +1,5 @@
 <template>
-  <v-footer class="bg-green-lighten-5 text-body-2 pt-12 pb-6 border-t mt-5" style="border-top: 2px solid #C7E5C9">
+  <v-footer class="bg-green-lighten-5 text-body-2 pt-12 pb-6 border-t mt-5" style="border-top: 2px solid #C7E5C9; transform: translateY(200px);">
     <v-container fluid>
       <!-- Main Content Grid -->
       <v-row justify="space-between">
