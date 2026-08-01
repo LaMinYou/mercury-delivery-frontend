@@ -24,7 +24,7 @@
       </div>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" :permanent="$vuetify.display.mdAndUp" color="bg-green-lighten-5">
+    <v-navigation-drawer v-model="drawer" :permanent="$vuetify.display.mdAndUp" color="green-lighten-5">
       <v-list density="compact" class="mt-5" nav>
         <v-list-item
           v-for="item in adminMenuItems"
