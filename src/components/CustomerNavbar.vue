@@ -1,8 +1,7 @@
 <template>
-  <v-app>
+  <!-- <v-app> -->
     <v-app-bar
-      
-      style="background:#1B5E20 !important;color:white"
+      color="green-darken-4"
       elevation="1"
       height="60"
       extension-height="auto"
@@ -140,7 +139,7 @@
       <Footer />
     </v-main>
 
-  </v-app>
+  <!-- </v-app> -->
   <signup-dialog
     :openSignupBox="openSignupBox"
     @closeSignupBox="openSignupBox = false"

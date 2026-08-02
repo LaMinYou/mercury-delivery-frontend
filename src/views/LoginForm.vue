@@ -106,7 +106,7 @@ const handleLogin = async () => {
   width: 100%;
   height: 100vh;
   object-fit: cover; /* Ensures image covers area without stretching */
-  z-index: -1; /* Puts image behind content */
+  /*z-index: -1; */
 }
 .card {
   background: transparent;

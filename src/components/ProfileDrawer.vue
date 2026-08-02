@@ -1,5 +1,5 @@
 <template>
-  <v-layout>
+  <!-- <v-layout> -->
     <v-navigation-drawer
       :model-value="openProfileDrawer"
       @update:model-value="$emit('closeProfileDrawer')"
@@ -109,7 +109,7 @@
         </div>
       </v-card>
     </v-navigation-drawer>
-  </v-layout>
+  <!-- </v-layout> -->
 </template>
 
 <script setup>

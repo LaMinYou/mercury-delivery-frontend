@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <!-- <v-app> -->
     <v-app-bar color="green-darken-4" elevation="1" class="px-4">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
@@ -57,7 +57,7 @@
       </v-container>
       <Footer />
     </v-main>
-  </v-app>
+  <!-- </v-app> -->
 </template>
 
 <script setup>

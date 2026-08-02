@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <!-- <v-app> -->
     <v-app-bar color="green-darken-4" elevation="1" class="px-4">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <!-- <v-toolbar-title>
@@ -86,7 +86,7 @@
         <slot />
       </v-container>
     </v-main>
-  </v-app>
+  <!-- </v-app> -->
 
   <!-- <div v-if="restaurant"> -->
     <profile-drawer

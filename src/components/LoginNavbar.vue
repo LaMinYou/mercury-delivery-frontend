@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <!-- <v-app> -->
     <v-app-bar
       color="green-darken-4"
       elevation="1"
@@ -64,7 +64,7 @@
     <v-main class="bg-grey-lighten-3 main">
         <slot />
     </v-main>
-  </v-app>
+  <!-- </v-app> -->
   <signup-dialog
     :openSignupBox="openSignupBox"
     @closeSignupBox="openSignupBox = false"
