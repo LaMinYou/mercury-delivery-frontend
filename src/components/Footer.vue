@@ -6,7 +6,7 @@
         
         <v-col cols="12" md="4" lg="3">
           <div class="d-flex align-center gap-2 mb-3">
-            <v-img src="@/assets/images/mercury.png" width="80" height="75" style="filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.5));"  />
+            <v-img :src="require('@/assets/images/mercury.png')" width="80" height="75" style="filter: drop-shadow(3px 3px 0 rgba(0,0,0,0.5));"  />
           </div>
           
           <p class="text-medium-emphasis mb-5 text-body-2 lh-relaxed text-green-darken-4 text-center">

@@ -6,7 +6,7 @@
           <v-card max-width="700" class="card">
             <v-card-title class="d-flex justify-center align-center my-5">
               <v-img
-                src="@/assets/images/mercury.png"
+                :src="require('@/assets/images/mercury.png')"
                 width="140"
                 height="135"
                 max-width="140"

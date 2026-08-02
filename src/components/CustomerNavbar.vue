@@ -13,7 +13,7 @@
           to="/"
           class="d-flex align-center text-decoration-none"
         >
-          <v-img src="@/assets/images/mercury.png" width="120" height="115" />
+          <v-img :src="require('@/assets/images/mercury.png')" width="120" height="115" />
           <!-- <span class="text-h6 text-white ms-2 font-weight-bold">Momo</span> -->
         </router-link>
       </div>
