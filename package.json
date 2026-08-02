@@ -25,7 +25,6 @@
     "@mdi/font": "^7.4.47",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
-    "vue-cli-plugin-vuetify": "~2.5.8"
+    "@vue/cli-service": "~5.0.0"
   }
 }
