@@ -1,13 +1,13 @@
+// import 'vuetify/styles'
+import 'vuetify/styles/main.css'
+import '@mdi/font/css/materialdesignicons.css'
+
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 
-//mdi icons
-import '@mdi/font/css/materialdesignicons.css'
-
-// Vuetify imports
-import 'vuetify/styles'           // global styles
 import { createVuetify } from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
