@@ -1,6 +1,8 @@
 <template>
-  <customer-navbar :address="userLocation.address" @search="updateFilters('search', $event)">
-
+  <customer-navbar
+    :address="userLocation.address"
+    @search="updateFilters('search', $event)"
+  >
     <!-- show timeout and try again if data can't get -->
     <timeout-view v-if="isTimeout" @retryFetch="retryFetch" />
 
@@ -47,7 +49,8 @@
         </v-row>
       </div>
 
-      <div v-if="restaurants.comesticShops && restaurants.comesticShops.length > 0"
+      <div
+        v-if="restaurants.comesticShops && restaurants.comesticShops.length > 0"
       >
         <div class="my-5 px-3">
           <h2 class="text-title-medium font-weight-bold text-green-darken-2">
@@ -88,12 +91,18 @@
         </v-row>
       </div>
 
-      <div v-if="restaurants.length == 0" class="pa-5 text-center text-grey w-100">
-          <v-icon size="40" class="mb-2">mdi-folder-open-outline</v-icon>
-          <div>
-            No stores available at the moment.
-          </div>
-        </div>
+      <div
+        v-if="
+          (!restaurants.foodShops || restaurants.foodShops.length === 0) &&
+          (!restaurants.comesticShops ||
+            restaurants.comesticShops.length === 0) &&
+          (!restaurants.otherShops || restaurants.otherShops.length === 0)
+        "
+        class="pa-5 text-center text-grey w-100"
+      >
+        <v-icon size="40" class="mb-2">mdi-folder-open-outline</v-icon>
+        <div>No stores available at the moment.</div>
+      </div>
     </div>
   </customer-navbar>
 </template>
@@ -164,7 +173,7 @@ const retryFetch = () => {
   isTimeout.value = false;
   getTags();
   getRestaurants();
-}
+};
 
 // const getRestaurantsByTag = async (tag) => {
 //   //alert(tag);
@@ -186,10 +195,10 @@ const userLocation = ref({
   address: "",
 });
 
-// တည်နေရာ တောင်းမည့် Function
+
 const requestLocation = () => {
   if (navigator.geolocation) {
-    // ဤနေရာတွင် Browser မှ Dialog Box ကို အလိုအလျောက် ပြပါလိမ့်မည်
+    
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         userLocation.value.lat = position.coords.latitude;
@@ -197,7 +206,6 @@ const requestLocation = () => {
         console.log("current location latitude " + position.coords.latitude);
         console.log("current location longitude " + position.coords.longitude);
 
-        // Address ပြန်ယူခြင်း
         await getDetailedAddress(
           userLocation.value.lat,
           userLocation.value.lng
