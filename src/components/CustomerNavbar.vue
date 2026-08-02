@@ -54,7 +54,7 @@
                   <v-icon size="small" class="me-1"
                     >mdi-map-marker-outline</v-icon
                   >
-                  <span class="text-caption">Your current location</span>
+                  <span class="text-subtitle-1">Your current location</span>
                 </div>
               </template>
 
@@ -89,7 +89,7 @@
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" :permanent="$vuetify.display.mdAndUp" color="green-lighten-5">
-      <v-list density="compact" class="mt-5 menu-bar" nav>
+      <v-list density="compact" class="mt-5 menu-bar text-subtitle-1" nav>
         <v-list-item
           v-for="item in customerMenuItems"
           :key="item.title"
@@ -153,7 +153,6 @@
     @update:user="user = $event"
   />
   </div>
-  
 </template>
 
 <script setup>
@@ -228,5 +227,8 @@ watch(
 .menu-bar,
 .main {
   margin-top: 150px;
+}
+.menu-bar{
+  transform: translateY(150px);
 }
 </style>

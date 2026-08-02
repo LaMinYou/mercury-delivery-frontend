@@ -21,7 +21,7 @@
                 </template>
              </v-img>
           </v-avatar>
-          <div class="text-caption text-center mt-1">{{ tag.name }}</div>
+          <div class="text-body-2 text-center mt-1">{{ tag.name }}</div>
         </div>
       </v-slide-group-item>
     </v-slide-group>

@@ -29,7 +29,7 @@
 
       <div v-if="restaurants.foodShops && restaurants.foodShops.length > 0">
         <div class="my-5 px-3">
-          <h2 class="text-title-medium font-weight-bold text-green-darken-2">
+          <h2 class="text-subtitle-1 font-weight-bold text-green-darken-2">
             စားသောက်ဖွယ်ရာများနှင့် မုန့်မျိုးစုံ
           </h2>
         </div>

@@ -19,12 +19,13 @@
     "vue": "^3.2.13",
     "vue-chartjs": "^5.3.3",
     "vue-router": "^4.0.3",
-    "vuetify": "^4.0.1"
+    "vuetify": "^3.7.11"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
-    "@vue/cli-service": "~5.0.0"
+    "@vue/cli-service": "~5.0.0",
+    "webpack-plugin-vuetify": "^3.1.3"
   }
 }

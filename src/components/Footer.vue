@@ -35,18 +35,18 @@
           <!-- Hotline Card -->
           <v-card variant="flat" class="pa-4 rounded-sm border mb-4 elevation-1 bg-teal-darken-2">
             <div class="d-flex align-center">
-              <v-avatar color="primary-lighten-5" size="42">
+              <v-avatar color="blue-lighten-5" size="42">
                 <v-icon color="primary">mdi-headset</v-icon>
               </v-avatar>
               <div class="ms-3">
-                <div class="text-caption text-medium-emphasis text-white">Helpline (8 AM - 8 PM)</div>
+                <div class="text-white">Helpline (8 AM - 8 PM)</div>
                 <div class="font-weight-bold text-subtitle-1 text-white">09-775 121 526</div>
               </div>
             </div>
           </v-card>
 
           <!-- Accept Payments -->
-          <div class="text-caption text-medium-emphasis mb-2 font-weight-medium text-green-darken-4">
+          <div class="text-caption text-body-2 mb-2 font-weight-medium text-green-darken-4">
             Mostly Accepting Payment Types
           </div>
           <div class="d-flex align-center flex-wrap">

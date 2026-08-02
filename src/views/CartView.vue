@@ -17,7 +17,7 @@
         <v-col cols="12" v-for="shop in groupedCart" :key="shop.id">
           <v-card class="px-5 py-2">
             <div class="d-flex align-center justify-space-between mb-2">
-              <span class="text-h3 font-weight-bold">
+              <span class="text-subtitle-1 font-weight-bold">
                 {{ shop.name }}
               </span>
               <span @click="removeFromGroupedCart(shop.id)" class="cursor-pointer">

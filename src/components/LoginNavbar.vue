@@ -33,7 +33,7 @@
                   <v-icon size="small" class="me-1"
                     >mdi-map-marker-outline</v-icon
                   >
-                  <span class="text-caption">Your current location</span>
+                  <span class="text-subtitle-1">Your current location</span>
                 </div>
               </template>
 
