@@ -4,6 +4,9 @@ module.exports = defineConfig({
   transpileDependencies: [
     'vuetify'
   ],
+  css: {
+    extract: true,
+  },
   pluginOptions: {
     vuetify: {
       styles: 'auto'
