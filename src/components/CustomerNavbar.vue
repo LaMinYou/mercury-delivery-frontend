@@ -1,7 +1,8 @@
 <template>
   <v-app>
     <v-app-bar
-      color="green-darken-4"
+      
+      style="background:#1B5E20 !important;color:white"
       elevation="1"
       height="60"
       extension-height="auto"
@@ -33,9 +34,9 @@
             }}</span>
           </div>
         </v-avatar>
-        <span class="text-subtitle-2 d-none d-sm-flex me-5">{{
+        <!-- <span class="text-subtitle-2 d-none d-sm-flex me-5">{{
           user?.name.split(" ")[0] || ""
-        }}</span>
+        }}</span> -->
       </div>
 
       <template v-slot:extension>
