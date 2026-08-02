@@ -47,8 +47,7 @@
         </v-row>
       </div>
 
-      <div
-        v-if="restaurants.comesticShops && restaurants.comesticShops.length > 0"
+      <div v-if="restaurants.comesticShops && restaurants.comesticShops.length > 0"
       >
         <div class="my-5 px-3">
           <h2 class="text-title-medium font-weight-bold text-green-darken-2">
@@ -88,6 +87,13 @@
           </v-col>
         </v-row>
       </div>
+
+      <div v-if="restaurants.length == 0" class="pa-5 text-center text-grey w-100">
+          <v-icon size="40" class="mb-2">mdi-folder-open-outline</v-icon>
+          <div>
+            No stores available at the moment.
+          </div>
+        </div>
     </div>
   </customer-navbar>
 </template>

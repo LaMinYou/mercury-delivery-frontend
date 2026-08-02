@@ -51,10 +51,10 @@
                   v-bind="props"
                   class="d-flex align-center cursor-pointer mx-4"
                 >
-                  <v-icon size="small" class="me-1"
+                  <v-icon :class="xs ? 'text-green-darken-4' : 'text-white'" size="small" class="me-1"
                     >mdi-map-marker-outline</v-icon
                   >
-                  <span class="text-subtitle-1">Your current location</span>
+                  <span :class="['text-subtitle-1', xs ? 'text-green-darken-4' : 'text-white']">Your current location</span>
                 </div>
               </template>
 
@@ -171,7 +171,7 @@ const props = defineProps(["address"]);
 const emit = defineEmits(['search']);
 const router = useRouter();
 const route = useRoute();
-const { mdAndUp } = useDisplay();
+const { xs, mdAndUp } = useDisplay();
 const drawer = ref(mdAndUp.value);
 const searchField = ref(null);
 let user = ref(null);
