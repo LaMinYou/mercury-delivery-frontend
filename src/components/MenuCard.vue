@@ -1,12 +1,12 @@
 <template>
-  <v-card class="d-flex align-center justify-space-between px-3 position-relative" flat>
+  <v-card class="d-flex align-center justify-space-between pa-3 position-relative" flat>
     <div>
       <v-card-title class="d-flex flex-column pa-0">
-        <span class="text-title-medium font-weight-bold pb-1">{{ menu.subtitle }}</span>
-        <span v-if="menu.discount_price" class="text-green-darken-2 font-weight-bold text-title-small">
+        <span class="text-subtitle-1 font-weight-bold pb-1">{{ menu.subtitle }}</span>
+        <span v-if="menu.discount_price" class="text-green-darken-2 font-weight-bold text-subtitle-2">
           {{ menu.discount_price }} MMK
         </span>
-        <span :class="{ 'text-decoration-line-through text-grey': menu.discount_price }" class="text-title-small text-green-darken-1">
+        <span :class="{ 'text-decoration-line-through text-grey': menu.discount_price }" class="text-subtitle-2 text-green-darken-1">
           {{ menu.price }} MMK
         </span>
       </v-card-title>

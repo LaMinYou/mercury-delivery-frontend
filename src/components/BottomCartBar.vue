@@ -9,7 +9,7 @@
         </span>
         <span class="text-grey-lighten-2">{{ restaurant.name }}</span>
       </div>
-      <div class="text-white font-weight-bold text-h6">
+      <div class="text-white font-weight-bold text-subtitle-1">
         MMK {{ filteredTotalPrice.toLocaleString() }}
       </div>
     </div>

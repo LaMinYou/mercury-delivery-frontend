@@ -18,7 +18,7 @@
           >
             <v-card-text class="d-flex align-center justify-center">
               <v-icon icon="mdi-account" size="large" class="me-3"></v-icon>
-              <span class="text-h3">{{ roleCount[3] || 0 }} Customers</span>
+              <span class="text-subtitle-1">{{ roleCount[3] || 0 }} Customers</span>
             </v-card-text>
           </v-card>
         </v-col>
@@ -32,7 +32,7 @@
           >
             <v-card-text class="d-flex align-center justify-center">
               <v-icon icon="mdi-store" size="large" class="me-3"></v-icon>
-              <span class="text-h3">{{ roleCount[2] || 0 }} Restaurants</span>
+              <span class="text-subtitle-1">{{ roleCount[2] || 0 }} Restaurants</span>
             </v-card-text>
           </v-card>
         </v-col>
@@ -46,7 +46,7 @@
           >
             <v-card-text class="d-flex align-center justify-center">
               <v-icon icon="mdi-bike" size="large" class="me-3"></v-icon>
-              <span class="text-h3">{{ roleCount[4] || 0 }} Riders</span>
+              <span class="text-subtitle-1">{{ roleCount[4] || 0 }} Riders</span>
             </v-card-text>
           </v-card>
         </v-col>

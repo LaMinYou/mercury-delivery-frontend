@@ -1,5 +1,6 @@
 <template>
   <!-- <v-app> -->
+  <v-layout>
     <v-app-bar color="green-darken-4" elevation="1" class="px-4">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <!-- <v-toolbar-title>
@@ -86,21 +87,22 @@
         <slot />
       </v-container>
     </v-main>
+  </v-layout>
   <!-- </v-app> -->
 
   <!-- <div v-if="restaurant"> -->
-    <profile-drawer
-      :openProfileDrawer="openProfileDrawer"
-      :user="restaurant"
-      @closeProfileDrawer="openProfileDrawer = false"
-      @update:user="restaurant = $event"
-    />
+  <profile-drawer
+    :openProfileDrawer="openProfileDrawer"
+    :user="restaurant"
+    @closeProfileDrawer="openProfileDrawer = false"
+    @update:user="restaurant = $event"
+  />
   <!-- </div> -->
   <shop-close-message-dialog
-      :user="restaurant"
-      :openMessageDialog="openMessageDialog"
-      @closeMessageDialog="closeMessageDialog"
-    />
+    :user="restaurant"
+    :openMessageDialog="openMessageDialog"
+    @closeMessageDialog="closeMessageDialog"
+  />
 </template>
 
 <script setup>
@@ -120,7 +122,7 @@ const openProfileDrawer = ref(false);
 const openMessageDialog = ref(false);
 
 restaurant = JSON.parse(localStorage.getItem("user"));
-const isOpen = ref(restaurant.status === 'active');
+const isOpen = ref(restaurant.status === "active");
 
 const handleLogout = async () => {
   try {
@@ -146,24 +148,27 @@ const handleOpenCloseShop = () => {
 };
 
 const handleOpenShop = async () => {
-  try{
-    const res = await api.put(`/auth/restaurant/${restaurant.id}/update-status`, { status: 'active' });
+  try {
+    const res = await api.put(
+      `/auth/restaurant/${restaurant.id}/update-status`,
+      { status: "active" }
+    );
     restaurant = res.data;
-    localStorage.setItem('user', JSON.stringify(restaurant));
-  }catch(err){
+    localStorage.setItem("user", JSON.stringify(restaurant));
+  } catch (err) {
     console.log(err.response.message);
   }
-}
+};
 
 const closeMessageDialog = (id) => {
-  if(id == null){
+  if (id == null) {
     isOpen.value = true;
-  }else{
-    restaurant.status = 'inactive';
-    localStorage.setItem('user', JSON.stringify(restaurant));
+  } else {
+    restaurant.status = "inactive";
+    localStorage.setItem("user", JSON.stringify(restaurant));
   }
   openMessageDialog.value = false;
-}
+};
 </script>
 <!-- light-green-accent-1 -->
  <style scoped>

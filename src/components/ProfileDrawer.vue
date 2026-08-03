@@ -5,6 +5,7 @@
       @update:model-value="$emit('closeProfileDrawer')"
       location="right"
       temporary
+      :scrim="false"
       style="z-index: 9999 !important"
       width="335"
     >
@@ -20,7 +21,7 @@
 
       <div>
         <!-- user level  -->
-        <v-card v-if="user.role_id == 3" class="px-3 ma-2 my-3">
+        <v-card v-if="user.role_id == 3" class="pa-5 ma-2 my-3">
           <div>
             <p class="text-grey">အသုံးပြုသူအဆင့်</p>
             <p class="font-weight-bold">
@@ -35,10 +36,10 @@
         </v-card>
         <!-- name -->
         <v-card
-          class="d-flex justify-space-between align-center px-3 ma-2 my-3"
+          class="d-flex justify-space-between align-center pa-5 ma-2 my-3"
         >
           <div>
-            <p class="text-grey">အမည်</p>
+            <p class="text-grey pb-3">အမည်</p>
             <p class="font-weight-bold">{{ user.name }}</p>
           </div>
           <div @click="showEditSheet('name')">
@@ -51,10 +52,10 @@
         <!-- email -->
         <v-card
           v-if="user.email"
-          class="d-flex justify-space-between align-center px-3 ma-2 my-3"
+          class="d-flex justify-space-between align-center pa-5 ma-2 my-3"
         >
           <div>
-            <p class="text-grey">အီးမေးလ်</p>
+            <p class="text-grey pb-3">အီးမေးလ်</p>
             <p class="font-weight-bold">{{ user?.email }}</p>
           </div>
           <div @click="showEditSheet('email')">
@@ -67,10 +68,10 @@
         <!-- phone -->
         <v-card
           v-if="user.phone"
-          class="d-flex justify-space-between align-center px-3 ma-2 my-3"
+          class="d-flex justify-space-between align-center pa-5 ma-2 my-3"
         >
           <div>
-            <p class="text-grey">ဖုန်းနံပါတ်</p>
+            <p class="text-grey pb-3">ဖုန်းနံပါတ်</p>
             <p class="font-weight-bold">{{ user?.phone }}</p>
           </div>
           <div @click="showEditSheet('phone')">
@@ -86,7 +87,7 @@
         v-if="openEditSheet"
       >
         <v-card-title
-          class="text-wrap text-blue-grey-darken-4 text-body-small py-5"
+          class="text-wrap text-blue-grey-darken-4 text-body-2 py-5"
         >
           ဤနည်းဖြင့် ကျွန်ုပ်တို့က သင့်ကို အကြောင်းကြားပါသည်။ ကျေးဇူးပြု၍
           အချက်လက်အားမှန်ကန်စွာဖြင့်သွင်းပါ။
@@ -96,11 +97,11 @@
           v-model="editField"
           :label="currentFieldName"
           variant="outlined"
-          density="conformtable"
           color="green-darken-2"
+          class="mb-2"
         />
 
-        <div class="d-flex justify-end">
+        <div class="d-flex justify-end mb-2">
           <v-btn variant="text" @click="openEditSheet = false"> Cancel </v-btn>
 
           <v-btn color="green-darken-4" :loading="loading" @click="updateUser">
@@ -157,7 +158,7 @@ const levelDetails = computed(() => {
       };
     default:
       return {
-        color: "grey-lighten-1",
+        color: "blue-grey-lighten-1",
         icon: "mdi-crown",
       };
   }

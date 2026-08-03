@@ -161,7 +161,7 @@
                   </div> -->
                   </div>
 
-                  <div class="text-wrap text-center w-100" v-else>
+                  <div class="text-wrap text-subtitle-2 text-center w-100" v-else>
                     <v-icon>mdi-plus</v-icon>
                     ငွေပေးချေမှုနည်းလမ်းတစ်ခုထည့်သွင်းပါ
                   </div>

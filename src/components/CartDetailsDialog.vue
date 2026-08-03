@@ -8,8 +8,8 @@
       <v-card class="rounded-t-xl pa-4">
         <v-card-title class="d-flex justify-space-between align-center px-2">
           <div>
-            <span class="font-weight-bold text-h6 d-block">ဈေးဝယ်ခြင်း</span>
-            <span class="text-body-small text-grey">{{ restaurant.name }}</span>
+            <span class="font-weight-bold text-subtitle-1 d-block">ဈေးဝယ်ခြင်း</span>
+            <span class="text-body-2 text-grey">{{ restaurant.name }}</span>
           </div>
           <v-btn icon="mdi-close" variant="text" @click="$emit('closeDetailsDialog')"></v-btn>
         </v-card-title>
@@ -22,8 +22,8 @@
               <div class="d-flex align-center">
                 <v-img :src="item.image_url" width="50" height="50" cover class="rounded-lg mr-3 bg-grey-lighten-3"></v-img>
                 <div>
-                  <div class="font-weight-bold">{{ item.subtitle }}</div>
-                  <div class="text-caption text-grey">MMK {{ item.finalPrice.toLocaleString() }}</div>
+                  <div class="font-weight-bold text-subtitle-1">{{ item.subtitle }}</div>
+                  <div class="text-subtitle-2 text-grey">MMK {{ item.finalPrice.toLocaleString() }}</div>
                 </div>
               </div>
               
@@ -40,7 +40,7 @@
 
         <div class="d-flex justify-space-between align-center my-4 px-2">
           <span class="font-weight-bold text-subtitle-1">စုစုပေါင်း ကျသင့်ငွေ:</span>
-          <span class="font-weight-bold text-h6 text-green-darken-1">MMK {{ filteredTotalPrice.toLocaleString() }}</span>
+          <span class="font-weight-bold text-subtitle-1 text-green-darken-1">MMK {{ filteredTotalPrice.toLocaleString() }}</span>
         </div>
 
         <v-btn 

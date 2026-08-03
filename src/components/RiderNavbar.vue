@@ -1,5 +1,6 @@
 <template>
   <!-- <v-app> -->
+  <v-layout>
     <v-app-bar color="green-darken-4" elevation="1" class="px-4">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <div class="logo d-flex align-center">
@@ -14,18 +15,22 @@
 
       <v-spacer></v-spacer>
 
-      <div class="d-flex align-center">
+      <div class="d-flex align-center cursor-pointer" @click="openProfileDrawer = true">
         <v-avatar class="me-2" size="32" color="green-lighten-4">
           <!-- <v-img src="https://path-to-avatar.jpg"></v-img> -->
           <span class="text-red"> {{ rider?.name.charAt(0) }}</span>
         </v-avatar>
-        <span class="text-subtitle-2">{{
+        <!-- <span class="text-subtitle-2">{{
           rider?.name.split(" ")[0] || "Loading..."
-        }}</span>
+        }}</span> -->
       </div>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" :permanent="$vuetify.display.mdAndUp" color="green-lighten-5">
+    <v-navigation-drawer
+      v-model="drawer"
+      :permanent="$vuetify.display.mdAndUp"
+      color="green-lighten-5"
+    >
       <v-list density="compact" class="mt-5" nav>
         <v-list-item
           v-for="item in riderMenuItems"
@@ -57,7 +62,15 @@
         <slot />
       </v-container>
     </v-main>
+  </v-layout>
   <!-- </v-app> -->
+
+  <profile-drawer
+    :openProfileDrawer="openProfileDrawer"
+    :user="rider"
+    @closeProfileDrawer="openProfileDrawer = false"
+    @update:user="rider = $event"
+  />
 </template>
 
 <script setup>
@@ -66,11 +79,13 @@ import api from "@/services/api";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { riderMenuItems } from "@/services/menus";
+import ProfileDrawer from "./ProfileDrawer.vue";
 
 const router = useRouter();
 const { mdAndUp } = useDisplay();
 const drawer = ref(mdAndUp.value);
 let rider = ref(null);
+const openProfileDrawer = ref(false);
 
 rider = JSON.parse(localStorage.getItem("user"));
 

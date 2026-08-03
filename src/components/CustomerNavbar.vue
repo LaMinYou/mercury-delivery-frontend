@@ -1,5 +1,6 @@
 <template>
   <!-- <v-app> -->
+  <div>
     <v-app-bar
       color="green-darken-4"
       elevation="1"
@@ -9,11 +10,12 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <div class="logo d-flex align-center">
-        <router-link
-          to="/"
-          class="d-flex align-center text-decoration-none"
-        >
-          <v-img :src="require('@/assets/images/mercury.png')" width="120" height="115" />
+        <router-link to="/" class="d-flex align-center text-decoration-none">
+          <v-img
+            :src="require('@/assets/images/mercury.png')"
+            width="120"
+            height="115"
+          />
           <!-- <span class="text-h6 text-white ms-2 font-weight-bold">Momo</span> -->
         </router-link>
       </div>
@@ -27,7 +29,7 @@
               >mdi-account-outline</v-icon
             >
           </div>
-          <div v-else @click="openProfileDrawer=true" class="cursor-pointer">
+          <div v-else @click="openProfileDrawer = true" class="cursor-pointer">
             <span class="text-green-darken-4 font-weight-bold">{{
               user?.name.charAt(0).toUpperCase()
             }}</span>
@@ -51,18 +53,23 @@
                   v-bind="props"
                   class="d-flex align-center cursor-pointer mx-4"
                 >
-                  <v-icon :class="xs ? 'text-green-darken-4' : 'text-white'" size="small" class="me-1"
+                  <v-icon
+                    :class="xs ? 'text-green-darken-4' : 'text-white'"
+                    size="small"
+                    class="me-1"
                     >mdi-map-marker-outline</v-icon
                   >
-                  <span :class="['text-subtitle-1', xs ? 'text-green-darken-4' : 'text-white']">Your current location</span>
+                  <span
+                    :class="[
+                      'text-subtitle-1',
+                      xs ? 'text-green-darken-4' : 'text-white',
+                    ]"
+                    >Your current location</span
+                  >
                 </div>
               </template>
 
-              <v-card
-                v-if="address"
-                class="pa-3 mt-1 "
-                max-width="350"
-              >
+              <v-card v-if="address" class="pa-3 mt-1" max-width="350">
                 <span class="text-caption text-grey">Current Address:</span>
                 <div class="text-body-2 mt-1">{{ address }}</div>
               </v-card>
@@ -88,7 +95,11 @@
       </template>
     </v-app-bar>
 
-    <v-navigation-drawer v-model="drawer" :permanent="$vuetify.display.mdAndUp" color="green-lighten-5">
+    <v-navigation-drawer
+      v-model="drawer"
+      :permanent="$vuetify.display.mdAndUp"
+      color="green-lighten-5"
+    >
       <v-list density="compact" class="mt-5 menu-bar text-subtitle-1" nav>
         <v-list-item
           v-for="item in customerMenuItems"
@@ -99,22 +110,22 @@
           active-color="green-darken-4"
         ></v-list-item>
 
-        <v-list-item 
+        <v-list-item
           prepend-icon="mdi-basket-outline"
           title="Cart"
           to="/customer/cart"
           active-color="green-darken-4"
         >
-        <template v-slot:append>
-          <v-badge 
-            v-if="groupedCart.length > 0"
-            :content="groupedCart.length"
-            color="red"
-            inline
+          <template v-slot:append>
+            <v-badge
+              v-if="groupedCart.length > 0"
+              :content="groupedCart.length"
+              color="red"
+              inline
             >
-          </v-badge>
-        </template>
-      </v-list-item>
+            </v-badge>
+          </template>
+        </v-list-item>
       </v-list>
 
       <template v-if="user" v-slot:append>
@@ -138,7 +149,7 @@
       </v-container>
       <Footer />
     </v-main>
-
+  </div>
   <!-- </v-app> -->
   <signup-dialog
     :openSignupBox="openSignupBox"
@@ -146,12 +157,12 @@
   />
 
   <div v-if="user">
-    <profile-drawer 
-    :openProfileDrawer="openProfileDrawer" 
-    :user="user" 
-    @closeProfileDrawer="openProfileDrawer=false" 
-    @update:user="user = $event"
-  />
+    <profile-drawer
+      :openProfileDrawer="openProfileDrawer"
+      :user="user"
+      @closeProfileDrawer="openProfileDrawer = false"
+      @update:user="user = $event"
+    />
   </div>
 </template>
 
@@ -168,7 +179,7 @@ import Footer from "./Footer.vue";
 
 const { groupedCart } = useCart();
 const props = defineProps(["address"]);
-const emit = defineEmits(['search']);
+const emit = defineEmits(["search"]);
 const router = useRouter();
 const route = useRoute();
 const { xs, mdAndUp } = useDisplay();
@@ -178,7 +189,7 @@ let user = ref(null);
 let openSignupBox = ref(false);
 const openProfileDrawer = ref(false);
 
-user = ref(JSON.parse(localStorage.getItem('user') || 'null'));
+user = ref(JSON.parse(localStorage.getItem("user") || "null"));
 
 const handleLogout = async () => {
   try {
@@ -199,10 +210,10 @@ const handleLogout = async () => {
 watch(
   () => route.query.search,
   (newSearch) => {
-    searchField.value = newSearch || '';
+    searchField.value = newSearch || "";
   },
   {
-    immediate: true
+    immediate: true,
   }
 );
 </script>
@@ -228,7 +239,7 @@ watch(
 .main {
   margin-top: 150px;
 }
-.menu-bar{
+.menu-bar {
   transform: translateY(150px);
 }
 </style>

@@ -13,8 +13,8 @@
     <div v-if="errorMessage">
       <alert :message="errorMessage" type="warning" color="red-accent-4" />
     </div>
-    <span class="text-display-small text-white">Enjoy Healthy</span>
-    <span class="text-display-medium pb-4 text-success food">Food</span>
+    <span class="text-h6 text-white">Enjoy Healthy</span>
+    <span class="text-h5 pb-4 text-success food">Food</span>
     <v-card class="mx-auto px-4 py-4 card" max-width="550" width="100%">
       <v-form @submit.prevent="handleLogin">
         <v-text-field

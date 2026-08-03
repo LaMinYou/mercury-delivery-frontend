@@ -118,7 +118,7 @@
 
             <!-- to choose payment type -->
             <div>
-              <p class="text-h3 font-weight-bold">ငွေပေးချေမှုနည်းလမ်း</p>
+              <p class="text-subtitle-1 py-2 font-weight-bold">ငွေပေးချေမှုနည်းလမ်း</p>
               <v-card
                 variant="outlined"
                 block
@@ -146,7 +146,7 @@
                   </div>
                 </div>
 
-                <div class="text-wrap text-center w-100" v-else>
+                <div class="text-wrap text-subtitle-2 text-center w-100" v-else>
                   <v-icon>mdi-plus</v-icon> ငွေပေးချေမှုနည်းလမ်းတစ်ခုထည့်သွင်းပါ
                 </div>
               </v-card>
@@ -154,7 +154,7 @@
 
             <!-- to show order summary -->
             <div>
-              <p class="text-h3 font-weight-bold">Order Summary</p>
+              <p class="text-subtitle-1 pt-3 font-weight-bold">Order Summary</p>
               <v-card flat>
                 <v-list>
                   <v-list-item
@@ -230,12 +230,12 @@
                   class="d-flex justify-space-between align-center flex-wrap"
                 >
                   <v-card-subtitle class="pa-0">
-                    <span class="text-h3 font-weight-bold text-black text-wrap"
+                    <span class="text-subtitle-1 font-weight-bold text-black text-wrap"
                       >စုစုပေါင်း</span
                     >(ဝန်ဆောင်ခနှင့်အခွန်ပါဝင်ပြီး)
                   </v-card-subtitle>
                   <v-card-subtitle
-                    class="font-weight-bold text-h3 text-green-darken-2"
+                    class="font-weight-bold text-subtitle-1 text-green-darken-2"
                   >
                     <p class="text-wrap">
                       {{ totalPrice + deliveryFee + serviceFee }} MMK
@@ -252,7 +252,7 @@
                   :disabled="!payment"
                   @click="makeOrder"
                 >
-                  <p class="text-wrap text-h3">မှာယူမှုကိုအတည်ပြုပါ</p>
+                  <p class="text-wrap text-subtitle-1 py-3">မှာယူမှုကိုအတည်ပြုပါ</p>
                 </v-btn>
               </v-card>
             </div>

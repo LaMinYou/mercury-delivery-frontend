@@ -14,9 +14,9 @@
         max-height="170"
         :class="['bg-grey-lighten-2', 'mx-auto', { 'cover-img': isAvailable }]"
       >
-        <v-overlay :model-value="!isAvailable" contained persistent scrim="rgba(0,0,0,0.85)" class="dark-overlay">
-            <div class="pa-3 my-5 text-center h-100">
-                <h4 class="text-white font-weight-bold mb-2">{{ reasonText }}</h4>
+        <v-overlay :model-value="!isAvailable" contained persistent scrim="rgba(0,0,0,0.85)" class="dark-overlay d-flex justify-center align-center">
+            <div class="pa-3 text-center h-100">
+                <h4 class="text-white font-weight-bold">{{ reasonText }}</h4>
             </div>
         </v-overlay>
         <!-- show loading placeholder before image is shown -->
@@ -83,7 +83,7 @@ const isAvailable = computed(() => {
   }
 
   const currentHour = new Date().getHours();
-  if(currentHour >= 20 || currentHour < 8){
+  if(currentHour >= 24 || currentHour < 8){
     reasonText.value = "ည 8 PM မှ မနက် 8 AM အထိအသုံးပြု၍မရနိုင်ပါ။"
     return false;
   }

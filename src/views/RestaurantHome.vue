@@ -9,8 +9,8 @@
     <!-- show data -->
     <v-container v-else fluid>
       <div v-if="orders.length === 0" class="text-center pa-5 text-grey">
-        <span class="text-h1"><v-icon>mdi-magnify</v-icon></span>
-        <p class="text-h1 font-weight-bold">လက်ရှိတွင် အော်ဒါအသစ်မရှိသေးပါ။</p>
+        <span class="text-subtitle-1"><v-icon>mdi-magnify</v-icon></span>
+        <p class="text-body-1 font-weight-bold">လက်ရှိတွင် အော်ဒါအသစ်မရှိသေးပါ။</p>
       </div>
 
       <div v-else v-for="order in orders" :key="order.id" class="my-2">

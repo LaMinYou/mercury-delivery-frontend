@@ -35,7 +35,7 @@
         </v-col>
 
         <v-col cols="12" v-if="hasOrder" class="text-green-darken-2">
-          <h4>
+          <h4 class="py-3">
             <v-icon>mdi-package-variant-closed</v-icon> သင်လက်ရှိ ပို့ဆောင်ရမည့်
             အော်ဒါများ ({{ activeOrders.length }}
             ခု)
@@ -51,7 +51,7 @@
               <v-card-title
                 class="text-primary font-weight-bold d-flex justify-space-between"
               >
-                <span class="text-wrap text-body-large"
+                <span class="text-wrap text-body-1"
                   >Order: #{{ order.order_number }}</span
                 >
                 <v-chip
@@ -420,7 +420,7 @@
         </v-col>
 
         <v-col v-else>
-          <p class="text-center text-grey font-weight-bold text-h3 py-5">
+          <p class="text-center text-grey font-weight-bold text-body-1 py-5">
             <v-icon>mdi-magnify</v-icon> လက်တလောပို့ဆောင်ရန်အော်ဒါများမရှိသေးပါ
           </p>
         </v-col>

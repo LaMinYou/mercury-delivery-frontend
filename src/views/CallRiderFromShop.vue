@@ -53,7 +53,7 @@
 
               <!-- order summary -->
               <div>
-                <p class="text-h3 font-weight-bold">Summary</p>
+                <p class="text-subtitle-1 font-weight-bold">Summary</p>
                 <v-card flat>
                   <v-card-subtitle class="pa-0">
                     <v-list>
@@ -97,12 +97,12 @@
                   >
                     <v-card-subtitle class="pa-0">
                       <span
-                        class="text-h3 font-weight-bold text-black text-wrap"
+                        class="text-subtitle-1 font-weight-bold text-black text-wrap"
                         >စုစုပေါင်း</span
                       >(ဝန်ဆောင်ခနှင့်အခွန်ပါဝင်ပြီး)
                     </v-card-subtitle>
                     <v-card-subtitle
-                      class="font-weight-bold text-h3 text-green-darken-2"
+                      class="font-weight-bold text-subtitle-1 text-green-darken-2"
                     >
                       <p class="text-wrap">
                         {{ deliveryFee + serviceFee }} MMK
@@ -118,7 +118,7 @@
                     height="auto"
                     @click="makeOrder"
                   >
-                    <p class="text-wrap text-h3">အတည်ပြုပါ</p>
+                    <p class="text-wrap text-subtitle-1 py-3">အတည်ပြုပါ</p>
                   </v-btn>
                 </v-card>
               </div>
