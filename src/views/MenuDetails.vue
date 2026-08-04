@@ -101,11 +101,18 @@
                 :precision="2"
                 hide-details="auto"
                 label="Price"
-                prepend-inner-icon="mdi-cash"
                 variant="solo"
                 bg-color="#fff"
                 :rules="[rules.required('price')]"
-              ></v-number-input>
+              >
+                <template #prepend-inner>
+                  <v-icon
+                    icon="mdi-cash"
+                    class="ms-3 me-1"
+                    color="grey-darken-1"
+                  ></v-icon>
+                </template>
+              </v-number-input>
             </v-col>
 
             <v-col cols="12" md="6">
@@ -113,14 +120,25 @@
                 v-model="menu.discount_price"
                 :precision="2"
                 :disabled="props.id == 'new'"
-                :hint="props.id == 'new' ? 'Discount can be added after item creation' : ''"
+                :hint="
+                  props.id == 'new'
+                    ? 'Discount can be added after item creation'
+                    : ''
+                "
                 persistent-hint
                 hide-details="auto"
                 label="Discount price"
-                prepend-inner-icon="mdi-sale"
                 variant="solo"
                 bg-color="#fff"
-              ></v-number-input>
+              >
+                <template #prepend-inner>
+                  <v-icon
+                    icon="mdi-sale"
+                    class="ms-3 me-1"
+                    color="grey-darken-1"
+                  ></v-icon>
+                </template>
+            </v-number-input>
             </v-col>
 
             <v-col cols="12" md="6">
@@ -128,15 +146,25 @@
                 v-model="menu.prepare_time"
                 hide-details="auto"
                 label="Prepare Time in minutes"
-                prepend-inner-icon="mdi-clock-time-eight-outline"
                 variant="solo"
                 bg-color="#fff"
                 :rules="[rules.required('prepare time in minutes')]"
-              ></v-number-input>
+              >
+                <template #prepend-inner>
+                  <v-icon
+                    icon="mdi-clock-time-eight-outline"
+                    class="ms-3 me-1"
+                    color="grey-darken-1"
+                  ></v-icon>
+                </template>
+            </v-number-input>
             </v-col>
 
             <v-col cols="12">
-              <div v-if="props.id !== 'new' && !menu.image && menu.image_url" class="mb-4">
+              <div
+                v-if="props.id !== 'new' && !menu.image && menu.image_url"
+                class="mb-4"
+              >
                 <p class="text-caption">Current Photo:</p>
                 <v-img
                   :src="menu.image_url"
@@ -152,7 +180,9 @@
                 variant="solo"
                 bg-color="#fff"
                 prepend-inner-icon="mdi-camera"
-                :rules="props.id === 'new' ? [rules.required('item photo')] : []"
+                :rules="
+                  props.id === 'new' ? [rules.required('item photo')] : []
+                "
                 show-size
               ></v-file-input>
             </v-col>
@@ -203,7 +233,11 @@
         <v-card-title class="d-flex align-center">
           Select Tags
           <v-spacer></v-spacer>
-          <v-btn icon="mdi-close" variant="text" @click="tagDialog = false"></v-btn>
+          <v-btn
+            icon="mdi-close"
+            variant="text"
+            @click="tagDialog = false"
+          ></v-btn>
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
@@ -222,21 +256,28 @@
             </v-list-item>
           </v-list> -->
           <v-chip
-                  v-for="tag in allTags"
-                  :key="tag.id"
-                  size="small"
-                  :color="selectedTagIds.includes(tag.id)? 'green-darken-2' : 'orange-darken-2'"
-                  class="ma-1"
-                
-                  :prepend-icon="selectedTagIds.includes(tag.id) ? 'mdi-check' : 'mdi-plus' "
-                  @click="toggleTag(tag.id)"
-                >
-                  {{ tag.name }}
-                </v-chip>
+            v-for="tag in allTags"
+            :key="tag.id"
+            size="small"
+            :color="
+              selectedTagIds.includes(tag.id)
+                ? 'green-darken-2'
+                : 'orange-darken-2'
+            "
+            class="ma-1"
+            :prepend-icon="
+              selectedTagIds.includes(tag.id) ? 'mdi-check' : 'mdi-plus'
+            "
+            @click="toggleTag(tag.id)"
+          >
+            {{ tag.name }}
+          </v-chip>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn block color="green-darken-1" @click="tagDialog = false">Done</v-btn>
+          <v-btn block color="green-darken-1" @click="tagDialog = false"
+            >Done</v-btn
+          >
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -272,7 +313,7 @@ const menu = ref({
   is_available: true,
   image: null,
   description: null,
-  prepare_time: null
+  prepare_time: null,
 });
 
 // Category အားလုံးယူမယ်
@@ -309,7 +350,7 @@ const prepareFormData = () => {
   formData.append("description", menu.value.description);
   formData.append("is_available", menu.value.is_available ? 1 : 0);
   formData.append("prepare_time", menu.value.prepare_time);
-  
+
   // Tags တွေကို JSON string အနေနဲ့ ပို့မယ်
   formData.append("tags", JSON.stringify(selectedTagIds.value));
 
@@ -372,10 +413,10 @@ const getMenuDetails = async () => {
       image: null,
       is_available: data.is_available == 1,
     };
-    
+
     // Edit ဖြစ်လို့ရှိရင် လက်ရှိ menu မှာရှိတဲ့ tag IDs တွေကို Selected list ထဲထည့်မယ်
     if (data.tags) {
-      selectedTagIds.value = data.tags.map(tag => tag.id);
+      selectedTagIds.value = data.tags.map((tag) => tag.id);
     }
   } catch (err) {
     errorMessage.value = "Could not load menu details";
