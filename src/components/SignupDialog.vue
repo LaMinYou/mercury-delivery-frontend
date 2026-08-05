@@ -19,7 +19,7 @@
         <v-card-text class="text-center">
             <p>Create an account to track your orders and get special offers.</p>
           <v-btn class="my-3" block size="large" color="green-darken-4" variant="outlined" @click="router.push('/customer/login')"> Login </v-btn>
-          <v-btn block size="large" color="green-darken-4" variant="elevated">
+          <v-btn block size="large" color="green-darken-4" variant="elevated" @click="router.push('/customer/login')">
             Sign up
           </v-btn>
         </v-card-text>
