@@ -83,7 +83,7 @@ const isAvailable = computed(() => {
   }
 
   const currentHour = new Date().getHours();
-  if(currentHour >= 24 || currentHour < 8){
+  if(currentHour >= 24 || currentHour < 4){
     reasonText.value = "ည 8 PM မှ မနက် 8 AM အထိအသုံးပြု၍မရနိုင်ပါ။"
     return false;
   }

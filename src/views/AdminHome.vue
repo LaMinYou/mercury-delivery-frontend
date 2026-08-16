@@ -77,6 +77,7 @@ import LineChart from "@/components/LineChart.vue";
 import { min } from "date-fns";
 import AdminHomeLoading from "@/components/loadings/AdminHomeLoading.vue";
 import TimeoutView from "@/components/TimeoutView.vue";
+import { requestNotificationPermission } from "@/firebase";
 
 const roleCount = ref({});
 const isLoading = ref(true);
@@ -155,5 +156,6 @@ const retryFetch = () => {
 onMounted(() => {
   fetchUserCounts();
   fetchWeeklyOrders();
+  requestNotificationPermission();
 });
 </script>

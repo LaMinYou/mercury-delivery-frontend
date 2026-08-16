@@ -27,6 +27,7 @@ import api from "@/services/api";
 import echo from "@/services/echo";
 import RestaurantHomeLoading from "@/components/loadings/RestaurantHomeLoading.vue";
 import TimeoutView from "@/components/TimeoutView.vue";
+import { requestNotificationPermission } from "@/firebase";
 
 const orders = ref([]);
 const user = JSON.parse(localStorage.getItem("user"));
@@ -88,6 +89,7 @@ const retryFetch = () => {
 onMounted(() => {
   getOrders();
   listenToIncomingOrders();
+  requestNotificationPermission();
 });
 
 onUnmounted(() => {
