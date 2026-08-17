@@ -1,43 +1,49 @@
 <template>
-  <v-card class="d-flex align-center justify-space-between pa-3 position-relative" flat>
-    <div>
-      <v-card-title class="d-flex flex-column pa-0">
-        <span class="text-subtitle-1 font-weight-bold pb-1">{{ menu.subtitle }}</span>
-        <span v-if="menu.discount_price" class="text-green-darken-2 font-weight-bold text-subtitle-2">
-          {{ menu.discount_price }} MMK
-        </span>
-        <span :class="{ 'text-decoration-line-through text-grey': menu.discount_price }" class="text-subtitle-2 text-green-darken-1">
-          {{ menu.price }} MMK
-        </span>
-      </v-card-title>
-      <v-card-subtitle class="text-wrap pa-0 mt-1">
-        <p class="text-body-medium">{{ menu.description }}</p>
-      </v-card-subtitle>
-    </div>
+  <v-card flat class="position-relative">
+    <div class="d-flex align-center justify-space-between pa-3 ga-3">
 
-    <div class="position-relative" style="height: 120px; width: 100px;">
-      <v-card class="bg-white" flat>
-        <v-img :src="menu.image_url" width="100" height="100" cover class="rounded-lg bg-grey-lighten-2">
-          <template v-slot:error>
-            <div class="d-flex align-center justify-center fill-height bg-grey-lighten-4">
-              <v-icon color="grey-darken-1" size="large">mdi-food-outline</v-icon>
+      <!-- Left Content (Text) -->
+      <div class="flex-grow-1 flex-shrink-1 min-width-0">
+        <v-card-title class="pa-0">
+          <p class="text-body-2 font-weight-bold pb-1 text-wrap">{{ menu.subtitle }}</p>
+          <p v-if="menu.discount_price" class="text-green-darken-2 font-weight-bold text-subtitle-2">
+            {{ menu.discount_price }} MMK
+          </p>
+          <p :class="{ 'text-decoration-line-through text-grey': menu.discount_price }" class="text-subtitle-2 text-green-darken-1">
+            {{ menu.price }} MMK
+          </p>
+        </v-card-title>
+        <v-card-subtitle class="pa-0 mt-1">
+          <p class="text-body-medium text-wrap">{{ menu.description }}</p>
+        </v-card-subtitle>
+      </div>
+
+      <!-- Right Content (Image & Action Button) -->
+      <div class="position-relative flex-shrink-0" style="width: 80px; height: 100px;">
+        <v-card class="bg-white" flat>
+          <v-img :src="menu.image_url" width="80" height="80" cover class="rounded-lg bg-grey-lighten-2">
+            <template v-slot:error>
+              <div class="d-flex align-center justify-center fill-height bg-grey-lighten-4">
+                <v-icon color="grey-darken-1" size="large">mdi-food-outline</v-icon>
+              </div>
+            </template>
+          </v-img>
+        </v-card>
+
+        <div class="cart-action-container">
+          <template v-if="quantity > 0">
+            <div class="action-btn minus" @click="removeFromCart(menu.id)">
+              <v-icon size="small">mdi-minus</v-icon>
             </div>
+            <span class="qty-text">{{ quantity }}</span>
           </template>
-        </v-img>
-      </v-card>
 
-      <div class="cart-action-container">
-        <template v-if="quantity > 0">
-          <div class="action-btn minus" @click="removeFromCart(menu.id)">
-            <v-icon size="small">mdi-minus</v-icon>
+          <div :class="['action-btn plus', {'is-disabled': isMaxReached}]" @click="addToCart(menu)">
+            <v-icon size="small">mdi-plus</v-icon>
           </div>
-          <span class="qty-text">{{ quantity }}</span>
-        </template>
-
-        <div :class="['action-btn plus', {'is-disabled': isMaxReached}]" @click="addToCart(menu)">
-          <v-icon size="small">mdi-plus</v-icon>
         </div>
       </div>
+
     </div>
   </v-card>
 </template>
@@ -61,7 +67,8 @@ const isMaxReached = computed(() =>{
 .cart-action-container {
   position: absolute;
   right: 0;
-  bottom: 5px;
+  bottom: 0;
+  z-index: 2; /* Image ရဲ့ အပေါ်သို့ ရောက်စေရန် */
   background: white;
   display: flex;
   align-items: center;

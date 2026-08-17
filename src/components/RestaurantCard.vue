@@ -36,7 +36,7 @@
       </v-img>
     </v-card>
 
-    <h3>{{ restaurant.name }}</h3>
+    <h3 class="text-subtitle-1 my-2 font-weight-bold">{{ restaurant.name }}</h3>
     <v-card-subtitle class="pa-0 d-flex flex-column">
       <span>
         {{ 

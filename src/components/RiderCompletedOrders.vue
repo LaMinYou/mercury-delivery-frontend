@@ -263,11 +263,11 @@ const totalOtherOrderCount = computed(() => {
 });
 
 const codOrders = computed(() => {
-  return serverItems.value.filter((item) => item.payment.name == "cash");
+  return serverItems.value.filter((item) => item.payment.name == "cash" && item.is_settled == 0);
 });
 const digitalOrders = computed(() => {
   return serverItems.value.filter(
-    (item) => item.payment.name != "cash" && item.payment_id != null
+    (item) => item.payment.name != "cash" && item.payment_id != null && item.is_settled == 0
   );
 });
 const totalCODEarnings = computed(() => {
@@ -284,7 +284,7 @@ const totalDigitalEarnings = computed(() => {
 });
 
 const totalCashServiceFees = computed(() => {
-  return codOrders.value.reduce(
+  return serverItems.value.filter((item) => item.payment.name == "cash").reduce(
     (sum, item) => sum + Number(item.service_fee || 0),
     0
   );

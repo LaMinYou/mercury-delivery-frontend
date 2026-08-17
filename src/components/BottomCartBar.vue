@@ -4,12 +4,12 @@
         <span>{{ filteredTotalItems }}</span>
       </div>
       <div class="text-white d-flex flex-column align-center">
-        <span class="text-title-medium font-weight-bold">
+        <span class="text-subtitle-2 font-weight-bold">
           ဈေးဝယ်ခြင်းအား ကြည့်ရန်
         </span>
-        <span class="text-grey-lighten-2">{{ restaurant.name }}</span>
+        <span class="text-grey-lighten-2 text-body-2">{{ restaurant.name }}</span>
       </div>
-      <div class="text-white font-weight-bold text-subtitle-1">
+      <div class="text-white font-weight-bold text-subtitle-2">
         MMK {{ filteredTotalPrice.toLocaleString() }}
       </div>
     </div>

@@ -149,8 +149,10 @@ const activeFilter = ref("this_week");
 
 const totalOrderCount = computed(() => serverItems.value.length);
 
+const unpaidOrders = computed(() => serverItems.value.filter(item => item.is_shop_settled == 0) );
+
 const totalEarnings = computed(() => {
-  return serverItems.value.reduce(
+  return unpaidOrders.value.reduce(
     (sum, item) => sum + Number(item.total_price || 0),
     0
   );
