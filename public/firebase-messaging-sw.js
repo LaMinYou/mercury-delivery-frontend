@@ -16,36 +16,36 @@ const messaging = firebase.messaging();
 //catch push noti from backend for background noti
 messaging.onBackgroundMessage((payload) => {
   console.log('Background Noti Received:', payload);
+  console.log('[firebase-messaging-sw.js] Background Payload: ', payload);
 
-  const notificationTitle = payload.data?.title || payload.notification?.title || 'အကြောင်းကြားစာ';
+  const title = payload.data?.title || 'အကြောင်းကြားစာ';
   const notificationOptions = {
-    body: payload.data?.body || payload.notification?.body || '',
+    body: payload.data?.body || 'အော်ဒါအသစ် ရောက်ရှိလာပါသည်။',
     icon: '/icon.png',
-    //get data from backend that is send by withData()
-    data: payload.data 
+    data: payload.data
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  self.registration.showNotification(title, notificationOptions);
 });
 
 // catch event when click  Notification Banner 
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
   event.notification.close(); // close Noti banner
 
   const data = event.notification.data || {};
-  
+
   // Backend က ပို့လိုက်တဲ့ target_url ကို ဆွဲထုတ်မည် (မပါလာပါက default '/' သို့ သွားမည်)
   const targetUrl = data.target_url || '/';
 
   event.waitUntil(
-    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function(clientList) {
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then(function (clientList) {
       // ဖွင့်ထားပြီးသား Tab များထဲမှ သက်ဆိုင်ရာ Role Domain/Path ကို ရှာမည်
       for (let i = 0; i < clientList.length; i++) {
         let client = clientList[i];
-        
+
         // Role အလိုက် Matching စစ်ဆေးခြင်း (ဥပမာ- /rider သို့မဟုတ် /restaurant)
-        const isMatchingPage = data.role 
-          ? client.url.includes(`/${data.role}`) 
+        const isMatchingPage = data.role
+          ? client.url.includes(`/${data.role}`)
           : true;
 
         if (isMatchingPage && 'focus' in client) {
@@ -53,7 +53,7 @@ self.addEventListener('notificationclick', function(event) {
           return client.focus();
         }
       }
-      
+
       // Tab ဖွင့်ထားခြင်း မရှိပါက Window အသစ်ဖွင့်၍ လမ်းကြောင်းမည်
       if (clients.openWindow) {
         return clients.openWindow(targetUrl);
