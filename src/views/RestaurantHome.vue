@@ -84,6 +84,7 @@ const retryFetch = () => {
   isTimeout.value = false;
   getOrders();
   listenToIncomingOrders();
+  requestNotificationPermission();
 }
 
 onMounted(() => {

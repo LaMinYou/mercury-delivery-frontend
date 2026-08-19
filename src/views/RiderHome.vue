@@ -426,59 +426,13 @@
         </v-col>
       </v-row>
       <!-- popup box for order noti event -->
-      <v-card v-if="incomingOrderOffer" class="order-popup-modal pa-3 ma-3">
-        <v-card-title>
-          အော်ဒါ ကမ်းလှမ်းချက်အသစ် ရရှိပါသည်!
-          <v-card-subtitle v-if="incomingOrderOffer.order_type == 'merchant'">
-            ဆိုင်မှခေါ်ယူခြင်း
-          </v-card-subtitle>
-        </v-card-title>
-        <v-card-text>
-          <p class="text-wrap font-weight-bold" style="max-width: 350px">
-            {{ incomingOrderOffer.restaurant?.name || "Express အမြန်ချောပို့" }}
-          </p>
-          <p class="text-wrap">
-            အော်ဒါနံပါတ်: {{ incomingOrderOffer.order_number }}
-          </p>
-          <p
-            class="text-wrap"
-            v-if="
-              incomingOrderOffer.order_type == 'errand' ||
-              incomingOrderOffer.order_type == 'merchant'
-            "
-          >
-            Delivery + Service Fee :
-            {{
-              Number(incomingOrderOffer.delivery_fee) +
-              Number(incomingOrderOffer.service_fee)
-            }}
-            MMK
-          </p>
-          <p v-else>
-            စုစုပေါင်းတန်ဖိုး: {{ incomingOrderOffer.total_price }} MMK
-          </p>
-        </v-card-text>
-        <v-card-action>
-          <v-btn
-            block
-            variant="elevated"
-            color="green-darken-2"
-            @click="handleAcceptOrder(incomingOrderOffer.id)"
-            class="mb-2"
-          >
-            လက်ခံမည်
-          </v-btn>
-
-          <v-btn
-            block
-            variant="outlined"
-            color="red-accent-4"
-            @click="incomingOrderOffer = null"
-          >
-            ငြင်းပယ်မည်
-          </v-btn>
-        </v-card-action>
-      </v-card>
+      <div v-if="incomingOrderOffer">
+        <rider-incoming-order-dialog
+          :incomingOrderOffer="incomingOrderOffer"
+          @handleAcceptOrder="handleAcceptOrder"
+          @closeIncomingOrderDialog="incomingOrderOffer = null"
+        />
+      </div>
     </v-container>
     <near-riders-dialog
       :openRiderDialog="riderDialog"
@@ -493,15 +447,21 @@
 <script setup>
 import RiderNavbar from "@/components/RiderNavbar.vue";
 import NearRidersDialog from "@/components/NearRidersDialog.vue";
-import { ref, computed, onMounted, onUnmounted } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch } from "vue";
 import api from "@/services/api";
 import echo from "@/services/echo";
 import Loading from "@/components/loadings/Loading.vue";
 import TimeoutView from "@/components/TimeoutView.vue";
+import RiderIncomingOrderDialog from "@/components/RiderIncomingOrderDialog.vue";
+import { requestNotificationPermission } from "@/firebase";
+import { useRouter, useRoute } from "vue-router";
 
+const router = useRouter();
+const route = useRoute();
 const isOnline = ref(false);
 const activeOrders = ref([]);
 const incomingOrderOffer = ref(null);
+const openIncomingOrderDialog = ref(false);
 const alertSound = new Audio("/images/noti.wav");
 const hasOrder = computed(() => activeOrders.value.length > 0);
 let locationTimer = null;
@@ -510,6 +470,38 @@ const riderDialog = ref(false);
 const selectedOrder = ref(null);
 const isLoading = ref(true);
 const isTimeout = ref(false);
+const user = ref(JSON.parse(localStorage.getItem('user')) || '');
+
+const checkRiderStatus = () => {
+  if(user.value.status == 'available'){
+    isOnline.value = true;
+    listenToRiderChannel(user.value.id);
+    startLocationTracking();
+    requestNotificationPermission();
+  }
+}
+
+
+const checkAndOpenNotiOrder = async () => {
+  const orderId = route.query.open_order_id;
+  console.log("Current Order ID from Query:", orderId); // Debugging Log
+
+  if (orderId) {
+    try {
+      const res = await api.get(`auth/rider/order-details/${orderId}`); 
+      console.log("API Result:", res.data);
+      
+      if (res.data) {
+        incomingOrderOffer.value = res.data;
+        //playAlert();
+      }
+    } catch (err) {
+      console.error("Notification order error:", err);
+    } finally {
+      router.replace({ path: route.path, query: {} });
+    }
+  }
+};
 
 const makePhoneCall = (phoneNumber) => {
   if (phoneNumber) {
@@ -613,10 +605,13 @@ const listenToRiderChannel = (riderId) => {
 const handleGoOnline = async () => {
   await api.put("auth/rider/toggle-status", { status: "available" });
   isOnline.value = true;
+  user.value.status = 'available';
+  localStorage.setItem('user', JSON.stringify(user.value));
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  listenToRiderChannel(user.id);
+  //const user = JSON.parse(localStorage.getItem("user"));
+  listenToRiderChannel(user.value.id);
   startLocationTracking();
+  requestNotificationPermission();
 };
 
 // when rider click Go Offline
@@ -624,23 +619,25 @@ const handleGoOffline = async () => {
   if (hasOrder.value) return;
   await api.put("auth/rider/toggle-status", { status: "inactive" });
   isOnline.value = false;
+  user.value.status = 'inactive';
+  localStorage.setItem('user', JSON.stringify(user.value));
 
   if (locationTimer) {
     clearInterval(locationTimer);
     locationTimer = null;
   }
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  echo.leave(`riders.${user.id}`); // Close Live Channel
+  //const user = JSON.parse(localStorage.getItem("user"));
+  echo.leave(`riders.${user.value.id}`); // Close Live Channel
 };
 
 const handleAcceptOrder = async (orderId) => {
   try {
     const res = await api.post(`auth/rider/accept-order/${orderId}`);
-    activeOrders.value.unshift(res.data.order); // လက်ရှိ Active အော်ဒါစာရင်းထဲ ထည့်မည်
-    incomingOrderOffer.value = null; // Pop-up ပိတ်လိုက်မည်
+    activeOrders.value.unshift(res.data.order); 
+    incomingOrderOffer.value = null; 
 
-    startLocationTracking(); // GPS ကို ၁၅ စက္ကန့်တစ်ခါ အရှိန်မြှင့်တင်လိုက်မည်
+    startLocationTracking();
     alert("အော်ဒါ လက်ခံရရှိမှု အောင်မြင်ပါသည်။ ဆိုင်သို့ သွားယူပေးပါဗျာ။");
   } catch (err) {
     alert(err.response?.data?.message || "အော်ဒါအား အခြားသူ ယူသွားပါပြီ။");
@@ -703,15 +700,16 @@ const openGoogleMap = (order) => {
 
 const fetchActiveOrders = async () => {
   try {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
+    //const user = JSON.parse(localStorage.getItem("user"));
+    if (user.value) {
       const res = await api.get("auth/rider/current-active-orders");
       activeOrders.value = res.data.orders;
 
       if (hasOrder.value) {
         isOnline.value = true;
-        listenToRiderChannel(user.id);
+        listenToRiderChannel(user.value.id);
         startLocationTracking();
+        requestNotificationPermission();
       }
     }
     isLoading.value = false;
@@ -721,21 +719,21 @@ const fetchActiveOrders = async () => {
   }
 };
 
-// အက်ပ်စပွင့်ချင်း ရိုက်ဒါတွင် လက်ရှိ ပို့ဆောင်ဆဲ အော်ဒါစာရင်း ရှိ/မရှိ စစ်ခြင်း
-onMounted(() => {
-  // const user = JSON.parse(localStorage.getItem("user"));
-  // if (user) {
-  //   const res = await api.get("auth/rider/current-active-orders");
-  //   activeOrders.value = res.data.orders;
+watch(
+  () => route.query.open_order_id,
+  (newOrderId) => {
+    if (newOrderId) {
+      checkAndOpenNotiOrder();
+    }
+  }
+);
 
-  //   if (hasOrder.value) {
-  //     isOnline.value = true;
-  //     listenToRiderChannel(user.id);
-  //     startLocationTracking();
-  //   }
-  // }
+onMounted(() => {
+  checkAndOpenNotiOrder();
+  checkRiderStatus();
   fetchActiveOrders();
 });
+
 
 const retryFetch = () => {
   isLoading.value = true;
