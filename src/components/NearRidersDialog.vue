@@ -114,7 +114,7 @@ const confirmHandover = async (rider, order) => {
         new_rider_id: rider.id
     });
     emit('closeRiderDialog');
-    emit('handOverSuccess');
+    emit('handOverSuccess', props.order.id);
     router.push('/rider');
     }catch(err){
         console.log(`Something went wrong ${err.response.data.error}`);

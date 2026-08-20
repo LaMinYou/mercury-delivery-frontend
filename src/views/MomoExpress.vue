@@ -234,6 +234,7 @@
                     class="w-100 my-3"
                     height="auto"
                     :disabled="!payment"
+                    :loading="loading"
                     @click="makeOrder"
                   >
                     <p class="text-wrap text-subtitle-1 py-3">အတည်ပြုပါ</p>
@@ -282,6 +283,7 @@ import api from "@/services/api";
 import { rules } from "@/services/rules";
 import { useRouter } from "vue-router";
 
+const loading = ref(false);
 const router = useRouter();
 const userLocation = JSON.parse(localStorage.getItem("userLocation"));
 const { calculateDeliveryFee } = useDelivery();
@@ -372,6 +374,7 @@ const submitOrder = async (payStatus) => {
   order.value.delivery_fee = deliveryFee.value;
   order.value.service_fee = serviceFee.value;
   try {
+    loading.value = true;
     const res = await api.post("/auth/orders/express/new", order.value);
     const orderId = res.data.orderId;
     if (payStatus == "pending") {
@@ -399,6 +402,8 @@ const submitOrder = async (payStatus) => {
     } else {
       console.error("API Error:", err.response?.data?.error || err.message);
     }
+  }finally{
+    loading.value = false;
   }
 }
 

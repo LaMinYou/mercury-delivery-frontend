@@ -96,14 +96,14 @@
             </v-col>
 
             <v-col cols="12" md="6">
-              <v-number-input
+              <v-text-field
                 v-model="menu.price"
-                :precision="2"
                 hide-details="auto"
                 label="Price"
                 variant="solo"
                 bg-color="#fff"
                 :rules="[rules.required('price')]"
+                @input="convertMyanmarToEnglishNumber($event, 'price')"
               >
                 <template #prepend-inner>
                   <v-icon
@@ -112,11 +112,11 @@
                     color="grey-darken-1"
                   ></v-icon>
                 </template>
-              </v-number-input>
+              </v-text-field>
             </v-col>
 
             <v-col cols="12" md="6">
-              <v-number-input
+              <!-- <v-number-input
                 v-model="menu.discount_price"
                 :precision="2"
                 :disabled="props.id == 'new'"
@@ -138,7 +138,30 @@
                     color="grey-darken-1"
                   ></v-icon>
                 </template>
-            </v-number-input>
+              </v-number-input> -->
+              <v-text-field
+                v-model="menu.discount_price"
+                :disabled="props.id == 'new'"
+                :hint="
+                  props.id == 'new'
+                    ? 'Discount can be added after item creation'
+                    : ''
+                "
+                persistent-hint
+                hide-details="auto"
+                label="Discount price"
+                variant="solo"
+                bg-color="#fff"
+                @input="convertMyanmarToEnglishNumber($event, 'discount_price')"
+              >
+                <template #prepend-inner>
+                  <v-icon
+                    icon="mdi-sale"
+                    class="ms-3 me-1"
+                    color="grey-darken-1"
+                  ></v-icon>
+                </template>
+              </v-text-field>
             </v-col>
 
             <v-col cols="12" md="6">
@@ -157,7 +180,7 @@
                     color="grey-darken-1"
                   ></v-icon>
                 </template>
-            </v-number-input>
+              </v-number-input>
             </v-col>
 
             <v-col cols="12">
@@ -346,6 +369,7 @@ const prepareFormData = () => {
   formData.append("title", menu.value.title);
   formData.append("subtitle", menu.value.subtitle);
   formData.append("price", menu.value.price);
+  formData.append("discount_price", menu.value.discount_price);
   formData.append("available_count", menu.value.available_count);
   formData.append("description", menu.value.description);
   formData.append("is_available", menu.value.is_available ? 1 : 0);
@@ -421,6 +445,27 @@ const getMenuDetails = async () => {
   } catch (err) {
     errorMessage.value = "Could not load menu details";
   }
+};
+
+const convertMyanmarToEnglishNumber = (event, targetValueName) => {
+  let input = event.target.value;
+
+  const myanmarNumbers = ["၀", "၁", "၂", "၃", "၄", "၅", "၆", "၇", "၈", "၉"];
+  myanmarNumbers.forEach((num, index) => {
+    const regex = new RegExp(num, "g");
+    input = input.replace(regex, index);
+  });
+
+  input = input.replace(/[^0-9.]/g, "");
+
+  const parts = input.split(".");
+  if (parts.length > 2) {
+    input = parts[0] + "." + parts.slice(1).join("");
+  }
+
+  targetValueName == "price"
+    ? (menu.value.price = input)
+    : (menu.value.discount_price = input);
 };
 
 onMounted(() => {

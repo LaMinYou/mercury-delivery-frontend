@@ -250,6 +250,7 @@
                   class="w-100 my-3"
                   height="auto"
                   :disabled="!payment"
+                  :loading="loading"
                   @click="makeOrder"
                 >
                   <p class="text-wrap text-subtitle-1 py-3">မှာယူမှုကိုအတည်ပြုပါ</p>
@@ -326,6 +327,7 @@ const showMap = ref(false);
 const payments = ref([]);
 const payment = ref(null);
 const userNote = ref(null);
+const loading = ref(false);
 const totalPrice = computed(() => {
   return cartItems.reduce((sum, item) => {
     return sum + item.finalPrice * item.quantity;
@@ -410,7 +412,7 @@ const submitOrder = async (payStatus) => {
     const successfullyReducedItems = [];
 
   try {
-    //to show error message if stock is not enough
+    loading.value = true;
     for (const item of cartItems) {
       await updateMenuCount(item.id, item.quantity);
       // စတော့လျှော့တာ အောင်မြင်ရင် ဒီ Array ထဲ ထည့်မှတ်ထားမယ်
@@ -465,6 +467,8 @@ const submitOrder = async (payStatus) => {
     } else {
       console.error("API Error:", err.response?.data?.error || err.message);
     }
+  }finally{
+    loading.value = false;
   }
 };
 

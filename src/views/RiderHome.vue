@@ -134,8 +134,9 @@
 
               <div>
                 <v-btn
-                  variant="outlined"
+                  
                   color="red-accent-4"
+                  :loading="releasingOrderId == order.id"
                   @click="releaseOrder(order)"
                 >
                   Release Order
@@ -447,7 +448,7 @@
 <script setup>
 import RiderNavbar from "@/components/RiderNavbar.vue";
 import NearRidersDialog from "@/components/NearRidersDialog.vue";
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted, watch, reactive } from "vue";
 import api from "@/services/api";
 import echo from "@/services/echo";
 import Loading from "@/components/loadings/Loading.vue";
@@ -469,6 +470,7 @@ const riders = ref([]);
 const riderDialog = ref(false);
 const selectedOrder = ref(null);
 const isLoading = ref(true);
+const releasingOrderId = ref(null);
 const isTimeout = ref(false);
 const user = ref(JSON.parse(localStorage.getItem('user')) || '');
 
@@ -533,40 +535,77 @@ const updateLocation = () => {
   }
 };
 
+// const releaseOrder = async (ord) => {
+//   selectedOrder.value = ord;
+//   if (ord.delivery_status == "picking") {
+//     try {
+//       const res = await api.post(`auth/rider/order-release/${ord.id}`);
+//       await fetchActiveOrders();
+//     } catch (err) {
+//       console.log(err);
+//     }
+//   } else {
+//     navigator.geolocation.getCurrentPosition(async (position) => {
+//       const current_latitude = position.coords.latitude;
+//       const current_longitude = position.coords.longitude;
+
+//       try {
+//         const res = await api.get("/auth/rider/nearest-riders", {
+//           params: {
+//             latitude: current_latitude,
+//             longitude: current_longitude,
+//             order_id: ord.id,
+//           },
+//         });
+
+//         riders.value = res.data;
+//         riderDialog.value = true;
+//       } catch (err) {
+//         console.error("အနီးနားရှိ ရိုက်ဒါများ ရှာမတွေ့ပါဗျာ-", err);
+//       }
+//     });
+//   }
+// };
+
 const releaseOrder = async (ord) => {
   selectedOrder.value = ord;
-  if (ord.delivery_status == "picking") {
-    try {
-      const res = await api.post(`auth/rider/order-release/${ord.id}`);
-      fetchActiveOrders();
-    } catch (err) {
-      console.log(err);
+  releasingOrderId.value = ord.id;
+
+  try {
+    if (ord.delivery_status == "picking") {
+      await api.post(`auth/rider/order-release/${ord.id}`);
+      await fetchActiveOrders();
+    } else {
+      await new Promise((resolve) => {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          try {
+            const res = await api.get("/auth/rider/nearest-riders", {
+              params: {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                order_id: ord.id,
+              },
+            });
+            riders.value = res.data;
+            riderDialog.value = true;
+          } catch (err) {
+            console.error("အနီးနားရှိ ရိုက်ဒါများ ရှာမတွေ့ပါဗျာ-", err);
+          } finally {
+            resolve();
+          }
+        }, () => resolve());
+      });
     }
-  } else {
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const current_latitude = position.coords.latitude;
-      const current_longitude = position.coords.longitude;
-
-      try {
-        const res = await api.get("/auth/rider/nearest-riders", {
-          params: {
-            latitude: current_latitude,
-            longitude: current_longitude,
-            order_id: ord.id,
-          },
-        });
-
-        riders.value = res.data;
-        riderDialog.value = true;
-      } catch (err) {
-        console.error("အနီးနားရှိ ရိုက်ဒါများ ရှာမတွေ့ပါဗျာ-", err);
-      }
-    });
+  } catch (err) {
+    console.error(err);
+  } finally {
+    releasingOrderId.value = null;
   }
 };
 
-const handOverSuccess = () => {
-  fetchActiveOrders();
+const handOverSuccess = (orderId) => {
+  activeOrders.value = activeOrders.value.filter(item => item.id !== orderId);
+  //await fetchActiveOrders();
 };
 
 const startLocationTracking = () => {
@@ -597,7 +636,11 @@ const listenToRiderChannel = (riderId) => {
       }
     })
     .listen(".OrderHandOver", (data) => {
-      activeOrders.value.unshift(data.order);
+      const exists = activeOrders.value.some((o) => o.id === data.order.id);
+  
+      if (!exists) {
+        activeOrders.value.unshift(data.order);
+      }
     });
 };
 
