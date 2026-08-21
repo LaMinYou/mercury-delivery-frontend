@@ -3,16 +3,35 @@
     <v-container fluid>
       <v-row v-if="currentOrders && currentOrders.length > 0">
         <v-col cols="12" v-if="currentOrders">
-          <v-card class="mb-2 mx-auto" v-for="order in currentOrders" :key="order.id" max-width="900" @click="router.push(`/customer/orders/${order.id}`)">
+          <v-card
+            class="mb-2 mx-auto"
+            v-for="order in currentOrders"
+            :key="order.id"
+            max-width="900"
+            @click="router.push(`/customer/orders/${order.id}`)"
+          >
             <v-card-text class="d-flex justify-space-between align-center">
-              <span>#{{ order.order_number }}</span>
-              <v-chip
+              <div>
+                 <span>#{{ order.order_number }}</span>
+                 <p class="text-grey text-caption mb-3">
+                  <v-icon>{{ order.order_type == 'food' ? 'mdi-food' : 'mdi-zip-box' }}</v-icon>
+                  {{ order.order_type == 'food' ? 'Food & Others' : 'Express' }}
+                 </p>
+                <v-chip
                 :color="getStatusColor(order.delivery_status)"
                 size="small"
                 class="font-weight-bold"
               >
                 {{ order.delivery_status }}
               </v-chip>
+              </div>
+
+              <v-btn
+                icon="mdi-chevron-right"
+                variant="text"
+                class="cursor-pointer"
+                @click.stop="showOrderItems(order)"
+              ></v-btn>
             </v-card-text>
           </v-card>
         </v-col>
@@ -26,12 +45,17 @@
       <v-row v-else>
         <div class="pa-5 text-center text-grey w-100">
           <v-icon size="40" class="mb-2">mdi-folder-open-outline</v-icon>
-          <div>
-            There is no current orders yet.
-          </div>
+          <div>There is no current orders yet.</div>
         </div>
       </v-row>
     </v-container>
+    <div v-if="openOrderItemDialog">
+      <customer-order-items
+      :order="selectedOrder"
+      :openOrderItemDialog="openOrderItemDialog"
+      @closeOrderItemDialog="openOrderItemDialog = false"
+    />
+    </div>
   </customer-navbar>
 </template>
 <script setup>
@@ -40,6 +64,7 @@ import api from "@/services/api";
 import { onMounted, ref } from "vue";
 import echo from "@/services/echo";
 import { useRouter } from "vue-router";
+import CustomerOrderItems from "@/components/CustomerOrderItems.vue";
 
 const userLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
 
@@ -48,6 +73,8 @@ const currentOrders = ref([]);
 const customer = ref({
   id: 1,
 });
+const openOrderItemDialog = ref(false);
+const selectedOrder = ref(null);
 
 const listenToRiderDeliveryStatus = (customerId) => {
   console.log(
@@ -83,6 +110,11 @@ const getStatusColor = (status) => {
 const getCurrentOrders = async () => {
   const res = await api.get("/auth/customer/current-orders");
   currentOrders.value = res.data;
+};
+
+const showOrderItems = (orderItem) => {
+  selectedOrder.value = orderItem;
+  openOrderItemDialog.value = true;
 };
 
 onMounted(() => {

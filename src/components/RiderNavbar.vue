@@ -92,15 +92,15 @@ rider = JSON.parse(localStorage.getItem("user"));
 const handleLogout = async () => {
   try {
     await api.post("auth/logout");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router.push("/login");
   } catch (err) {
     console.error(
       "Backend logout failed, proceeding with frontend cleanup",
       err
     );
-  } finally {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    router.push("/login");
+    alert(err.response.data.message);
   }
 };
 </script>
