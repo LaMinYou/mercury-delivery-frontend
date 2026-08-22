@@ -2,12 +2,34 @@
   <v-dialog
     :model-value="incomingOrderOffer"
     @update:model-value="$emit('closeIncomingOrderDialog')"
+    persistent
     max-width="700"
   >
     <v-card class="order-popup-modal pa-3 ma-3">
-      <v-card-title class="text-subtitle-1">
-        <p class="text-wrap">အော်ဒါ ကမ်းလှမ်းချက်အသစ် ရရှိပါသည်!</p>
+      <!-- Countdown Header -->
+      <v-card-title
+        class="d-flex justify-space-between align-center text-subtitle-1 pa-0 mb-2"
+      >
+        <span class="text-wrap font-weight-bold"
+          >အော်ဒါ ကမ်းလှမ်းချက်အသစ် ရရှိပါသည်!</span
+        >
+        <v-chip
+          color="error"
+          variant="flat"
+          size="small"
+          class="font-weight-bold"
+        >
+          <v-icon>mdi-clock-outline</v-icon> {{ timeLeft }} seconds left
+        </v-chip>
       </v-card-title>
+      <!-- Timer Progress Bar -->
+      <v-progress-linear
+        :model-value="(timeLeft / totalSeconds) * 100"
+        color="red-accent-4"
+        height="5"
+        striped
+        class="mb-3"
+      ></v-progress-linear>
       <v-card-subtitle v-if="incomingOrderOffer.order_type == 'merchant'">
         ဆိုင်မှခေါ်ယူခြင်း
       </v-card-subtitle>
@@ -76,6 +98,45 @@
   </v-dialog>
 </template>
 <script setup>
+import { onUnmounted, ref, watch } from 'vue';
+
 const props = defineProps(["incomingOrderOffer"]);
 const emit = defineEmits(["closeIncomingOrderDialog", "handleAcceptOrder"]);
+
+const totalSeconds = 60; // 1 minutes
+const timeLeft = ref(totalSeconds);
+let timer = null;
+
+const startTimer = () => {
+  stopTimer();
+  timeLeft.value = totalSeconds;
+
+  timer = setInterval(() => {
+    if (timeLeft.value > 0) {
+      timeLeft.value--;
+    } else {
+      stopTimer();
+      emit('closeIncomingOrderDialog');
+    }
+  }, 1000);
+};
+
+const stopTimer = () => {
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+};
+
+watch(() => props.incomingOrderOffer, (newVal) => {
+  if (newVal) {
+    startTimer();
+  } else {
+    stopTimer();
+  }
+}, { immediate: true });
+
+onUnmounted(() => {
+  stopTimer();
+});
 </script>

@@ -1,3 +1,5 @@
+import { icon } from "leaflet";
+
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
@@ -21,7 +23,10 @@ messaging.onBackgroundMessage((payload) => {
   const title = payload.data?.title || 'အကြောင်းကြားစာ';
   const notificationOptions = {
     body: payload.data?.body || 'အော်ဒါအသစ် ရောက်ရှိလာပါသည်။',
-    icon: '/icon.png',
+    //icon: '/icon.png',
+    icon: '/images/mortorcycle.png',
+    badge: '/images/mortorcycle.png',
+    vibrate: [200, 100, 200, 100, 200],
     data: payload.data
   };
 
