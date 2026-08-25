@@ -86,7 +86,7 @@ const getMenus = async () => {
       },
     });
 
-    menus.value = res.data;
+    menus.value = res.data.filter(item => item.is_available == 1);
   } catch (err) {
     console.log(err.response.data.message);
   }

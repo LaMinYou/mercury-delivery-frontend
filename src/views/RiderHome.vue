@@ -631,7 +631,7 @@ const listenToRiderChannel = (riderId) => {
         incomingOrderOffer.value &&
         incomingOrderOffer.value.id == data.orderId
       ) {
-        incomingOrderOffer.value = null; // ပေါ့ပ်အပ်ကို အလိုအလျောက် ပိတ်မည်
+        incomingOrderOffer.value = null;
         console.log("ဒီအော်ဒါကို တခြားသူ ယူသွားလို့ ပိတ်လိုက်ပါပြီ။");
       }
     })
