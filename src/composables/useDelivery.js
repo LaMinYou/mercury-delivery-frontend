@@ -95,8 +95,8 @@ export function useDelivery() {
       await checkIsRainy(customerLat, customerLng);
 
       //make delivery fee to fixed for too far distance
-      const maxDistanceThreshold = 10;
-      const maxDeliveryFee = 8000;
+      const maxDistanceThreshold = 13;
+      const maxDeliveryFee = 7000;
 
       if (km >= maxDistanceThreshold) {
         deliveryFee.value = maxDeliveryFee;
