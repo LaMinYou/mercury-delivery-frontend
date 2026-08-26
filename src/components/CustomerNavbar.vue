@@ -9,7 +9,7 @@
     >
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <div class="logo d-flex align-center">
+      <div class="logo d-flex align-center" style="margin-left: -15px;">
         <router-link to="/" class="d-flex align-center text-decoration-none">
           <v-img
             :src="require('@/assets/images/mercury.png')"
@@ -164,6 +164,7 @@
       @update:user="user = $event"
     />
   </div>
+  <delivery-promo-alert :activePromo="activePromo" />
 </template>
 
 <script setup>
@@ -176,6 +177,8 @@ import SignupDialog from "./SignupDialog.vue";
 import { useCart } from "@/composables/useCart";
 import ProfileDrawer from "./ProfileDrawer.vue";
 import Footer from "./Footer.vue";
+import DeliveryPromoAlert from "./DeliveryPromoAlert.vue";
+import { formatToLocalDateTime } from "@/composables/dateTimeHelper.js";
 
 const { groupedCart } = useCart();
 const props = defineProps(["address"]);
@@ -188,6 +191,7 @@ const searchField = ref(null);
 let user = ref(null);
 let openSignupBox = ref(false);
 const openProfileDrawer = ref(false);
+
 
 user = ref(JSON.parse(localStorage.getItem("user") || "null"));
 
@@ -206,6 +210,31 @@ const handleLogout = async () => {
     router.push("/");
   }
 };
+
+//for delivery promo
+const activePromo = ref({});
+
+const getActivePromo = async () => {
+  try {
+    console.log("start fetching active promo...")
+    const res = await api.get("/delivery-promo");
+    if (res.data && res.data.id) {
+      activePromo.value.id = res.data.id;
+      activePromo.value.title = res.data.title;
+      activePromo.value.promo_type = res.data.promo_type;
+      activePromo.value.amount = res.data.amount;
+      activePromo.value.start_date = formatToLocalDateTime(res.data.start_date);
+      activePromo.value.end_date = formatToLocalDateTime(res.data.end_date);
+    }
+    console.log(res.data.id);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+onMounted(() => {
+  getActivePromo();
+})
 
 watch(
   () => route.query.search,

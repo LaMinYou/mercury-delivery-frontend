@@ -16,7 +16,7 @@
         <span class="text-red"> {{ restaurant?.name.charAt(0) }}</span>
       </v-avatar>
       <span class="text-subtitle-2">{{ restaurant?.name || 'Loading...' }}</span> -->
-      <div class="logo d-flex align-center">
+      <div class="logo d-flex align-center" style="margin-left: -15px;">
         <router-link
           to="/admin"
           class="d-flex align-center text-decoration-none"

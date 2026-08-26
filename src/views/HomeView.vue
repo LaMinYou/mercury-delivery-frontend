@@ -104,7 +104,9 @@
         <div>No stores available at the moment.</div>
       </div>
     </div>
+    
   </customer-navbar>
+  <!-- <delivery-promo-alert :activePromo="activePromo" /> -->
 </template>
 
 <script setup>
@@ -116,6 +118,8 @@ import MenuTagsSlide from "@/components/MenuTagsSlide.vue";
 import { useRouter, useRoute } from "vue-router";
 import CustomerHomeLoading from "@/components/loadings/CustomerHomeLoading.vue";
 import TimeoutView from "@/components/TimeoutView.vue";
+//import DeliveryPromoAlert from "@/components/DeliveryPromoAlert.vue";
+//import { formatToLocalDateTime } from "@/composables/dateTimeHelper";
 
 const router = useRouter();
 const route = useRoute();
@@ -238,6 +242,34 @@ const getDetailedAddress = async (lat, lng) => {
   }
 };
 
+//for delivery promotion
+// const activePromo = ref({});
+
+// const getActivePromo = async () => {
+//   try {
+//     console.log("start fetching active promo...")
+//     const res = await api.get("/delivery-promo");
+//     if (res.data && res.data.id) {
+//       activePromo.value.id = res.data.id;
+//       activePromo.value.title = res.data.title;
+//       activePromo.value.promo_type = res.data.promo_type;
+//       activePromo.value.amount = res.data.amount;
+//       activePromo.value.start_date = formatToLocalDateTime(res.data.start_date);
+//       activePromo.value.end_date = formatToLocalDateTime(res.data.end_date);
+//     }
+//     console.log(res.data.id);
+//   } catch (err) {
+//     console.log(err);
+//   }
+// };
+// date Helper Function
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return `${date.getMonth() + 1}/${date.getDate()}`;
+};
+
+
 watch(
   () => route.query,
   () => {
@@ -247,6 +279,7 @@ watch(
 );
 
 onMounted(() => {
+  //getActivePromo();
   getTags();
   getRestaurants();
   requestLocation();

@@ -3,7 +3,7 @@
     <v-app-bar color="green-darken-4" elevation="1" class="px-4">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <div class="logo d-flex align-center">
+      <div class="logo d-flex align-center" style="margin-left: -15px;">
         <router-link
           to="/admin"
           class="d-flex align-center text-decoration-none"

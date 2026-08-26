@@ -11,7 +11,7 @@ export const adminMenuItems = [
   { title: 'Payment Methods', icon: 'mdi-credit-card-outline', route: '/admin/payments' },
   { title: 'Payment Transactions', icon: 'mdi-swap-horizontal', route: '/admin/transactions' },
   { title: 'Delivery Assigned History', icon: 'mdi-history', route: '/admin/order-rider-offers' },
-  { title: 'Analytics', icon: 'mdi-chart-line', route: '' },
+  { title: 'Delivery Promo', icon: 'mdi-percent-outline', route: '/admin/delivery-promo' },
 ];
 
 export const restaurantMenuItems = [

@@ -7,7 +7,7 @@
   >
     <v-card class="pa-2">
       <div class="text-center text-green-darken-2">
-        <p class="text-wrap">
+        <p class="text-wrap py-5">
           {{ message }}
         </p>
         

@@ -32,6 +32,7 @@ import RestaurantOrderHistory from '@/views/RestaurantOrderHistory.vue';
 import DeliverAssignedHistory from '@/views/DeliverAssignedHistory.vue';
 import Customers from '@/views/Customers.vue';
 import RestaurantCustomers from '@/views/RestaurantCustomers.vue';
+import ActiveDeliveryPromoDetails from '@/views/ActiveDeliveryPromoDetails.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -132,6 +133,12 @@ const routes = [
     path: '/admin/customers',
     name: 'customers',
     component: Customers,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/delivery-promo',
+    name: 'deliveryPromo',
+    component: ActiveDeliveryPromoDetails,
     meta: { requiresAuth: true, role: 1 }
   },
   {
