@@ -94,8 +94,17 @@ export function useDelivery() {
       checkIsPeakHour();
       await checkIsRainy(customerLat, customerLng);
 
+      //make delivery fee to fixed for too far distance
+      const maxDistanceThreshold = 10;
+      const maxDeliveryFee = 8000;
+
+      if (km >= maxDistanceThreshold) {
+        deliveryFee.value = maxDeliveryFee;
+        return deliveryFee.value;
+      }
+
       // formula
-      const baseFee = 1000;   // below 1 km
+      const baseFee = 500;   // below 1 km
       const perKmRate = 500;  // per km rate for every above 1 km
       const baseDistance = 1;
 
@@ -110,7 +119,10 @@ export function useDelivery() {
       if (isPeakHour.value) surge += 0.2; // get more 15% 
       if (isRainy.value) surge += 0.3;    // get more 20%
 
-      deliveryFee.value = Math.ceil((totalFee * surge) / 100) * 100;
+      let calculatedFee = Math.ceil((totalFee * surge) / 100) * 100;
+
+      //control to prevent overflow Max Fee even Surge
+      deliveryFee.value = Math.min(calculatedFee, maxDeliveryFee);
 
     } catch (err) {
       console.error('Error calculating delivery fee:', err);
