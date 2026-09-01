@@ -12,6 +12,7 @@ import * as directives from 'vuetify/directives'
 
 const vuetify = createVuetify({
   components: {
+    ...components,
     VNumberInput, 
   },
   directives,
@@ -33,3 +34,15 @@ createApp(App)
   .use(router)
   .use(vuetify)
   .mount('#app')
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+      .then((reg) => {
+        console.log('Service Worker registered successfully:', reg.scope);
+      })
+      .catch((err) => {
+        console.error('Service Worker registration failed:', err);
+      });
+  });
+}
