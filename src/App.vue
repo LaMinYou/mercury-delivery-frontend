@@ -19,7 +19,7 @@
       </template> -->
       <template v-slot:prepend>
         <v-img
-          src="/images/icons/icon-192x192.png"
+          src="/images/icons/icon1-192x192.png"
           width="60"
           height="50"
           cover
@@ -105,6 +105,7 @@ const installApp = async () => {
     }
 }
 .install-img{
-    filter: drop-shadow(3px -3px 2px rgb(155, 155, 8));
+    /*filter: drop-shadow(3px -3px 2px rgb(155, 155, 8));*/
+    transform: scaleX(1.5);
 }
 </style>
