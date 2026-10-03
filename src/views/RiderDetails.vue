@@ -18,6 +18,29 @@
       </div>
       <v-card class="mx-auto px-4 py-4 card" max-width="600" width="100%">
         <v-form @submit.prevent="handleSubmit">
+          <div>
+            <div v-if="props.id != 'new' && rider.image_url" class="mb-4">
+              <p class="text-caption">Current Photo:</p>
+                <v-img
+                  :src="rider.image_url"
+                  width="150"
+                  class="rounded border"
+                  cover
+                ></v-img>
+            </div>
+            <v-file-input
+                v-model="rider.cover_image"
+                label="Upload Rider Photo"
+                accept="image/*"
+                variant="solo"
+                bg-color="#fff"
+                prepend-inner-icon="mdi-camera"
+                :rules="
+                  props.id === 'new' ? [rules.required('rider photo')] : []
+                "
+                show-size
+              ></v-file-input>
+          </div>
           <v-text-field
             v-model="rider.name"
             :rules="[rules.required('rider name')]"
@@ -96,7 +119,23 @@ let rider = ref({
   phone: "",
   latitude: 0,
   longitude: 0,
+  cover_image: null
 });
+
+const prepareFormData = () => {
+  const formData = new FormData();
+  formData.append('name', rider.value.name);
+  formData.append('username', rider.value.username);
+  formData.append('password', rider.value.password);
+  formData.append('phone', rider.value.phone);
+  formData.append('latitude', rider.value.latitude);
+  formData.append('longitude', rider.value.longitude);
+
+  if(rider.value.cover_image instanceof File){
+    formData.append('cover_image', rider.value.cover_image);
+  }
+  return formData;
+}
 
 watch(
   () => rider.value.name,
@@ -115,8 +154,11 @@ watch(
 
 const addNew = async () => {
   loading.value = true;
+  const formData = prepareFormData();
   try {
-    const res = await api.post("/auth/admin/rider/new", rider.value);
+    const res = await api.post("/auth/admin/rider/new", formData, {
+     headers: { "Content-Type": "multipart/form-data" },
+    });
     router.push("/admin/riders");
   } catch (err) {
     console.error("Full Error Object:", err);
@@ -143,8 +185,11 @@ const addNew = async () => {
 
 const update = async () => {
   loading.value = true;
+  const formData = prepareFormData();
   try {
-    const res = await api.post("/auth/admin/rider/" + props.id, rider.value);
+    const res = await api.post("/auth/admin/rider/" + props.id, formData , {
+      headers: { "Content-Type": "multipart/form-data"  },
+    });
     router.push("/admin/riders");
   } catch (err) {
     console.log(err);

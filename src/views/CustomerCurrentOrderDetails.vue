@@ -108,9 +108,16 @@
                 <v-avatar
                   color="green-darken-2"
                   size="48"
-                  class="mr-3 text-white font-weight-bold"
+                  class="mr-3 text-white font-weight-bold cursor-pointer"
                 >
-                  {{ currentOrder.rider.name.charAt(0) }}
+                  <v-img
+                    v-if="currentOrder.rider.image_url"
+                    :src="currentOrder.rider.image_url"
+                    @click="openImageDialog = true"
+                  ></v-img>
+                  <span v-else>
+                    {{ currentOrder.rider.name.charAt(0) }}
+                  </span>
                 </v-avatar>
                 <div>
                   <div class="text-body-2 text-grey">ပို့ဆောင်မည့် ရိုက်ဒါ</div>
@@ -147,27 +154,38 @@
         </v-col>
       </v-row>
     </v-container>
+
+    <image-dialog
+      :dialogImgUrl="currentOrder.rider?.image_url"
+      :openImageDialog="openImageDialog"
+      @closeImageDialog="openImageDialog = false"
+    />
   </customer-navbar>
 </template>
 
 <script setup>
 import CustomerNavbar from "@/components/CustomerNavbar.vue";
-import { ref, computed, onMounted, onUnmounted, watch } from "vue";
+import { ref, computed, onMounted, onUnmounted } from "vue";
 import api from "@/services/api";
 import { useRoute, useRouter } from "vue-router";
 import echo from "@/services/echo";
+import ImageDialog from "@/components/ImageDialog.vue";
 
 const props = defineProps(["id"]);
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
+const openImageDialog = ref(false);
 
-// Map HTML Element Ref
+// Map HTML Element & Map Refs
 const mapRef = ref(null);
 let map = null;
 let customerMarker = null;
 let riderMarker = null;
-const userLocation = JSON.parse(localStorage.getItem("userLocation") || {});
+let polyline = null;
+let animationFrame = null;
+
+const userLocation = JSON.parse(localStorage.getItem("userLocation") || "{}");
 
 // ဒေတာစနစ်
 const currentOrder = ref({
@@ -183,59 +201,121 @@ const currentOrder = ref({
 const riderLocation = ref(null);
 
 // 🎯 ၁။ မြေပုံကို စတင်ဆောက်လုပ်သည့် ဖန်ရှင်
-// အကယ်၍ AdvancedMarkerElement ပြောင်းသုံးချင်ပါက (မဖြစ်မနေတော့ မဟုတ်ပါ)
 const initMap = async () => {
   if (!mapRef.value || !window.google) return;
 
-  // Marker library ကို လှမ်းခေါ်ခြင်း
   const { AdvancedMarkerElement } = await window.google.maps.importLibrary(
     "marker"
   );
 
   map = new window.google.maps.Map(mapRef.value, {
-    center: { lat: userLocation.lat, lng: userLocation.lng },
+    center: { lat: userLocation.lat || 16.8409, lng: userLocation.lng || 96.1735 },
     zoom: 15,
-    mapId: "DEMO_MAP_ID", // Advanced Marker သုံးလျှင် Map ID တစ်ခုခု ထည့်ပေးရပါမည်
+    mapId: "DEMO_MAP_ID",
   });
 
   customerMarker = new AdvancedMarkerElement({
     map: map,
-    position: { lat: userLocation.lat, lng: userLocation.lng },
+    position: { lat: userLocation.lat || 16.8409, lng: userLocation.lng || 96.1735 },
     title: "သင်၏ အိမ်တည်နေရာ",
   });
 };
 
-// 🎯 ၂။ ရိုက်ဒါ တည်နေရာပြောင်းတိုင်း Marker ကို ရွှေ့ပေးမည့် ဖန်ရှင်
+// 🎯 ၂။ Polyline (အပြာရောင် လမ်းကြောင်းလိုင်း) ဆွဲပေးသည့် ဖန်ရှင်
+const drawRouteLine = (riderPos, customerPos) => {
+  if (!map || !window.google) return;
+
+  const path = [
+    { lat: Number(riderPos.lat), lng: Number(riderPos.lng) },
+    { lat: Number(customerPos.lat), lng: Number(customerPos.lng) },
+  ];
+
+  if (!polyline) {
+    polyline = new window.google.maps.Polyline({
+      path: path,
+      geodesic: true,
+      strokeColor: "#1976D2",
+      strokeOpacity: 0.8,
+      strokeWeight: 5,
+      icons: [
+        {
+          icon: { path: window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW },
+          offset: "100%",
+          repeat: "50px",
+        },
+      ],
+      map: map,
+    });
+  } else {
+    polyline.setPath(path);
+  }
+};
+
+// 🎯 ၃။ Marker ကို Smooth (ချောမွေ့စွာ) ရွှေ့ပေးမည့် Animation Logic
+const animateMarker = (marker, startPos, endPos, duration = 2000) => {
+  const startTime = performance.now();
+
+  const animate = (currentTime) => {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+
+    const currentLat = startPos.lat + (endPos.lat - startPos.lat) * progress;
+    const currentLng = startPos.lng + (endPos.lng - startPos.lng) * progress;
+
+    const newPos = { lat: currentLat, lng: currentLng };
+
+    if (typeof marker.setPosition === "function") {
+      marker.setPosition(newPos);
+    } else {
+      marker.position = newPos;
+    }
+
+    if (progress < 1) {
+      animationFrame = requestAnimationFrame(animate);
+    }
+  };
+
+  if (animationFrame) cancelAnimationFrame(animationFrame);
+  animationFrame = requestAnimationFrame(animate);
+};
+
+// 🎯 ၄။ updateRiderMarker (Smooth movement + Polyline)
 const updateRiderMarker = (lat, lng) => {
   if (!map || !window.google) return;
 
-  const riderPos = { lat: Number(lat), lng: Number(lng) };
+  const newRiderPos = { lat: Number(lat), lng: Number(lng) };
+  const customerPos = {
+    lat: Number(userLocation.lat || 16.8409),
+    lng: Number(userLocation.lng || 96.1735),
+  };
 
   if (!riderMarker) {
-    // Marker မရှိသေးရင် အသစ်ဆောက်မည်
     riderMarker = new window.google.maps.Marker({
-      position: riderPos,
+      position: newRiderPos,
       map: map,
       title: "ရိုက်ဒါ လက်ရှိတည်နေရာ",
       label: {
-        text: "ပို့ဆောင်သူ", // 💡 အင်္ဂလိပ်လို ပြောင်းချင်ရင် "Rider" လို့ ရေးနိုင်ပါတယ်ဗျာ
-        color: "#2E7D32",          // စာသားအရောင် အမည်းရောင်
-        fontWeight: "bold",        // စာသားကို Bold တင်ခြင်း
-        fontSize: "14px",          // စာလုံးအရွယ်အစား
+        text: "rider",
+        color: "#2E7D32",
+        fontWeight: "bold",
+        fontSize: "14px",
       },
       icon: {
-        url: "https://cdn-icons-png.flaticon.com/512/3198/3198336.png", // ဆိုင်ကယ်ပုံစံ Custom Icon
+        url: "https://cdn-icons-png.flaticon.com/512/3198/3198336.png",
         scaledSize: new window.google.maps.Size(40, 40),
-        labelOrigin: new window.google.maps.Point(20, -10), //x is 20 and y is -10
+        labelOrigin: new window.google.maps.Point(20, -10),
       },
     });
   } else {
-    // ရှိပြီးသားဆိုရင် တည်နေရာကိုပဲ ရွှေ့ပေးမည်
-    riderMarker.setPosition(riderPos);
+    const oldPos = {
+      lat: riderMarker.getPosition().lat(),
+      lng: riderMarker.getPosition().lng(),
+    };
+    animateMarker(riderMarker, oldPos, newRiderPos);
   }
 
-  // မြေပုံကို ရိုက်ဒါ့နောက်သို့ လိုက်ဗဟိုပြုပေးခြင်း
-  map.panTo(riderPos);
+  drawRouteLine(newRiderPos, customerPos);
+  map.panTo(newRiderPos);
 };
 
 // Laravel Echo နားထောင်ခြင်း Logic
@@ -247,7 +327,6 @@ const startListeningToRider = (riderId) => {
   echo.channel(`riders.${riderId}`).listen(".RiderLocationUpdated", (data) => {
     riderLocation.value = { lat: data.latitude, lng: data.longitude };
     console.log("rider location : ", data);
-    // Real-time Marker ရွှေ့ခိုင်းခြင်း
     updateRiderMarker(data.latitude, data.longitude);
   });
 };
@@ -279,6 +358,7 @@ onMounted(async () => {
 
 onUnmounted(() => {
   if (statusInterval) clearInterval(statusInterval);
+  if (animationFrame) cancelAnimationFrame(animationFrame);
   if (currentOrder.value.rider) {
     echo.leave(`riders.${currentOrder.value.rider.id}`);
   }
@@ -297,6 +377,7 @@ const progressWidth = computed(() => {
       return "0%";
   }
 });
+
 const stepColor = (step) => {
   const status = currentOrder.value.delivery_status;
   if (step === 1) return "green-darken-2";
@@ -310,6 +391,7 @@ const stepColor = (step) => {
       : "grey-lighten-1";
   return "grey-lighten-1";
 };
+
 const stepTextColor = (step) => {
   const status = currentOrder.value.delivery_status;
   if (step === 1 && status === "pending")
@@ -320,14 +402,12 @@ const stepTextColor = (step) => {
     return "text-green-darken-3 font-weight-black";
   return "text-grey-darken-1";
 };
+
 const callRider = (phone) => {
   if (!phone) return;
 
-  // 🎯 နည်းလမ်းကောင်း: Anchor tag တစ်ခုကို memory ထဲမှာ ယာယီဆောက်ပြီး ဖုန်းခေါ်ခိုင်းခြင်း
   const link = document.createElement("a");
   link.href = `tel:${phone}`;
-  
-  // Mobile Browser အချို့တွင် လုံခြုံရေးအရ တိုက်ရိုက် window.location ပြောင်းလဲခြင်းကို ပိတ်ထားပါက ယခုနည်းလမ်းက အလုပ်လုပ်ပါသည်
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -349,7 +429,7 @@ const callRider = (phone) => {
 .progress-line {
   position: absolute;
   top: 14px;
-  left: 0; 
+  left: 0;
   height: 3px;
   background-color: #4caf50;
   transition: width 0.5s ease;
@@ -375,7 +455,7 @@ const callRider = (phone) => {
 .step-icon {
   background-color: #ffffff !important;
   border-radius: 50%;
-  padding: 4px; 
+  padding: 4px;
 }
 
 .top-0 {

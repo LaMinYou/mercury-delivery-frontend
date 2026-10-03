@@ -28,16 +28,15 @@
       </template>
       <v-banner-text class="text-green-darken-3">Install App</v-banner-text>
       <template v-slot:actions>
-        <v-btn color="green-darken-3" style="margin-top: -45px;" variant="text" @click="installApp">
+        <v-btn color="green-darken-3" style="margin-top: -10px;" variant="text" @click="installApp">
             <v-img
           src="/images/icons/download.gif"
           width="50"
           height="50"
           cover
-        ></v-img>
-           
+        ></v-img> 
         </v-btn>
-        <!-- <v-btn variant="text" @click="deferredPrompt = null"> ပိတ်မည် </v-btn> -->
+        <v-btn variant="text" @click="deferredPrompt = null"> <v-icon>mdi-close</v-icon> </v-btn>
       </template>
     </v-banner>
     <router-view />

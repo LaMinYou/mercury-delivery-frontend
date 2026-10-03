@@ -57,6 +57,18 @@
         :items-per-page-options="[5, 10, 15]"
         @update:options="fetchData"
       >
+        <template #item.cover_image="{ item }">
+          <v-avatar size="45" rounded="lg" border>
+            <v-img :src="item.image_url" cover alt="Rider Profile Image">
+              <template #placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-icon color="grey-lighten-2">mdi-account</v-icon>
+                </div>
+              </template>
+            </v-img>
+          </v-avatar>
+        </template>
+
         <template #item.status="{ value }">
           <v-chip
             :color="value === 'available' ? 'success' : 'error'"
@@ -124,6 +136,7 @@ const openPicker = ref(false);
 const rider = ref();
 
 const headers = [
+  { title: "Profile", key: "cover_image", align: "start", sortable: false },
   { title: "Rider Name", key: "name", sortable: true },
   { title: "Username", key: "username", sortable: true },
   { title: "Phone Number", key: "phone", align: "center", sortable: true },
