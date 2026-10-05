@@ -143,6 +143,50 @@
                 </v-btn>
               </div>
 
+              <!-- Multi Photo Upload Section for Express Gate Only -->
+<div v-if="order.dest_type === 'express_gate' && order.delivery_status == 'delivering'" class="mt-4 pa-3 bg-grey-lighten-4 rounded-lg">
+  <div class="font-weight-bold text-caption text-grey-darken-3 mb-2 d-flex align-center">
+    <v-icon color="indigo" class="mr-1">mdi-camera</v-icon>
+    Please upload invoices
+  </div>
+
+  <!-- File Input Button -->
+  <v-file-input
+    multiple
+    accept="image/*"
+    label="select invoices"
+    prepend-icon="mdi-attachment"
+    density="compact"
+    hide-details
+    @change="handlePhotoSelect($event, order.id)"
+  ></v-file-input>
+
+  <!-- Image Previews -->
+  <div v-if="orderPhotos[order.id]?.previews?.length" class="d-flex flex-wrap ga-2 mt-3">
+    <div
+      v-for="(src, index) in orderPhotos[order.id].previews"
+      :key="index"
+      class="position-relative"
+    >
+      <v-img
+        :src="src"
+        width="70"
+        height="70"
+        cover
+        class="rounded border"
+      ></v-img>
+      <v-btn
+        icon="mdi-close"
+        size="x-small"
+        color="red"
+        class="position-absolute top-0 right-0 ma-n1"
+        style="width: 20px; height: 20px;"
+        @click="removePhoto(order.id, index)"
+      ></v-btn>
+    </div>
+  </div>
+</div>
+
               <!-- for express order -->
               <div v-if="order.order_type == 'errand'">
                 <v-expansion-panels
@@ -688,17 +732,82 @@ const handleAcceptOrder = async (orderId) => {
   }
 };
 
+// Add reactive state for storing files per order
+const orderPhotos = reactive({});
+
+// File Selection Handler
+const handlePhotoSelect = (event, orderId) => {
+  const files = Array.from(event.target.files || []);
+  if (!files.length) return;
+
+  if (!orderPhotos[orderId]) {
+    orderPhotos[orderId] = { files: [], previews: [] };
+  }
+
+  files.forEach((file) => {
+    orderPhotos[orderId].files.push(file);
+    orderPhotos[orderId].previews.push(URL.createObjectURL(file));
+  });
+};
+
+// Remove Photo Handler
+const removePhoto = (orderId, index) => {
+  if (orderPhotos[orderId]) {
+    URL.revokeObjectURL(orderPhotos[orderId].previews[index]);
+    orderPhotos[orderId].files.splice(index, 1);
+    orderPhotos[orderId].previews.splice(index, 1);
+  }
+};
+
+// handleDeliveryStatus method
 const handleDeliveryStatus = async (order) => {
   try {
-    let nextStatus =
-      order.delivery_status === "picking" ? "delivering" : "completed";
-    const res = await api.put(`auth/rider/update-delivery-status/${order.id}`, {
-      deliveryStatus: nextStatus,
-    });
+    let nextStatus = order.delivery_status === "picking" ? "delivering" : "completed";
 
-    const index = activeOrders.value.findIndex(
-      (o) => o.id === res.data.order.id
-    );
+    // Validation: Require photos when completing an express_gate order
+    if (
+      order.dest_type === "express_gate" &&
+      nextStatus === "completed" &&
+      (!orderPhotos[order.id]?.files || orderPhotos[order.id].files.length === 0)
+    ) {
+      alert("ဂိတ်သို့ အပ်နှံထားသည့် ဓာတ်ပုံအနည်းဆုံး ၁ ပုံ တင်ပေးပါရန်။");
+      return;
+    }
+
+    // Build FormData if photos exist
+    const hasPhotos = orderPhotos[order.id]?.files?.length > 0;
+    let res;
+
+    if (hasPhotos) {
+      // Multipart FormData ALWAYS needs POST + _method = PUT spoofing in Laravel
+      const payload = new FormData();
+      payload.append("deliveryStatus", nextStatus);
+      payload.append("_method", "PUT");
+
+      orderPhotos[order.id].files.forEach((file) => {
+        payload.append("photos[]", file);
+      });
+
+      res = await api.post(
+        `auth/rider/update-delivery-status/${order.id}`,
+        payload,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+    } else {
+      // Direct PUT request when sending JSON (no files)
+      res = await api.put(
+        `auth/rider/update-delivery-status/${order.id}`,
+        { deliveryStatus: nextStatus }
+      );
+    }
+
+    // Clean up local image preview URLs
+    if (orderPhotos[order.id]) {
+      orderPhotos[order.id].previews.forEach((url) => URL.revokeObjectURL(url));
+      delete orderPhotos[order.id];
+    }
+
+    const index = activeOrders.value.findIndex((o) => o.id === res.data.order.id);
 
     nextStatus === "completed"
       ? activeOrders.value.splice(index, 1)
@@ -706,9 +815,31 @@ const handleDeliveryStatus = async (order) => {
 
     startLocationTracking();
   } catch (err) {
-    console.log(err.response.data.error);
+    console.error(err.response?.data?.error || err);
   }
 };
+
+// const handleDeliveryStatus = async (order) => {
+//   try {
+//     let nextStatus =
+//       order.delivery_status === "picking" ? "delivering" : "completed";
+//     const res = await api.put(`auth/rider/update-delivery-status/${order.id}`, {
+//       deliveryStatus: nextStatus,
+//     });
+
+//     const index = activeOrders.value.findIndex(
+//       (o) => o.id === res.data.order.id
+//     );
+
+//     nextStatus === "completed"
+//       ? activeOrders.value.splice(index, 1)
+//       : (activeOrders.value[index] = res.data.order);
+
+//     startLocationTracking();
+//   } catch (err) {
+//     console.log(err.response.data.error);
+//   }
+// };
 
 const playAlert = () => {
   alertSound.play().catch((error) => {

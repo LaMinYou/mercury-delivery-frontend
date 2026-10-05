@@ -19,7 +19,10 @@
                 omo
                 <span class="text-indigo-darken-1 font-italic">Express</span>
               </span> -->
-              <span class="text-white pt-10 font-italic font-weight-bold header-text">Express</span>
+              <span
+                class="text-white pt-10 font-italic font-weight-bold header-text"
+                >Express</span
+              >
             </v-card-title>
 
             <v-card-text class="mt-4">
@@ -38,8 +41,8 @@
 
                 <!-- to type new address for order -->
                 <v-text-field
-                  v-model="order.source_address"
-                  label="ပစ္စည်းပို့မည့်လိပ်စာ"
+                  v-model="order.sourceMapAddress"
+                  label="source address (Map Search)"
                   prepend-inner-icon="mdi-map-marker"
                   variant="outlined"
                   density="comfortable"
@@ -49,8 +52,20 @@
                   class="mb-3"
                   :rules="[rules.required('source address')]"
                 ></v-text-field>
+
+                <v-textarea
+                  v-model="order.source_address"
+                  label="source address in details"
+                  prepend-inner-icon="mdi-home-map-marker"
+                  variant="outlined"
+                  density="comfortable"
+                  placeholder="eg. အမှတ် (၄၅)၊ ၃ လွှာ၊ ဗိုလ်ချုပ်လမ်း"
+                  class="mb-3"
+                  persistent-placeholder
+                  :rules="[rules.required('source address in details')]"
+                ></v-textarea>
                 <!-- <span>{{ order.source_latitude }}, {{ order.source_longitude }}</span> -->
-                
+
                 <v-text-field
                   v-model="order.source_phone"
                   label="ပစ္စည်းပို့မည့်ဖုန်းနံပါတ်"
@@ -61,7 +76,6 @@
                   class="mb-3"
                   :rules="[rules.required('source phone number'), rules.phone]"
                 ></v-text-field>
-
               </div>
 
               <!-- for destination address -->
@@ -79,8 +93,8 @@
 
                 <!-- to type new address for order -->
                 <v-text-field
-                  v-model="order.dest_address"
-                  label="ပစ္စည်းလက်ခံမည့်လိပ်စာ"
+                  v-model="order.destMapAddress"
+                  label="destination address (Map Search)"
                   prepend-inner-icon="mdi-map-marker"
                   variant="outlined"
                   density="comfortable"
@@ -90,6 +104,19 @@
                   class="mb-3"
                   :rules="[rules.required('destination address')]"
                 ></v-text-field>
+
+                <v-textarea
+                  v-model="order.dest_address"
+                  label="destination address in details"
+                  prepend-inner-icon="mdi-home-map-marker"
+                  variant="outlined"
+                  density="comfortable"
+                  placeholder="eg. အမှတ် (၄၅)၊ ၃ လွှာ၊ ဗိုလ်ချုပ်လမ်း"
+                  class="mb-3"
+                  persistent-placeholder
+                  :rules="[rules.required('destination address in details')]"
+                ></v-textarea>
+
                 <!-- <span>{{ order.dest_latitude }}, {{ order.dest_longitude }}</span> -->
 
                 <v-text-field
@@ -100,8 +127,48 @@
                   density="comfortable"
                   placeholder="09xxxxxxxxx"
                   class="mb-3"
-                  :rules="[rules.required('destination phone number'), rules.phone]"
+                  :rules="[
+                    rules.required('destination phone number'),
+                    rules.phone,
+                  ]"
                 ></v-text-field>
+
+                <!-- Destination Type Selection -->
+                <div class="my-3">
+                  <p class="text-subtitle-2 font-weight-bold mb-2">
+                    Destination Type
+                  </p>
+                  <v-btn-toggle
+                    v-model="order.dest_type"
+                    mandatory
+                    color="green-darken-2"
+                    variant="outlined"
+                    class="w-100 d-flex"
+                  >
+                    <v-btn
+                      v-for="item in destinationTypes"
+                      :key="item.value"
+                      :value="item.value"
+                      class="flex-grow-1"
+                    >
+                      <v-icon class="mr-1">{{ item.icon }}</v-icon>
+                      {{ item.label }}
+                    </v-btn>
+                  </v-btn-toggle>
+                </div>
+
+                <!-- showing alert when chosen destination type is gate  -->
+                <v-alert
+                  v-if="order.destination_type === 'express_gate'"
+                  type="info"
+                  variant="tonal"
+                  density="compact"
+                  class="mt-2 text-caption"
+                >
+                  <v-icon size="small">mdi-information</v-icon>
+                  ကားဂိတ်သို့ ပေးပို့မည်ဖြစ်၍ Rider မှ ဂိတ်ပြေစာ (Invoice) ကို
+                  ဓာတ်ပုံရိုက်၍ တင်ပေးမည်ဖြစ်ပါသည်။
+                </v-alert>
               </div>
 
               <div class="item-type">
@@ -133,7 +200,9 @@
 
               <!--  payment way to choose -->
               <div class="payment-way">
-                <p class="text-subtitle-1 py-5 font-weight-bold">ငွေပေးချေမှုနည်းလမ်း</p>
+                <p class="text-subtitle-1 py-5 font-weight-bold">
+                  ငွေပေးချေမှုနည်းလမ်း
+                </p>
                 <v-card
                   variant="outlined"
                   block
@@ -161,7 +230,10 @@
                   </div> -->
                   </div>
 
-                  <div class="text-wrap text-subtitle-2 text-center w-100" v-else>
+                  <div
+                    class="text-wrap text-subtitle-2 text-center w-100"
+                    v-else
+                  >
                     <v-icon>mdi-plus</v-icon>
                     ငွေပေးချေမှုနည်းလမ်းတစ်ခုထည့်သွင်းပါ
                   </div>
@@ -297,21 +369,29 @@ const showSourceMap = ref(false);
 const showDestMap = ref(false);
 const openAlertDialog = ref(false);
 const errorMessage = ref(null);
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem("user"));
 const payment_transaction = ref({
   user_id: user.id,
   order_id: "#125$7",
   image: null,
 });
+// Destination Type options
+const destinationTypes = [
+  { label: "Home", value: "home", icon: "mdi-home-outline" },
+  { label: "Express Gate", value: "express_gate", icon: "mdi-bus-clock" },
+];
 const order = ref({
   source_latitude: userLocation ? userLocation.lat : 16.8404,
   source_longitude: userLocation ? userLocation.lng : 96.1725,
-  source_address: userLocation ? userLocation.address : null,
+  sourceMapAddress: userLocation ? userLocation.address : null,
+  source_address: null,
   source_phone: user?.phone || null,
   dest_latitude: userLocation ? userLocation.lat : 16.8404,
   dest_longitude: userLocation ? userLocation.lng : 96.1725,
-  dest_address: userLocation ? userLocation.address : null,
+  destMapAddress: userLocation ? userLocation.address : null,
+  dest_address: null,
   dest_phone: user?.phone || null,
+  dest_type: "home",
   order_type: "errand",
   order_number: useRandomOrderNumber(),
   restaurant_id: null,
@@ -402,21 +482,21 @@ const submitOrder = async (payStatus) => {
     } else {
       console.error("API Error:", err.response?.data?.error || err.message);
     }
-  }finally{
+  } finally {
     loading.value = false;
   }
-}
+};
 
 const handleMapUpdateForSource = (updatedData) => {
   order.value.source_latitude = updatedData.lat;
   order.value.source_longitude = updatedData.lng;
-  order.value.source_address = updatedData.address;
+  order.value.sourceMapAddress = updatedData.address;
 };
 
 const handleMapUpdateForDest = (updatedData) => {
   order.value.dest_latitude = updatedData.lat;
   order.value.dest_longitude = updatedData.lng;
-  order.value.dest_address = updatedData.address;
+  order.value.destMapAddress = updatedData.address;
 };
 
 const initAutocompleteForSource = () => {
@@ -436,7 +516,7 @@ const initAutocompleteForSource = () => {
 
       order.value.source_latitude = place.geometry.location.lat();
       order.value.source_longitude = place.geometry.location.lng();
-      order.value.source_address = place.formatted_address;
+      order.value.sourceMapAddress = place.formatted_address;
     }
   });
 };
@@ -458,7 +538,7 @@ const initAutocompleteForDest = () => {
 
       order.value.dest_latitude = place.geometry.location.lat();
       order.value.dest_longitude = place.geometry.location.lng();
-      order.value.dest_address = place.formatted_address;
+      order.value.destMapAddress = place.formatted_address;
     }
   });
 };
@@ -491,10 +571,14 @@ onMounted(() => {
 });
 </script>
 <style scoped>
-.card{
-  background: linear-gradient(rgb(16, 168, 105) 3%, transparent 20%, transparent 20%);
+.card {
+  background: linear-gradient(
+    rgb(16, 168, 105) 3%,
+    transparent 20%,
+    transparent 20%
+  );
 }
-.header-text{
+.header-text {
   margin-left: -20px;
 }
 </style>
