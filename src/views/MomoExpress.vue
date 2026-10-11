@@ -159,7 +159,7 @@
 
                 <!-- showing alert when chosen destination type is gate  -->
                 <v-alert
-                  v-if="order.destination_type === 'express_gate'"
+                  v-if="order.dest_type === 'express_gate'"
                   type="info"
                   variant="tonal"
                   density="compact"

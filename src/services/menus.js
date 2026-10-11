@@ -18,6 +18,7 @@ export const restaurantMenuItems = [
   { title: 'Pending Orders', icon: 'mdi-cart-plus', route: '/restaurant' },
   { title: 'Products', icon: 'mdi-shopping', route: '/restaurant/menus' },
   { title: 'Call Rider', icon: 'mdi-bike', route: '/restaurant/call-rider' },
+  { title: 'Call Rider History', icon: 'mdi-history', route: '/restaurant/call-rider-history' },
   { title: 'Order History', icon: 'mdi-history', route: '/restaurant/order-history' },
   { title: 'Customers', icon: 'mdi-account', route: '/restaurant/customers' }
 ];
@@ -26,7 +27,7 @@ export const customerMenuItems = [
   { title: 'Home', icon: 'mdi-home', route: '/' },
   { title: 'Mercury Express', icon: 'mdi-bike', route: '/customer/express' },
   { title: 'Current Orders', icon: 'mdi-cart-plus', route: '/customer/current-orders' },
-  { title: 'Order History', icon: 'mdi-history', route: '' },
+  { title: 'Order History', icon: 'mdi-history', route: '/customer/completed-orders' },
 
 ];
 

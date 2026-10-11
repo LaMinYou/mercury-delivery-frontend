@@ -39,6 +39,57 @@
                 <!-- <span
                   >{{ orderLocation.lat }}, {{ orderLocation.lng }}</span
                 > -->
+
+                <v-textarea
+                  v-model="order.dest_address"
+                  label="ပစ္စည်းလက်ခံမည့် customer လိပ်စာအသေးစိတ်"
+                  prepend-inner-icon="mdi-home-map-marker"
+                  variant="outlined"
+                  density="comfortable"
+                  placeholder="eg. အမှတ် (၄၅)၊ ၃ လွှာ၊ ဗိုလ်ချုပ်လမ်း"
+                  class="mb-3"
+                  persistent-placeholder
+                  :rules="[rules.required('destination address in details')]"
+                ></v-textarea>
+
+                <!-- Destination Type Selection -->
+                <div class="my-3">
+                  <p class="text-subtitle-2 font-weight-bold mb-2">
+                    Destination Type
+                  </p>
+                  <v-btn-toggle
+                    v-model="order.dest_type"
+                    mandatory
+                    color="green-darken-2"
+                    variant="outlined"
+                    class="w-100 d-flex"
+                  >
+                    <v-btn
+                      v-for="item in destinationTypes"
+                      :key="item.value"
+                      :value="item.value"
+                      class="flex-grow-1"
+                    >
+                      <v-icon class="mr-1">{{ item.icon }}</v-icon>
+                      {{ item.label }}
+                    </v-btn>
+                  </v-btn-toggle>
+                </div>
+
+                <!-- showing alert when chosen destination type is gate  -->
+                <v-alert
+                  v-if="order.dest_type === 'express_gate'"
+                  type="info"
+                  variant="tonal"
+                  density="compact"
+                  class="mt-2 text-caption"
+                >
+                  <v-icon size="small">mdi-information</v-icon>
+                  ကားဂိတ်သို့ ပေးပို့မည်ဖြစ်၍ Rider မှ ဂိတ်ပြေစာ (Invoice) ကို
+                  ဓာတ်ပုံရိုက်၍ တင်ပေးမည်ဖြစ်ပါသည်။
+                </v-alert>
+              </div>
+
                 <v-text-field
                   v-model="destPhone"
                   label="ပစ္စည်းလက်ခံမည့် customer ဖုန်းနံပါတ်"
@@ -49,7 +100,6 @@
                   class="mb-3"
                   :rules="[rules.required('customer phone number'), rules.phone]"
                 ></v-text-field>
-              </div>
 
               <!-- order summary -->
               <div>
@@ -149,7 +199,15 @@ import Alert from "@/components/Alert.vue";
 import AlertDialog from "@/components/AlertDialog.vue";
 
 const restaurant = JSON.parse(localStorage.getItem('user'));
-const order = ref({});
+// Destination Type options
+const destinationTypes = [
+  { label: "Home", value: "home", icon: "mdi-home-outline" },
+  { label: "Express Gate", value: "express_gate", icon: "mdi-bus-clock" },
+];
+const order = ref({
+  'dest_address': null,
+  dest_type: 'home'
+});
 const orderLocation = ref({
     lat: 16.8409,
     lng: 96.1735,
@@ -182,7 +240,8 @@ const makeOrder = async () => {
         order_type: 'merchant',
         dest_latitude: orderLocation.value.lat,
         dest_longitude: orderLocation.value.lng,
-        dest_address: orderLocation.value.address,
+        dest_address: order.value.dest_address,
+        dest_type: order.value.dest_type,
         dest_phone: destPhone.value,
         delivery_fee: deliveryFee.value,
         service_fee: serviceFee.value,

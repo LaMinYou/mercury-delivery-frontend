@@ -33,6 +33,10 @@ import DeliverAssignedHistory from '@/views/DeliverAssignedHistory.vue';
 import Customers from '@/views/Customers.vue';
 import RestaurantCustomers from '@/views/RestaurantCustomers.vue';
 import ActiveDeliveryPromoDetails from '@/views/ActiveDeliveryPromoDetails.vue';
+import CustomerCompletedOrders from '@/views/CustomerCompletedOrders.vue';
+import CustomerCompletedOrderDetails from '@/views/CustomerCompletedOrderDetails.vue';
+import RestaurantCallingRiderHistory from '@/views/RestaurantCallingRiderHistory.vue';
+import CallRiderHistoryDetails from '@/views/CallRiderHistoryDetails.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -179,6 +183,18 @@ const routes = [
     meta: { requiresAuth: true, role: 2 }
   },
   {
+    path: '/restaurant/call-rider-history',
+    name: 'shop-call-rider-history',
+    component: RestaurantCallingRiderHistory,
+    meta: { requiresAuth: true, role: 2 }
+  },
+  {
+    path: '/restaurant/call-rider-history/:id',
+    name: 'call-rider-details',
+    component: CallRiderHistoryDetails,
+    props: true
+  },
+  {
     path: '/customer/login',
     name: 'customer-login',
     component: CustomerLogin,
@@ -207,9 +223,21 @@ const routes = [
     meta: { requiresAuth: true, role: 3 }
   },
   {
+    path: '/customer/completed-orders',
+    name: 'customer-completed-orders',
+    component: CustomerCompletedOrders,
+    meta: { requiresAuth: true, role: 3 }
+  },
+  {
     path: '/customer/orders/:id',
     name: 'current-order-details',
     component: CustomerCurrentOrderDetails,
+    props: true
+  },
+  {
+    path: '/customer/completed-orders/:id',
+    name: 'completed-order-details',
+    component: CustomerCompletedOrderDetails,
     props: true
   },
   {
