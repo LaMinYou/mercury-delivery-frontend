@@ -471,7 +471,7 @@
         </v-col>
       </v-row>
       <!-- popup box for order noti event -->
-      <div v-if="incomingOrderOffer">
+      <div v-if="incomingOrderOffer != null">
         <rider-incoming-order-dialog
           :incomingOrderOffer="incomingOrderOffer"
           @handleAcceptOrder="handleAcceptOrder"
@@ -667,7 +667,11 @@ const listenToRiderChannel = (riderId) => {
     .private(`riders.${riderId}`)
     .listen(".RiderOrderAssigned", (data) => {
       console.log("အော်ဒါ ကမ်းလှမ်းချက်အသစ် ရောက်လာပါပြီ-", data.order);
-      incomingOrderOffer.value = data.order;
+      if(data.order.delivery_status == 'picking'){
+        incomingOrderOffer.value = null;
+      }else{
+        incomingOrderOffer.value = data.order;
+      }
       playAlert();
     })
     .listen(".OrderOfferWithdrawn", (data) => {

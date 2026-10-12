@@ -112,6 +112,7 @@ const emit = defineEmits(['closeOrderItemDialog', 'orderAccepted']);
 const acceptOrder = async () =>{
     try{
         const res = await api.put(`auth/restaurant/orders/${props.order.id}`, { status: 'accepted' });
+        console.log(res.data.message);
         printKitchenSlip();
         emit('closeOrderItemDialog');
         emit('orderAccepted');
