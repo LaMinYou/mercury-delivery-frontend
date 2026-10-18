@@ -134,7 +134,6 @@
 
               <div>
                 <v-btn
-                  
                   color="red-accent-4"
                   :loading="releasingOrderId == order.id"
                   @click="releaseOrder(order)"
@@ -144,48 +143,59 @@
               </div>
 
               <!-- Multi Photo Upload Section for Express Gate Only -->
-<div v-if="order.dest_type === 'express_gate' && order.delivery_status == 'delivering'" class="mt-4 pa-3 bg-grey-lighten-4 rounded-lg">
-  <div class="font-weight-bold text-caption text-grey-darken-3 mb-2 d-flex align-center">
-    <v-icon color="indigo" class="mr-1">mdi-camera</v-icon>
-    Please upload invoices
-  </div>
+              <div
+                v-if="
+                  order.dest_type === 'express_gate' &&
+                  order.delivery_status == 'delivering'
+                "
+                class="mt-4 pa-3 bg-grey-lighten-4 rounded-lg"
+              >
+                <div
+                  class="font-weight-bold text-caption text-grey-darken-3 mb-2 d-flex align-center"
+                >
+                  <v-icon color="indigo" class="mr-1">mdi-camera</v-icon>
+                  Please upload invoices
+                </div>
 
-  <!-- File Input Button -->
-  <v-file-input
-    multiple
-    accept="image/*"
-    label="select invoices"
-    prepend-icon="mdi-attachment"
-    density="compact"
-    hide-details
-    @change="handlePhotoSelect($event, order.id)"
-  ></v-file-input>
+                <!-- File Input Button -->
+                <v-file-input
+                  multiple
+                  accept="image/*"
+                  label="select invoices"
+                  prepend-icon="mdi-attachment"
+                  density="compact"
+                  hide-details
+                  @change="handlePhotoSelect($event, order.id)"
+                ></v-file-input>
 
-  <!-- Image Previews -->
-  <div v-if="orderPhotos[order.id]?.previews?.length" class="d-flex flex-wrap ga-2 mt-3">
-    <div
-      v-for="(src, index) in orderPhotos[order.id].previews"
-      :key="index"
-      class="position-relative"
-    >
-      <v-img
-        :src="src"
-        width="70"
-        height="70"
-        cover
-        class="rounded border"
-      ></v-img>
-      <v-btn
-        icon="mdi-close"
-        size="x-small"
-        color="red"
-        class="position-absolute top-0 right-0 ma-n1"
-        style="width: 20px; height: 20px;"
-        @click="removePhoto(order.id, index)"
-      ></v-btn>
-    </div>
-  </div>
-</div>
+                <!-- Image Previews -->
+                <div
+                  v-if="orderPhotos[order.id]?.previews?.length"
+                  class="d-flex flex-wrap ga-2 mt-3"
+                >
+                  <div
+                    v-for="(src, index) in orderPhotos[order.id].previews"
+                    :key="index"
+                    class="position-relative"
+                  >
+                    <v-img
+                      :src="src"
+                      width="70"
+                      height="70"
+                      cover
+                      class="rounded border"
+                    ></v-img>
+                    <v-btn
+                      icon="mdi-close"
+                      size="x-small"
+                      color="red"
+                      class="position-absolute top-0 right-0 ma-n1"
+                      style="width: 20px; height: 20px"
+                      @click="removePhoto(order.id, index)"
+                    ></v-btn>
+                  </div>
+                </div>
+              </div>
 
               <!-- for express order -->
               <div v-if="order.order_type == 'errand'">
@@ -471,7 +481,7 @@
         </v-col>
       </v-row>
       <!-- popup box for order noti event -->
-      <div v-if="incomingOrderOffer != null">
+      <div v-if="incomingOrderOffer != null && incomingOrderOffer.delivery_status !== 'picking'">
         <rider-incoming-order-dialog
           :incomingOrderOffer="incomingOrderOffer"
           @handleAcceptOrder="handleAcceptOrder"
@@ -516,17 +526,16 @@ const selectedOrder = ref(null);
 const isLoading = ref(true);
 const releasingOrderId = ref(null);
 const isTimeout = ref(false);
-const user = ref(JSON.parse(localStorage.getItem('user')) || '');
+const user = ref(JSON.parse(localStorage.getItem("user")) || "");
 
 const checkRiderStatus = () => {
-  if(user.value.status == 'available'){
+  if (user.value.status == "available") {
     isOnline.value = true;
     listenToRiderChannel(user.value.id);
     startLocationTracking();
     requestNotificationPermission();
   }
-}
-
+};
 
 const checkAndOpenNotiOrder = async () => {
   const orderId = route.query.open_order_id;
@@ -534,9 +543,9 @@ const checkAndOpenNotiOrder = async () => {
 
   if (orderId) {
     try {
-      const res = await api.get(`auth/rider/order-details/${orderId}`); 
+      const res = await api.get(`auth/rider/order-details/${orderId}`);
       console.log("API Result:", res.data);
-      
+
       if (res.data) {
         incomingOrderOffer.value = res.data;
         //playAlert();
@@ -621,23 +630,26 @@ const releaseOrder = async (ord) => {
       await fetchActiveOrders();
     } else {
       await new Promise((resolve) => {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-          try {
-            const res = await api.get("/auth/rider/nearest-riders", {
-              params: {
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                order_id: ord.id,
-              },
-            });
-            riders.value = res.data;
-            riderDialog.value = true;
-          } catch (err) {
-            console.error("အနီးနားရှိ ရိုက်ဒါများ ရှာမတွေ့ပါဗျာ-", err);
-          } finally {
-            resolve();
-          }
-        }, () => resolve());
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            try {
+              const res = await api.get("/auth/rider/nearest-riders", {
+                params: {
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                  order_id: ord.id,
+                },
+              });
+              riders.value = res.data;
+              riderDialog.value = true;
+            } catch (err) {
+              console.error("အနီးနားရှိ ရိုက်ဒါများ ရှာမတွေ့ပါဗျာ-", err);
+            } finally {
+              resolve();
+            }
+          },
+          () => resolve()
+        );
       });
     }
   } catch (err) {
@@ -648,7 +660,7 @@ const releaseOrder = async (ord) => {
 };
 
 const handOverSuccess = (orderId) => {
-  activeOrders.value = activeOrders.value.filter(item => item.id !== orderId);
+  activeOrders.value = activeOrders.value.filter((item) => item.id !== orderId);
   //await fetchActiveOrders();
 };
 
@@ -667,9 +679,13 @@ const listenToRiderChannel = (riderId) => {
     .private(`riders.${riderId}`)
     .listen(".RiderOrderAssigned", (data) => {
       console.log("အော်ဒါ ကမ်းလှမ်းချက်အသစ် ရောက်လာပါပြီ-", data.order);
-      if(data.order.delivery_status == 'picking'){
+      if (data.order.delivery_status == "picking") {
         incomingOrderOffer.value = null;
-      }else{
+        const exists = activeOrders.value.some((o) => o.id === data.order.id);
+        if (!exists) {
+          activeOrders.value.unshift(data.order);
+        }
+      } else {
         incomingOrderOffer.value = data.order;
       }
       playAlert();
@@ -685,7 +701,7 @@ const listenToRiderChannel = (riderId) => {
     })
     .listen(".OrderHandOver", (data) => {
       const exists = activeOrders.value.some((o) => o.id === data.order.id);
-  
+
       if (!exists) {
         activeOrders.value.unshift(data.order);
       }
@@ -696,8 +712,8 @@ const listenToRiderChannel = (riderId) => {
 const handleGoOnline = async () => {
   await api.put("auth/rider/toggle-status", { status: "available" });
   isOnline.value = true;
-  user.value.status = 'available';
-  localStorage.setItem('user', JSON.stringify(user.value));
+  user.value.status = "available";
+  localStorage.setItem("user", JSON.stringify(user.value));
 
   //const user = JSON.parse(localStorage.getItem("user"));
   listenToRiderChannel(user.value.id);
@@ -710,8 +726,8 @@ const handleGoOffline = async () => {
   if (hasOrder.value) return;
   await api.put("auth/rider/toggle-status", { status: "inactive" });
   isOnline.value = false;
-  user.value.status = 'inactive';
-  localStorage.setItem('user', JSON.stringify(user.value));
+  user.value.status = "inactive";
+  localStorage.setItem("user", JSON.stringify(user.value));
 
   if (locationTimer) {
     clearInterval(locationTimer);
@@ -725,8 +741,8 @@ const handleGoOffline = async () => {
 const handleAcceptOrder = async (orderId) => {
   try {
     const res = await api.post(`auth/rider/accept-order/${orderId}`);
-    activeOrders.value.unshift(res.data.order); 
-    incomingOrderOffer.value = null; 
+    activeOrders.value.unshift(res.data.order);
+    incomingOrderOffer.value = null;
 
     startLocationTracking();
     alert("အော်ဒါ လက်ခံရရှိမှု အောင်မြင်ပါသည်။ ဆိုင်သို့ သွားယူပေးပါဗျာ။");
@@ -766,13 +782,15 @@ const removePhoto = (orderId, index) => {
 // handleDeliveryStatus method
 const handleDeliveryStatus = async (order) => {
   try {
-    let nextStatus = order.delivery_status === "picking" ? "delivering" : "completed";
+    let nextStatus =
+      order.delivery_status === "picking" ? "delivering" : "completed";
 
     // Validation: Require photos when completing an express_gate order
     if (
       order.dest_type === "express_gate" &&
       nextStatus === "completed" &&
-      (!orderPhotos[order.id]?.files || orderPhotos[order.id].files.length === 0)
+      (!orderPhotos[order.id]?.files ||
+        orderPhotos[order.id].files.length === 0)
     ) {
       alert("ဂိတ်သို့ အပ်နှံထားသည့် ဓာတ်ပုံအနည်းဆုံး ၁ ပုံ တင်ပေးပါရန်။");
       return;
@@ -799,10 +817,9 @@ const handleDeliveryStatus = async (order) => {
       );
     } else {
       // Direct PUT request when sending JSON (no files)
-      res = await api.put(
-        `auth/rider/update-delivery-status/${order.id}`,
-        { deliveryStatus: nextStatus }
-      );
+      res = await api.put(`auth/rider/update-delivery-status/${order.id}`, {
+        deliveryStatus: nextStatus,
+      });
     }
 
     // Clean up local image preview URLs
@@ -811,7 +828,9 @@ const handleDeliveryStatus = async (order) => {
       delete orderPhotos[order.id];
     }
 
-    const index = activeOrders.value.findIndex((o) => o.id === res.data.order.id);
+    const index = activeOrders.value.findIndex(
+      (o) => o.id === res.data.order.id
+    );
 
     nextStatus === "completed"
       ? activeOrders.value.splice(index, 1)
@@ -911,7 +930,6 @@ onMounted(() => {
   checkRiderStatus();
   fetchActiveOrders();
 });
-
 
 const retryFetch = () => {
   isLoading.value = true;

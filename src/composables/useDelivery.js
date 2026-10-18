@@ -73,6 +73,66 @@ export function useDelivery() {
   };
 
   // calculate delivery fee
+  // const calculateDeliveryFee = async (customerLat, customerLng, restaurantLat, restaurantLng) => {
+  //   loading.value = true;
+
+  //   try {
+  //     const activePromo = await getActiveDeliveryPromo();
+  //     if (activePromo && activePromo.id) {
+  //       if (activePromo.promo_type === 'free') {
+  //         deliveryFee.value = 0;
+  //       } else {
+  //         deliveryFee.value = Number(activePromo.amount) || 0;
+  //       }
+  //       return deliveryFee.value;
+  //     }
+
+  //     // calculate distance
+  //     const km = calculateDistanceKM(restaurantLat, restaurantLng, customerLat, customerLng);
+
+  //     // check for Peak Hour and Rainy
+  //     checkIsPeakHour();
+  //     await checkIsRainy(customerLat, customerLng);
+
+  //     //make delivery fee to fixed for too far distance
+  //     const maxDistanceThreshold = 13;
+  //     const maxDeliveryFee = 7000;
+
+  //     if (km >= maxDistanceThreshold) {
+  //       deliveryFee.value = maxDeliveryFee;
+  //       return deliveryFee.value;
+  //     }
+
+  //     // formula
+  //     const baseFee = 500;   // below 1 km
+  //     const perKmRate = 500;  // per km rate for every above 1 km
+  //     const baseDistance = 1;
+
+  //     let totalFee = baseFee;
+  //     if (km > baseDistance) {
+  //       const extraDistance = km - baseDistance;
+  //       totalFee += extraDistance * perKmRate;
+  //     }
+
+  //     // calculate Surge Multiplier
+  //     let surge = 1.0;
+  //     if (isPeakHour.value) surge += 0.2; // get more 15% 
+  //     if (isRainy.value) surge += 0.3;    // get more 20%
+
+  //     let calculatedFee = Math.ceil((totalFee * surge) / 100) * 100;
+
+  //     //control to prevent overflow Max Fee even Surge
+  //     deliveryFee.value = Math.min(calculatedFee, maxDeliveryFee);
+
+  //   } catch (err) {
+  //     console.error('Error calculating delivery fee:', err);
+  //   } finally{
+  //     loading.value = false;
+  //   }
+  //   return deliveryFee.value;
+  // };
+
+  // calculate delivery fee
   const calculateDeliveryFee = async (customerLat, customerLng, restaurantLat, restaurantLng) => {
     loading.value = true;
 
@@ -90,9 +150,14 @@ export function useDelivery() {
       // calculate distance
       const km = calculateDistanceKM(restaurantLat, restaurantLng, customerLat, customerLng);
 
-      // check for Peak Hour and Rainy
+      // check for Peak Hour and Rainy (Safe execution)
       checkIsPeakHour();
-      await checkIsRainy(customerLat, customerLng);
+      try {
+        await checkIsRainy(customerLat, customerLng);
+      } catch (e) {
+        console.warn("Skipping rain check due to API failure");
+        isRainy.value = false;
+      }
 
       //make delivery fee to fixed for too far distance
       const maxDistanceThreshold = 13;
@@ -116,8 +181,8 @@ export function useDelivery() {
 
       // calculate Surge Multiplier
       let surge = 1.0;
-      if (isPeakHour.value) surge += 0.2; // get more 15% 
-      if (isRainy.value) surge += 0.3;    // get more 20%
+      if (isPeakHour.value) surge += 0.2; 
+      if (isRainy.value) surge += 0.3;    
 
       let calculatedFee = Math.ceil((totalFee * surge) / 100) * 100;
 
@@ -126,7 +191,8 @@ export function useDelivery() {
 
     } catch (err) {
       console.error('Error calculating delivery fee:', err);
-    } finally{
+      deliveryFee.value = 1000; 
+    } finally {
       loading.value = false;
     }
     return deliveryFee.value;

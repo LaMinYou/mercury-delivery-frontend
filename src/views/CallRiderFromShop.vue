@@ -197,6 +197,7 @@ import { useDelivery } from "@/composables/useDelivery";
 import PureMiniMap from "@/components/PureMiniMap.vue";
 import Alert from "@/components/Alert.vue";
 import AlertDialog from "@/components/AlertDialog.vue";
+import router from "@/router";
 
 const restaurant = JSON.parse(localStorage.getItem('user'));
 // Destination Type options
@@ -258,26 +259,53 @@ const makeOrder = async () => {
     }catch(err){
         console.log(err.response.data.error);
         errorMessage.value = err.response.data.message;
+    }finally{
+      router.push('/restaurant');
     }
 
 }
 
+const isWayOrder = ref(false);
+const checkWayOrder = async () => {
+  try {
+
+    const res = await api.post('auth/restaurant/check-way-order', {
+      restaurant_id: restaurant.id,
+      source_latitude: restaurant.latitude,
+      source_longitude: restaurant.longitude,
+      current_order_id: null
+    });
+    console.log('API Response success:', res.data);
+    if(res.data.is_way_order){
+      isWayOrder.value = true;
+      deliveryFee.value = res.data.delivery_fee;
+    }
+    
+  } catch (err) {
+    console.log('API Error caught:', err.response?.data || err.message);
+  }
+};
+
 onMounted(() => {
-    initAutocomplete();
-    getCashPaymentId();
+  checkWayOrder();
+  initAutocomplete();
+  getCashPaymentId();
 });
 
 watch(
   () => [orderLocation.value.lat, orderLocation.value.lng],
   async ([newLat, newLng]) => {
     if (newLat && newLng) {
-      const fee = await calculateDeliveryFee(
-        newLat,
-        newLng,
-        restaurant.latitude,
-        restaurant.longitude
-      );
-      deliveryFee.value = fee || 1000;
+      if(!isWayOrder.value){
+        const fee = await calculateDeliveryFee(
+          newLat,
+          newLng,
+          restaurant.latitude,
+          restaurant.longitude
+        );
+        deliveryFee.value = fee || 1000;
+      }
+      
     }
   },
   { immediate: true }

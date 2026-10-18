@@ -37,6 +37,8 @@ import CustomerCompletedOrders from '@/views/CustomerCompletedOrders.vue';
 import CustomerCompletedOrderDetails from '@/views/CustomerCompletedOrderDetails.vue';
 import RestaurantCallingRiderHistory from '@/views/RestaurantCallingRiderHistory.vue';
 import CallRiderHistoryDetails from '@/views/CallRiderHistoryDetails.vue';
+import Settings from '@/views/Settings.vue';
+import InvoiceHistory from '@/views/InvoiceHistory.vue';
 
 const routes = [
   { path: '/', name: 'home', component: HomeView },
@@ -140,9 +142,21 @@ const routes = [
     meta: { requiresAuth: true, role: 1 }
   },
   {
+    path: '/admin/invoice-history',
+    name: 'invoice-history',
+    component: InvoiceHistory,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
     path: '/admin/delivery-promo',
     name: 'deliveryPromo',
     component: ActiveDeliveryPromoDetails,
+    meta: { requiresAuth: true, role: 1 }
+  },
+  {
+    path: '/admin/settings',
+    name: 'settings',
+    component: Settings,
     meta: { requiresAuth: true, role: 1 }
   },
   {

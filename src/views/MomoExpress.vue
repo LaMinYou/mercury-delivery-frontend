@@ -369,7 +369,7 @@ const showSourceMap = ref(false);
 const showDestMap = ref(false);
 const openAlertDialog = ref(false);
 const errorMessage = ref(null);
-const user = JSON.parse(localStorage.getItem("user"));
+const user = JSON.parse(localStorage.getItem("user")) || null;
 const payment_transaction = ref({
   user_id: user.id,
   order_id: "#125$7",
@@ -543,6 +543,28 @@ const initAutocompleteForDest = () => {
   });
 };
 
+const isWayOrder = ref(false);
+
+const checkWayOrder = async () => {
+  try {
+
+    const res = await api.post('auth/customer/check-way-order', {
+      customer_id: user.id,
+      source_latitude: order.value.source_latitude,
+      source_longitude: order.value.source_longitude,
+      current_order_id: null
+    });
+    console.log('API Response success:', res.data);
+    if(res.data.is_way_order){
+      isWayOrder.value = true;
+      deliveryFee.value = res.data.delivery_fee;
+    }
+    
+  } catch (err) {
+    console.log('API Error caught:', err.response?.data || err.message);
+  }
+};
+
 watch(
   () => [
     order.value.source_latitude,
@@ -552,22 +574,28 @@ watch(
   ],
   async ([newSrcLat, newSrcLng, newDestLat, newDestLng]) => {
     if (newSrcLat && newSrcLng && newDestLat && newDestLng) {
-      const fee = await calculateDeliveryFee(
-        newSrcLat,
-        newSrcLng,
-        newDestLat,
-        newDestLng
-      );
-      deliveryFee.value = fee || 1000;
+      if(!isWayOrder.value){
+        const fee = await calculateDeliveryFee(
+          newSrcLat,
+          newSrcLng,
+          newDestLat,
+          newDestLng
+        );
+        deliveryFee.value = fee || 1000;
+      }
+      
     }
   },
   { immediate: true }
 );
 
+
 onMounted(() => {
+  checkWayOrder();
   initAutocompleteForSource();
   initAutocompleteForDest();
   getPayments();
+  
 });
 </script>
 <style scoped>

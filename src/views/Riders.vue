@@ -69,6 +69,23 @@
           </v-avatar>
         </template>
 
+        <template #item.location="{ item }">
+          <div v-if="item.latitude && item.longitude">
+            <v-btn
+              size="x-small"
+              variant="tonal"
+              color="green-darken-3"
+              prepend-icon="mdi-map-marker"
+              :href="`https://www.google.com/maps?q=${item.latitude},${item.longitude}`"
+              target="_blank"
+              @click.stop
+            >
+              View Map
+            </v-btn>
+          </div>
+          <span v-else class="text-grey text-caption">Location Unavailable</span>
+        </template>
+
         <template #item.status="{ value }">
           <v-chip
             :color="value === 'available' ? 'success' : 'error'"
@@ -141,6 +158,7 @@ const headers = [
   { title: "Username", key: "username", sortable: true },
   { title: "Phone Number", key: "phone", align: "center", sortable: true },
   { title: "Current Status", key: "status", align: "center", sortable: true },
+  { title: "Current Location", key: "location", align: "center", sortable: false },
   { title: "No. of Orders in week", key: "weekly_orders_count", align: "center", sortable: true },
   { title: "Actions", key: "actions", align: "center", sortable: false },
 ];

@@ -335,7 +335,7 @@ const totalPrice = computed(() => {
 });
 const serviceFee = ref(100);
 const deliveryFee = ref(0);
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem('user')) || null;
 const payment_transaction = ref({
   user_id: user.id,
   order_id: "#125$7",
@@ -489,7 +489,30 @@ const closeQRDialog = (qrImg) => {
   }
 };
 
+const isWayOrder = ref(false);
+
+const checkWayOrder = async () => {
+  try {
+
+    const res = await api.post('auth/customer/check-way-order', {
+      customer_id: user.id,
+      source_latitude: cartItems[0].restaurant.latitude,
+      source_longitude: cartItems[0].restaurant.longitude,
+      current_order_id: null
+    });
+    console.log('API Response success:', res.data);
+    if(res.data.is_way_order){
+      isWayOrder.value = true;
+      deliveryFee.value = res.data.delivery_fee;
+    }
+    
+  } catch (err) {
+    console.log('API Error caught:', err.response?.data || err.message);
+  }
+};
+
 onMounted(() => {
+  checkWayOrder();
   initAutocomplete();
   getPayments();
 });
@@ -498,13 +521,16 @@ watch(
   () => [orderLocation.value.lat, orderLocation.value.lng],
   async ([newLat, newLng]) => {
     if (newLat && newLng) {
-      const fee = await calculateDeliveryFee(
-        newLat,
-        newLng,
-        cartItems[0].restaurant.latitude,
-        cartItems[0].restaurant.longitude
-      );
-      deliveryFee.value = fee || 1000;
+      if(!isWayOrder.value){
+        const fee = await calculateDeliveryFee(
+          newLat,
+          newLng,
+          cartItems[0].restaurant.latitude,
+          cartItems[0].restaurant.longitude
+        );
+        deliveryFee.value = fee || 1000;
+      }
+      
     }
   },
   { immediate: true }
