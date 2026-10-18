@@ -278,7 +278,15 @@ const checkWayOrder = async () => {
     console.log('API Response success:', res.data);
     if(res.data.is_way_order){
       isWayOrder.value = true;
-      deliveryFee.value = res.data.delivery_fee;
+      deliveryFee.value = Number(res.data.delivery_fee);
+    }else{
+      isWayOrder.value = false;
+      calculateFeeBasedOnDistance(
+        restaurant.latitude,
+        restaurant.longitude,
+        orderLocation.value.lat, 
+        orderLocation.value.lng
+      );
     }
     
   } catch (err) {
@@ -286,30 +294,50 @@ const checkWayOrder = async () => {
   }
 };
 
+const calculateFeeBasedOnDistance = async (
+  srcLat,
+  srcLng,
+  destLat,
+  destLng
+) => {
+  if (isWayOrder.value) return;
+  if (srcLat && srcLng) {
+    const fee = await calculateDeliveryFee(srcLat, srcLng, destLat, destLng);
+    deliveryFee.value = fee || 1000;
+  }
+};
+
+watch(
+  () => [orderLocation.value.lat, orderLocation.value.lng],
+  async () => {
+    await checkWayOrder();
+  }
+);
+
 onMounted(() => {
   checkWayOrder();
   initAutocomplete();
   getCashPaymentId();
 });
 
-watch(
-  () => [orderLocation.value.lat, orderLocation.value.lng],
-  async ([newLat, newLng]) => {
-    if (newLat && newLng) {
-      if(!isWayOrder.value){
-        const fee = await calculateDeliveryFee(
-          newLat,
-          newLng,
-          restaurant.latitude,
-          restaurant.longitude
-        );
-        deliveryFee.value = fee || 1000;
-      }
+// watch(
+//   () => [orderLocation.value.lat, orderLocation.value.lng],
+//   async ([newLat, newLng]) => {
+//     if (newLat && newLng) {
+//       if(!isWayOrder.value){
+//         const fee = await calculateDeliveryFee(
+//           newLat,
+//           newLng,
+//           restaurant.latitude,
+//           restaurant.longitude
+//         );
+//         deliveryFee.value = fee || 1000;
+//       }
       
-    }
-  },
-  { immediate: true }
-);
+//     }
+//   },
+//   { immediate: true }
+// );
 
 
 // connect to Google Places Autocomplete and listen for autocomplete

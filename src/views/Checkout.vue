@@ -503,11 +503,32 @@ const checkWayOrder = async () => {
     console.log('API Response success:', res.data);
     if(res.data.is_way_order){
       isWayOrder.value = true;
-      deliveryFee.value = res.data.delivery_fee;
+      deliveryFee.value = Number(res.data.delivery_fee);
+    }else{
+      isWayOrder.value = false;
+      calculateFeeBasedOnDistance(
+        cartItems[0].restaurant.latitude,
+        cartItems[0].restaurant.longitude,
+        orderLocation.value.lat,
+        orderLocation.value.lng
+      );
     }
     
   } catch (err) {
     console.log('API Error caught:', err.response?.data || err.message);
+  }
+};
+
+const calculateFeeBasedOnDistance = async (
+  srcLat,
+  srcLng,
+  destLat,
+  destLng
+) => {
+  if (isWayOrder.value) return;
+  if (srcLat && srcLng) {
+    const fee = await calculateDeliveryFee(srcLat, srcLng, destLat, destLng);
+    deliveryFee.value = fee || 1000;
   }
 };
 
@@ -517,24 +538,31 @@ onMounted(() => {
   getPayments();
 });
 
+// watch(
+//   () => [orderLocation.value.lat, orderLocation.value.lng],
+//   async ([newLat, newLng]) => {
+//     if (newLat && newLng) {
+//       if(!isWayOrder.value){
+//         const fee = await calculateDeliveryFee(
+//           newLat,
+//           newLng,
+//           cartItems[0].restaurant.latitude,
+//           cartItems[0].restaurant.longitude
+//         );
+//         deliveryFee.value = fee || 1000;
+//       }
+      
+//     }
+//   },
+//   { immediate: true }
+// );
+
 watch(
   () => [orderLocation.value.lat, orderLocation.value.lng],
-  async ([newLat, newLng]) => {
-    if (newLat && newLng) {
-      if(!isWayOrder.value){
-        const fee = await calculateDeliveryFee(
-          newLat,
-          newLng,
-          cartItems[0].restaurant.latitude,
-          cartItems[0].restaurant.longitude
-        );
-        deliveryFee.value = fee || 1000;
-      }
-      
-    }
-  },
-  { immediate: true }
-);
+  async () => {
+    await checkWayOrder();
+  }
+)
 
 // connect to Google Places Autocomplete and listen for autocomplete
 const initAutocomplete = () => {

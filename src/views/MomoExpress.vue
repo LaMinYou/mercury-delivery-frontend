@@ -547,23 +547,66 @@ const isWayOrder = ref(false);
 
 const checkWayOrder = async () => {
   try {
-
-    const res = await api.post('auth/customer/check-way-order', {
+    const res = await api.post("auth/customer/check-way-order", {
       customer_id: user.id,
       source_latitude: order.value.source_latitude,
       source_longitude: order.value.source_longitude,
-      current_order_id: null
+      current_order_id: null,
     });
-    console.log('API Response success:', res.data);
-    if(res.data.is_way_order){
+    console.log("API Response success:", res.data);
+    if (res.data.is_way_order) {
       isWayOrder.value = true;
-      deliveryFee.value = res.data.delivery_fee;
+      deliveryFee.value = Number(res.data.delivery_fee);
+    } else {
+      isWayOrder.value = false;
+      calculateFeeBasedOnDistance(
+        order.value.source_latitude,
+        order.value.source_longitude,
+        order.value.dest_latitude,
+        order.value.dest_longitude
+      );
     }
-    
   } catch (err) {
-    console.log('API Error caught:', err.response?.data || err.message);
+    console.log("API Error caught:", err.response?.data || err.message);
   }
 };
+
+const calculateFeeBasedOnDistance = async (
+  srcLat,
+  srcLng,
+  destLat,
+  destLng
+) => {
+  if (isWayOrder.value) return;
+  if (srcLat && srcLng) {
+    const fee = await calculateDeliveryFee(srcLat, srcLng, destLat, destLng);
+    deliveryFee.value = fee || 1000;
+  }
+};
+
+// watch(
+//   () => [
+//     order.value.source_latitude,
+//     order.value.source_longitude,
+//     order.value.dest_latitude,
+//     order.value.dest_longitude,
+//   ],
+//   async ([newSrcLat, newSrcLng, newDestLat, newDestLng]) => {
+//     if (newSrcLat && newSrcLng && newDestLat && newDestLng) {
+//       if(!isWayOrder.value){
+//         const fee = await calculateDeliveryFee(
+//           newSrcLat,
+//           newSrcLng,
+//           newDestLat,
+//           newDestLng
+//         );
+//         deliveryFee.value = fee || 1000;
+//       }
+
+//     }
+//   },
+//   { immediate: true }
+// );
 
 watch(
   () => [
@@ -572,30 +615,16 @@ watch(
     order.value.dest_latitude,
     order.value.dest_longitude,
   ],
-  async ([newSrcLat, newSrcLng, newDestLat, newDestLng]) => {
-    if (newSrcLat && newSrcLng && newDestLat && newDestLng) {
-      if(!isWayOrder.value){
-        const fee = await calculateDeliveryFee(
-          newSrcLat,
-          newSrcLng,
-          newDestLat,
-          newDestLng
-        );
-        deliveryFee.value = fee || 1000;
-      }
-      
-    }
-  },
-  { immediate: true }
+  async () => {
+    await checkWayOrder();
+  }
 );
-
 
 onMounted(() => {
   checkWayOrder();
   initAutocompleteForSource();
   initAutocompleteForDest();
   getPayments();
-  
 });
 </script>
 <style scoped>
