@@ -7,9 +7,12 @@
       height="60"
       extension-height="auto"
     >
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon
+        class="d-none d-md-flex"
+        @click="drawer = !drawer"
+      ></v-app-bar-nav-icon>
 
-      <div class="logo d-flex align-center" style="margin-left: -15px;">
+      <div class="logo d-flex align-center" style="margin-left: -15px">
         <router-link to="/" class="d-flex align-center text-decoration-none">
           <v-img
             :src="require('@/assets/images/mercury.png')"
@@ -95,6 +98,7 @@
       </template>
     </v-app-bar>
 
+    <!-- menu bar for web view -->
     <v-navigation-drawer
       v-model="drawer"
       :permanent="$vuetify.display.mdAndUp"
@@ -143,12 +147,45 @@
       </template>
     </v-navigation-drawer>
 
+     <!-- menu bar for mobile view -->
+    <v-bottom-navigation
+      grow
+      color="primary"
+      bg-color="light-blue-lighten-5"
+      class="d-md-none border-top"
+      elevation="4"
+    >
+      <v-btn
+        v-for="item in customerMobileMenuItems"
+        :key="item.title"
+        :to="item.route"
+      >
+        <v-icon>{{ item.icon }}</v-icon>
+        <span style="font-size: 11px;">{{ item.title }}</span>
+      </v-btn>
+
+      <v-btn to="/customer/cart">
+        <v-badge
+          v-if="groupedCart && groupedCart.length > 0"
+          :content="groupedCart.length"
+          color="red"
+          offset-x="-5"
+          offset-y="5"
+        >
+          <v-icon>mdi-basket-outline</v-icon>
+        </v-badge>
+        <v-icon v-else>mdi-basket-outline</v-icon>
+        <span style="font-size: 11px;">Cart</span>
+      </v-btn>
+    </v-bottom-navigation>
+    
     <v-main class="bg-grey-lighten-3 main">
       <v-container fluid>
         <slot />
       </v-container>
       <Footer />
     </v-main>
+    
   </div>
   <!-- </v-app> -->
   <signup-dialog
@@ -160,7 +197,7 @@
     <profile-drawer
       :openProfileDrawer="openProfileDrawer"
       :user="user"
-      @closeProfileDrawer="openProfileDrawer = false"
+      @closeProfileDrawer="closeDrawer"
       @update:user="user = $event"
     />
   </div>
@@ -173,6 +210,7 @@ import api from "@/services/api";
 import { useDisplay } from "vuetify";
 import { useRouter, useRoute } from "vue-router";
 import { customerMenuItems } from "@/services/menus";
+import { customerMobileMenuItems } from "@/services/menus";
 import SignupDialog from "./SignupDialog.vue";
 import { useCart } from "@/composables/useCart";
 import ProfileDrawer from "./ProfileDrawer.vue";
@@ -192,7 +230,6 @@ let user = ref(null);
 let openSignupBox = ref(false);
 const openProfileDrawer = ref(false);
 
-
 user = ref(JSON.parse(localStorage.getItem("user") || "null"));
 
 const handleLogout = async () => {
@@ -211,12 +248,19 @@ const handleLogout = async () => {
   }
 };
 
+const closeDrawer = (value) => {
+  if(value){
+    user.value = null;
+  }
+  openProfileDrawer.value = false;
+}
+
 //for delivery promo
 const activePromo = ref({});
 
 const getActivePromo = async () => {
   try {
-    console.log("start fetching active promo...")
+    console.log("start fetching active promo...");
     const res = await api.get("/delivery-promo");
     if (res.data && res.data.id) {
       activePromo.value.id = res.data.id;
@@ -234,7 +278,7 @@ const getActivePromo = async () => {
 
 onMounted(() => {
   getActivePromo();
-})
+});
 
 watch(
   () => route.query.search,
@@ -270,5 +314,11 @@ watch(
 }
 .menu-bar {
   transform: translateY(150px);
+}
+.close-nav {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
 }
 </style>

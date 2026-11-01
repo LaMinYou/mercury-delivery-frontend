@@ -6,7 +6,7 @@
       location="right"
       temporary
       :scrim="false"
-      style="z-index: 9999 !important"
+      style="z-index: 9999 !important; bottom: 0px; height: 100vh;"
       width="335"
     >
       <v-list-item
@@ -80,6 +80,18 @@
             >
           </div>
         </v-card>
+
+        <div class="pa-2 d-md-none position-absolute bottom-0 w-100">
+          <v-btn
+            block
+            prepend-icon="mdi-logout"
+            color="error"
+            variant="tonal"
+            @click="handleLogout"
+          >
+            Logout
+          </v-btn>
+        </div>
       </div>
       <!-- edit userinfo box -->
       <v-card
@@ -186,12 +198,41 @@ const updateUser = async() => {
   loading.value = false;
 }
 
+const handleLogout = async () => {
+  try {
+    await api.post("auth/customer/logout");
+  } catch (err) {
+    console.error(
+      "Backend logout failed, proceeding with frontend cleanup",
+      err
+    );
+  } finally {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    props.user = null;
+    emit('closeProfileDrawer', true);
+  }
+};
+
 onMounted(() => {
   props.user.role_id == 3 ? getUserLevel() : '';
 });
 </script>
 
 <style scoped>
+.v-navigation-drawer{
+  bottom: 0px;
+  height: 100%;
+}
+/* :deep(.v-navigation-drawer) {
+  top: 0px !important;
+  height: 200vh !important;
+  max-height: 200vh !important;
+}
+
+:deep(.v-navigation-drawer__content) {
+  height: 100% !important;
+} */
 .edit-card {
   position: absolute;
   bottom: 0;
@@ -202,6 +243,7 @@ onMounted(() => {
   box-shadow: 0 -5px 7px rgba(0, 0, 0, 0.2);
   animation: animate 0.2s linear forwards;
 }
+
 @keyframes animate {
   from {
     transform: translateY(300px);

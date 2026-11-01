@@ -53,7 +53,7 @@ const filteredTotalItems = computed(() => {
   transform: translateX(-50%);
   width: 90%;
   max-width: 900px;
-  background: #43A047; /* မူရင်းပုံထဲကလို ပန်းရောင်ရင့်ရင့် */
+  background: #43A047;
   
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -64,7 +64,7 @@ const filteredTotalItems = computed(() => {
   flex-wrap: wrap;
   box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
   cursor: pointer;
-  z-index: 99;
+  z-index: 1000 !important;
 }
 .totalCount span{
   width: 30px;

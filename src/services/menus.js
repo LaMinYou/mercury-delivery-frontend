@@ -33,6 +33,12 @@ export const customerMenuItems = [
 
 ];
 
+export const customerMobileMenuItems = [
+  { title: 'express', icon: 'mdi-bike', route: '/customer/express' },
+  { title: 'orders', icon: 'mdi-cart-plus', route: '/customer/current-orders' },
+  { title: 'history', icon: 'mdi-history', route: '/customer/completed-orders' },
+]
+
 export const riderMenuItems = [
   { title: 'Current Orders', icon: 'mdi-clock-fast', route: '/rider' },
   { title: 'Order History', icon: 'mdi-history', route: '/rider/order-history' }
