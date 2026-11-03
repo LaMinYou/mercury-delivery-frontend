@@ -58,7 +58,7 @@
         Ks. {{ restaurant.menus[0]?.price }} MMK
       </span>
       <span v-if="restaurant.menus[0]?.discount_price">
-        <v-chip color="green">
+        <v-chip color="primary">
           <v-icon>mdi-sale</v-icon>
           Ks. {{ restaurant.menus[0]?.discount_price }} MMK
         </v-chip>

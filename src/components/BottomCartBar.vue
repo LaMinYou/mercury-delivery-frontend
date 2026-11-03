@@ -64,7 +64,7 @@ const filteredTotalItems = computed(() => {
   flex-wrap: wrap;
   box-shadow: 0 4px 15px rgba(233, 30, 99, 0.4);
   cursor: pointer;
-  z-index: 1000 !important;
+  z-index: 9999 !important;
 }
 .totalCount span{
   width: 30px;

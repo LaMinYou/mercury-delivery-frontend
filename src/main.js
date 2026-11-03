@@ -21,8 +21,12 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          'green-darken-2': '#388E3C',
-          'green-darken-3': '#2E7D32',
+          primary: '#0D47A1', 
+          'green-darken-2': '#1976D2',
+          'green-darken-3': '#1565C0',
+          'green-darken-4': '#0D47A1',
+          'green-lighten-4': '#BBDEFB',
+          'green-lighten-5': '#E3F2FD',
           'grey-darken-4': '#212121',
         }
       }

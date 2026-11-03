@@ -9,7 +9,7 @@
           <p v-if="menu.discount_price" class="text-green-darken-2 font-weight-bold text-subtitle-2">
             {{ menu.discount_price }} MMK
           </p>
-          <p :class="{ 'text-decoration-line-through text-grey': menu.discount_price }" class="text-subtitle-2 text-green-darken-1">
+          <p :class="{ 'text-decoration-line-through text-grey': menu.discount_price }" class="text-subtitle-2 text-green-darken-2">
             {{ menu.price }} MMK
           </p>
         </v-card-title>
@@ -38,7 +38,7 @@
             <span class="qty-text">{{ quantity }}</span>
           </template>
 
-          <div :class="['action-btn plus', {'is-disabled': isMaxReached}]" @click="addToCart(menu)">
+          <div :class="['action-btn plus bg-primary', {'is-disabled': isMaxReached}]" @click="addToCart(menu)">
             <v-icon size="small">mdi-plus</v-icon>
           </div>
         </div>

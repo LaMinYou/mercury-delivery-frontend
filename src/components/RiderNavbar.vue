@@ -2,7 +2,7 @@
   <!-- <v-app> -->
   <v-layout>
     <v-app-bar color="green-darken-4" elevation="1" class="px-4">
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon class="d-none d-md-flex" @click="drawer = !drawer"></v-app-bar-nav-icon>
       <div class="logo d-flex align-center" style="margin-left: -15px;">
         <router-link
           to="/rider"
@@ -26,6 +26,7 @@
       </div>
     </v-app-bar>
 
+    <!-- nav drawer for web view -->
     <v-navigation-drawer
       v-model="drawer"
       :permanent="$vuetify.display.mdAndUp"
@@ -57,6 +58,25 @@
       </template>
     </v-navigation-drawer>
 
+    <!-- bottom nav bar for mobile view -->
+    <v-bottom-navigation
+      grow
+      color="primary"
+      bg-color="light-blue-lighten-5"
+      class="d-md-none border-top"
+      elevation="4"
+      style="position: fixed;bottom: 0;"
+    >
+      <v-btn
+        v-for="item in riderMobileMenuItems"
+        :key="item.title"
+        :to="item.route"
+      >
+        <v-icon>{{ item.icon }}</v-icon>
+        <span style="font-size: 11px;">{{ item.title }}</span>
+      </v-btn>
+    </v-bottom-navigation>
+    
     <v-main class="bg-grey-lighten-3">
       <v-container fluid>
         <slot />
@@ -68,7 +88,7 @@
   <profile-drawer
     :openProfileDrawer="openProfileDrawer"
     :user="rider"
-    @closeProfileDrawer="openProfileDrawer = false"
+    @closeProfileDrawer="closeDrawer"
     @update:user="rider = $event"
   />
 </template>
@@ -79,6 +99,7 @@ import api from "@/services/api";
 import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { riderMenuItems } from "@/services/menus";
+import { riderMobileMenuItems } from "@/services/menus";
 import ProfileDrawer from "./ProfileDrawer.vue";
 
 const router = useRouter();
@@ -103,6 +124,13 @@ const handleLogout = async () => {
     alert(err.response.data.message);
   }
 };
+
+const closeDrawer = (value) => {
+  if(value){
+    handleLogout();
+  }
+  openProfileDrawer.value = false;
+}
 </script>
 <!-- light-green-accent-1 -->
  <style scoped>

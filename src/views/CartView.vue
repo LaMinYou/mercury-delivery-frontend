@@ -57,7 +57,7 @@
             </div>
             <div class="mt-3">
               <v-btn 
-                color="green" 
+                color="primary" 
                 variant="outlined" 
                 block
                 :disabled="!isOfficeHour"

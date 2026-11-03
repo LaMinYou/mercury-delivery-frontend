@@ -30,7 +30,7 @@
           >
             For Customers
           </div>
-          <div class="d-flex flex-column gap-3 text-center">
+          <div class="d-flex flex-column gap-3 text-center text-green-darken-4">
             <a href="#" class="footer-link">Order Tracking</a>
             <a href="#" class="footer-link">Popular Restaurants</a>
             <a href="#" class="footer-link">Coverage Areas</a>
@@ -48,7 +48,7 @@
           <!-- Hotline Card -->
           <v-card
             variant="flat"
-            class="pa-4 rounded-sm border mb-4 elevation-1 bg-teal-darken-2"
+            class="pa-4 rounded-sm border mb-4 elevation-1 bg-green-darken-4"
           >
             <div class="d-flex align-center">
               <v-avatar color="blue-lighten-5" size="42">
@@ -101,11 +101,11 @@
       <v-divider
         :thickness="2"
         class="border-opacity-100 mb-5"
-        color="success"
+        color="primary"
       ></v-divider>
 
       <!-- Copyright -->
-      <div class="text-center">
+      <div class="text-center mb-5">
         <div class="text-subtitle-1 text-green-darken-4">
           © 2026 SpeedyExpress Delivery System. All rights reserved.
         </div>
@@ -117,7 +117,7 @@
 <style scoped>
 /* Hover Effect for Links */
 .footer-link {
-  color: rgb(18, 111, 32);
+  /* color: rgb(18, 111, 32); */
   text-decoration: none;
   transition: color 0.2s ease, transform 0.2s ease;
   font-size: 0.875rem;

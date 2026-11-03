@@ -87,7 +87,7 @@
             prepend-icon="mdi-logout"
             color="error"
             variant="tonal"
-            @click="handleLogout"
+            @click="$emit('closeProfileDrawer', true)"
           >
             Logout
           </v-btn>
@@ -198,21 +198,21 @@ const updateUser = async() => {
   loading.value = false;
 }
 
-const handleLogout = async () => {
-  try {
-    await api.post("auth/customer/logout");
-  } catch (err) {
-    console.error(
-      "Backend logout failed, proceeding with frontend cleanup",
-      err
-    );
-  } finally {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    props.user = null;
-    emit('closeProfileDrawer', true);
-  }
-};
+// const handleLogout = async () => {
+//   try {
+//     await api.post("auth/customer/logout");
+//   } catch (err) {
+//     console.error(
+//       "Backend logout failed, proceeding with frontend cleanup",
+//       err
+//     );
+//   } finally {
+//     localStorage.removeItem("token");
+//     localStorage.removeItem("user");
+//     props.user = null;
+//     emit('closeProfileDrawer', true);
+//   }
+// };
 
 onMounted(() => {
   props.user.role_id == 3 ? getUserLevel() : '';

@@ -2,7 +2,7 @@
   <!-- <v-app> -->
   <div>
     <v-app-bar
-      color="green-darken-4"
+      color="primary"
       elevation="1"
       height="60"
       extension-height="auto"
@@ -18,6 +18,7 @@
             :src="require('@/assets/images/mercury.png')"
             width="120"
             height="115"
+            class="logo-image"
           />
           <!-- <span class="text-h6 text-white ms-2 font-weight-bold">Momo</span> -->
         </router-link>
@@ -57,7 +58,7 @@
                   class="d-flex align-center cursor-pointer mx-4"
                 >
                   <v-icon
-                    :class="xs ? 'text-green-darken-4' : 'text-white'"
+                    :class="xs ? 'text-green-darken-2' : 'text-white'"
                     size="small"
                     class="me-1"
                     >mdi-map-marker-outline</v-icon
@@ -65,7 +66,7 @@
                   <span
                     :class="[
                       'text-subtitle-1',
-                      xs ? 'text-green-darken-4' : 'text-white',
+                      xs ? 'text-green-darken-2' : 'text-white',
                     ]"
                     >Your current location</span
                   >
@@ -250,7 +251,7 @@ const handleLogout = async () => {
 
 const closeDrawer = (value) => {
   if(value){
-    user.value = null;
+   handleLogout();
   }
   openProfileDrawer.value = false;
 }

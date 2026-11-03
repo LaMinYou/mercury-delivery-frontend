@@ -43,3 +43,8 @@ export const riderMenuItems = [
   { title: 'Current Orders', icon: 'mdi-clock-fast', route: '/rider' },
   { title: 'Order History', icon: 'mdi-history', route: '/rider/order-history' }
 ];
+
+export const riderMobileMenuItems = [
+  { title: 'current orders', icon: 'mdi-clock-fast', route: '/rider' },
+  { title: 'history', icon: 'mdi-history', route: '/rider/order-history' }
+];
