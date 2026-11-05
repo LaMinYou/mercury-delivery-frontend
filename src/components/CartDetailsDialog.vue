@@ -40,11 +40,11 @@
 
         <div class="d-flex justify-space-between align-center my-4 px-2">
           <span class="font-weight-bold text-subtitle-1">စုစုပေါင်း ကျသင့်ငွေ:</span>
-          <span class="font-weight-bold text-subtitle-1 text-green-darken-1">MMK {{ filteredTotalPrice.toLocaleString() }}</span>
+          <span class="font-weight-bold text-subtitle-1 text-secondary">MMK {{ filteredTotalPrice.toLocaleString() }}</span>
         </div>
 
         <v-btn 
-          color="green-darken-1" 
+          color="secondary" 
           block 
           size="large" 
           class="rounded-pill text-white font-weight-bold"

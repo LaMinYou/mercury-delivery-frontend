@@ -2,7 +2,7 @@
   <!-- activePromo ထဲမှာ Data ရှိမှသာ Banner ပေါ်မည် -->
   <v-alert
     v-if="activePromo && activePromo.id"
-    color="teal-darken-4"
+    color="deep-sea-blue"
     theme="dark"
     density="compact"
     class="text-center rounded-0 py-1 font-weight-bold mx-auto alert"

@@ -21,13 +21,15 @@ const vuetify = createVuetify({
     themes: {
       light: {
         colors: {
-          primary: '#0D47A1', 
+          primary: '#0000FF', 
+          secondary: '#0041C2',
           'green-darken-2': '#1976D2',
           'green-darken-3': '#1565C0',
-          'green-darken-4': '#0D47A1',
+          'green-darken-4': '#0000FF',
           'green-lighten-4': '#BBDEFB',
           'green-lighten-5': '#E3F2FD',
           'grey-darken-4': '#212121',
+          'deep-sea-blue': '#123456'
         }
       }
     }

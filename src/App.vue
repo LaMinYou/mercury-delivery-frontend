@@ -1,22 +1,14 @@
-<!-- <template>
-  
-    <router-view :key="$route.fullPath" />
-  
-</template> -->
 <template>
   <v-app>
+    <!-- Android သို့မဟုတ် Desktop အတွက် Install Banner -->
     <v-banner
-      v-if="deferredPrompt"
+      v-if="showInstallBanner && !isIos"
       color="green-darken-3"
       class="text-white position-fixed w-100 banner"
-      style=""
       max-width="500"
       height="80"
       lines="one"
     >
-      <!-- <template v-slot:text>
-        {{ appBannerText }}
-      </template> -->
       <template v-slot:prepend>
         <v-img
           src="/images/icons/icon1-192x192.png"
@@ -29,48 +21,104 @@
       <v-banner-text class="text-green-darken-3">Install App</v-banner-text>
       <template v-slot:actions>
         <v-btn color="green-darken-3" style="margin-top: -10px;" variant="text" @click="installApp">
-            <v-img
-          src="/images/icons/download.gif"
-          width="50"
-          height="50"
-          cover
-        ></v-img> 
+          <v-img
+            src="/images/icons/download.gif"
+            width="50"
+            height="50"
+            cover
+          ></v-img> 
         </v-btn>
         <v-btn variant="text" @click="deferredPrompt = null"> <v-icon>mdi-close</v-icon> </v-btn>
       </template>
     </v-banner>
+
+    <!-- iPhone (iOS) အသုံးပြုသူများအတွက် Install လုပ်နည်း လမ်းညွှန် Banner -->
+    <v-banner
+      v-if="isIos && showIosInstallGuide"
+      color="green-darken-3"
+      class="text-white position-fixed w-100 banner"
+      lines="two"
+    >
+      <template v-slot:prepend>
+        <v-icon size="large" class="me-2">mdi-apple</v-icon>
+      </template>
+      <v-banner-text class="text-white text-caption">
+       To install the app on your iPhone, tap the <v-icon size="small">mdi-export-variant</v-icon> (Share) button in Safari and select <b>"Add to Home Screen"</b>.
+      </v-banner-text>
+      <template v-slot:actions>
+        <v-btn variant="text" color="white" @click="closeIosGuide">OK</v-btn>
+      </template>
+    </v-banner>
+
     <router-view />
   </v-app>
 </template>
+
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 const deferredPrompt = ref(null);
 
-// Role / Route အလိုက် Dynamic Banner စာသားပြောင်းခြင်း
-const appBannerText = computed(() => {
-  if (route.path.startsWith("/admin")) {
-    return "Mercury Admin Portal ကို Phone ထဲတွင် Install ပြုလုပ်ပါ။";
-  } else if (route.path.startsWith("/rider")) {
-    return "Mercury Rider App ကို Phone ထဲတွင် Install ပြုလုပ်ပါ။";
-  }
-  return "Mercury Delivery App ကို Phone ထဲတွင် Install ပြုလုပ်ပါ။";
+// 🍏 iPhone (iOS) ဖြစ်မဖြစ် စစ်ဆေးခြင်း
+const isIos = computed(() => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /iphone|ipad|ipod/.test(userAgent);
+});
+
+// 🍏 iOS Guide ကို ပြမပြ ထိန်းချုပ်ရန် (LocalStorage ဖြင့် မှတ်ထားမည်)
+const showIosInstallGuide = ref(false);
+
+const closeIosGuide = () => {
+  showIosInstallGuide.value = false;
+  localStorage.setItem('ios_guide_closed', 'true');
+};
+
+// Android / Desktop အတွက် Login မျက်နှာပြင်တွင် Banner မပြရန်
+const showInstallBanner = computed(() => {
+  if (!deferredPrompt.value) return false;
+  const hiddenPaths = ['/login', '/customer/login'];
+  if (hiddenPaths.includes(route.path)) return false;
+  return true;
 });
 
 onMounted(() => {
-  // Browser ၏ Install Prompt Event ကို ဖမ်းဆီးခြင်း
+  // 1. iOS ဖြစ်ပြီး ယခင်က ပိတ်ထားခြင်း မရှိသေးပါက Guide Banner ကို ပြရန်
+  if (isIos.value) {
+    const isClosed = localStorage.getItem('ios_guide_closed');
+    // standalone mode (Already installed on home screen) မဟုတ်မှသာ ပြမည်
+    const isStandalone = window.navigator.standalone === true;
+    if (!isClosed && !isStandalone) {
+      showIosInstallGuide.value = true;
+    }
+  }
+
+  // 2. Android/Desktop Browser ၏ Install Prompt Event ကို ဖမ်းဆီးခြင်း
   window.addEventListener("beforeinstallprompt", (e) => {
     e.preventDefault();
     deferredPrompt.value = e;
   });
+
+  // 3. PWA Standalone Mode ဖြင့် App ကို ဖွင့်လာပါက သိမ်းဆည်းထားသော Path ဆီသို့ Redirect လုပ်ရန်
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || isIos.value;
+  
+  if (isStandalone) {
+    const savedRolePath = localStorage.getItem('pwa_start_path');
+    if (savedRolePath && (window.location.pathname === '/' || window.location.pathname === '')) {
+      router.push(savedRolePath);
+    }
+  }
 });
 
 const installApp = async () => {
   if (!deferredPrompt.value) return;
 
-  // Native Browser Install Box ကို တောင်းဆိုခြင်း
+  if (route.path.startsWith('/admin') || route.path.startsWith('/rider') || route.path.startsWith('/restaurant')) {
+    localStorage.setItem('pwa_start_path', route.path);
+  }
+
   deferredPrompt.value.prompt();
   const { outcome } = await deferredPrompt.value.userChoice;
 
@@ -79,7 +127,9 @@ const installApp = async () => {
   }
   deferredPrompt.value = null;
 };
+
 </script>
+
 <style scoped>
 .banner{
     z-index: 9999; 
@@ -91,8 +141,9 @@ const installApp = async () => {
     border-bottom-right-radius: 5px;
     opacity: 0;
     animation: animateBanner 0.5s linear forwards;
-    animation-delay: 5s;
+    animation-delay: 2s;
 }
+ 
 @keyframes animateBanner {
     from{
         opacity: 0;
@@ -104,7 +155,6 @@ const installApp = async () => {
     }
 }
 .install-img{
-    /*filter: drop-shadow(3px -3px 2px rgb(155, 155, 8));*/
     transform: scaleX(1.5);
 }
 </style>

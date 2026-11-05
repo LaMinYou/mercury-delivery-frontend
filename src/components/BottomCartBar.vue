@@ -1,5 +1,5 @@
 <template>
-    <div class="bottom-cart-bar" v-if="filteredTotalItems" @click="openDetailsDialog=true">
+    <div class="bottom-cart-bar bg-secondary" v-if="filteredTotalItems" @click="openDetailsDialog=true">
       <div class="text-white totalCount">
         <span>{{ filteredTotalItems }}</span>
       </div>

@@ -1,7 +1,7 @@
 <template>
   <restaurant-navbar>
     <v-container fluid>
-      <v-row v-if="completedOrders && completedOrders.length > 0">
+      <v-row v-if="completedOrders && completedOrders.length > 0" style="max-height: 500px;overflow-y: auto;">
         <v-col cols="12" v-if="completedOrders">
           <v-card
             class="mb-2 mx-auto"

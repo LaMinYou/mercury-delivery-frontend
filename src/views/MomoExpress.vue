@@ -630,7 +630,7 @@ onMounted(() => {
 <style scoped>
 .card {
   background: linear-gradient(
-    rgb(16, 168, 105) 3%,
+    rgb(32, 67, 208) 3%,
     transparent 20%,
     transparent 20%
   );
