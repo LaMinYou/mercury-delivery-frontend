@@ -11,20 +11,21 @@
     >
       <template v-slot:prepend>
         <v-img
-          src="/images/icons/icon1-192x192.png"
-          width="60"
-          height="50"
+          src="/images/icons/icon2-192x192.png"
+          width="40"
+          height="40"
           cover
           class="install-img"
+          style="transform: scale(1.5) translateY(5px);"
         ></v-img>
       </template>
-      <v-banner-text class="text-green-darken-3">Install App</v-banner-text>
+      <!-- <v-banner-text class="text-green-darken-3">Install App</v-banner-text> -->
       <template v-slot:actions>
-        <v-btn color="green-darken-3" style="margin-top: -10px;" variant="text" @click="installApp">
+        <v-btn color="green-darken-3" style="margin-top: 0px; margin-right: -30px;" variant="text" @click="installApp">
           <v-img
             src="/images/icons/download.gif"
-            width="50"
-            height="50"
+            width="40"
+            height="40"
             cover
           ></v-img> 
         </v-btn>
@@ -32,7 +33,7 @@
       </template>
     </v-banner>
 
-    <!-- iPhone (iOS) အသုံးပြုသူများအတွက် Install လုပ်နည်း လမ်းညွှန် Banner -->
+    <!-- Install guide Banner for iPhone (iOS)  -->
     <v-banner
       v-if="isIos && showIosInstallGuide"
       color="green-darken-3"
@@ -40,13 +41,21 @@
       lines="two"
     >
       <template v-slot:prepend>
-        <v-icon size="large" class="me-2">mdi-apple</v-icon>
+        <!-- <v-icon color="secondary" size="large" class="me-2">mdi-apple</v-icon> -->
+         <v-img
+          src="/images/icons/icon2-192x192.png"
+          width="40"
+          height="40"
+          cover
+          class="install-img"
+          style="transform: scaleX(1.5) translateY(5px);"
+        ></v-img>
       </template>
-      <v-banner-text class="text-white text-caption">
+      <v-banner-text class="text-secondary text-caption">
        To install the app on your iPhone, tap the <v-icon size="small">mdi-export-variant</v-icon> (Share) button in Safari and select <b>"Add to Home Screen"</b>.
       </v-banner-text>
       <template v-slot:actions>
-        <v-btn variant="text" color="white" @click="closeIosGuide">OK</v-btn>
+        <v-btn variant="text" color="secondary" @click="closeIosGuide">OK</v-btn>
       </template>
     </v-banner>
 
@@ -62,13 +71,13 @@ const route = useRoute();
 const router = useRouter();
 const deferredPrompt = ref(null);
 
-// 🍏 iPhone (iOS) ဖြစ်မဖြစ် စစ်ဆေးခြင်း
+// iPhone (iOS) ဖြစ်မဖြစ် စစ်ဆေးခြင်း
 const isIos = computed(() => {
   const userAgent = window.navigator.userAgent.toLowerCase();
   return /iphone|ipad|ipod/.test(userAgent);
 });
 
-// 🍏 iOS Guide ကို ပြမပြ ထိန်းချုပ်ရန် (LocalStorage ဖြင့် မှတ်ထားမည်)
+// iOS Guide ကို ပြမပြ ထိန်းချုပ်ရန် (LocalStorage ဖြင့် မှတ်ထားမည်)
 const showIosInstallGuide = ref(false);
 
 const closeIosGuide = () => {
