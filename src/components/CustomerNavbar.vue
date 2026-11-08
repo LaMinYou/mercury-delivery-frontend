@@ -27,6 +27,9 @@
       <v-spacer></v-spacer>
 
       <div class="d-flex align-center">
+        <!-- for language switch -->
+         <language-switch></language-switch>
+
         <v-avatar class="me-2" size="32" color="green-lighten-4">
           <div v-if="!user">
             <v-icon @click="openSignupBox = true" color="green-darken-4"
@@ -110,14 +113,14 @@
           v-for="item in customerMenuItems"
           :key="item.title"
           :prepend-icon="item.icon"
-          :title="item.title"
+          :title="$t(item.title)"
           :to="item.route"
           active-color="green-darken-4"
         ></v-list-item>
 
         <v-list-item
           prepend-icon="mdi-basket-outline"
-          title="Cart"
+          :title="$t('customer_menus.cart')"
           to="/customer/cart"
           active-color="green-darken-4"
         >
@@ -142,7 +145,7 @@
             variant="tonal"
             @click="handleLogout"
           >
-            Logout
+            {{ $t('logout') }}
           </v-btn>
         </div>
       </template>
@@ -162,7 +165,7 @@
         :to="item.route"
       >
         <v-icon>{{ item.icon }}</v-icon>
-        <span style="font-size: 11px;">{{ item.title }}</span>
+        <span style="font-size: 11px;">{{ $t(item.title) }}</span>
       </v-btn>
 
       <v-btn to="/customer/cart">
@@ -176,7 +179,7 @@
           <v-icon>mdi-basket-outline</v-icon>
         </v-badge>
         <v-icon v-else>mdi-basket-outline</v-icon>
-        <span style="font-size: 11px;">Cart</span>
+        <span style="font-size: 11px;">{{ $t('customer_menus.cart') }}</span>
       </v-btn>
     </v-bottom-navigation>
     
@@ -206,7 +209,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import api from "@/services/api";
 import { useDisplay } from "vuetify";
 import { useRouter, useRoute } from "vue-router";
@@ -218,6 +221,7 @@ import ProfileDrawer from "./ProfileDrawer.vue";
 import Footer from "./Footer.vue";
 import DeliveryPromoAlert from "./DeliveryPromoAlert.vue";
 import { formatToLocalDateTime } from "@/composables/dateTimeHelper.js";
+import LanguageSwitch from "./LanguageSwitch.vue";
 
 const { groupedCart } = useCart();
 const props = defineProps(["address"]);

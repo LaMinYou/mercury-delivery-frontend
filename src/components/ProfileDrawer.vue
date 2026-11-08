@@ -89,7 +89,7 @@
             variant="tonal"
             @click="$emit('closeProfileDrawer', true)"
           >
-            Logout
+            {{ $t('logout') }}
           </v-btn>
         </div>
       </div>

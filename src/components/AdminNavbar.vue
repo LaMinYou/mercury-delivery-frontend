@@ -16,6 +16,11 @@
       <v-spacer></v-spacer>
 
       <div class="d-flex align-center">
+
+        <!-- for language switch -->
+         <language-switch />
+
+        <!-- for profile -->
         <v-avatar class="me-2" size="32" color="green-lighten-4">
           <!-- <v-img src="https://path-to-avatar.jpg"></v-img> -->
           <span class="text-red"> {{ admin?.name.charAt(0) }}</span>
@@ -30,7 +35,7 @@
           v-for="item in adminMenuItems"
           :key="item.title"
           :prepend-icon="item.icon"
-          :title="item.title"
+          :title="$t(item.title)"
           :to="item.route"
           active-color="green-darken-4"
         ></v-list-item>
@@ -45,7 +50,7 @@
             variant="tonal"
             @click="handleLogout"
           >
-            Logout
+            {{ $t('logout') }}
           </v-btn>
         </div>
       </template>
@@ -67,6 +72,7 @@ import { useDisplay } from "vuetify";
 import { useRouter } from "vue-router";
 import { adminMenuItems } from "@/services/menus";
 import Footer from "./Footer.vue";
+import LanguageSwitch from "./LanguageSwitch.vue";
 
 const router = useRouter();
 const { mdAndUp } = useDisplay();

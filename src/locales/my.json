@@ -1,0 +1,46 @@
+{
+    "admin_menus": {
+        "home": "ပင်မစာမျက်နှာ",
+        "item_categories": "ပစ္စည်းအမျိုးအစားများ",
+        "tags": "တဂ်များ",
+        "customers": "ဖောက်သည်များ",
+        "shops": "ဆိုင်များ",
+        "riders": "ပို့ဆောင်ရေးသမားများ",
+        "payment_methods": "ငွေပေးချေမှု နည်းလမ်းများ",
+        "payment_transactions": "ငွေပေးချေမှု မှတ်တမ်းများ",
+        "delivery_assigned_history": "ပို့ဆောင်ရန်တာဝန်ပေးအပ်မှု မှတ်တမ်း",
+        "invoice_history": "ပြေစာမှတ်တမ်း",
+        "delivery_promo": "ပို့ဆောင်ခ ပရိုမိုးရှင်း",
+        "settings": "ဆက်တင်များ"
+    },
+    "restaurant_menus": {
+        "pending_orders": "စောင့်ဆိုင်းဆဲ အော်ဒါများ",
+        "products": "ပစ္စည်းများ",
+        "call_rider": "ရိုက်ဒါခေါ်ရန်",
+        "call_rider_history": "ရိုက်ဒါခေါ်ဆိုမှု မှတ်တမ်း",
+        "order_history": "အော်ဒါမှတ်တမ်း",
+        "customers": "ဖောက်သည်များ"
+    },
+    "customer_menus": {
+        "home": "ပင်မစာမျက်နှာ",
+        "mercury_express": "အမြန်ချောပို့",
+        "current_orders": "လက်ရှိ အော်ဒါများ",
+        "order_history": "အော်ဒါမှတ်တမ်း",
+        "cart": "ခြင်းတောင်း"
+    },
+    "customer_mobile_menus": {
+        "express": "အမြန်ချောပို့",
+        "orders": "အော်ဒါများ",
+        "history": "မှတ်တမ်း",
+        "cart": "ခြင်းတောင်း"
+    },
+    "rider_menus": {
+        "current_orders": "လက်ရှိ အော်ဒါများ",
+        "order_history": "အော်ဒါမှတ်တမ်း"
+    },
+    "rider_mobile_menus": {
+        "current_orders": "လက်ရှိ အော်ဒါများ",
+        "history": "မှတ်တမ်း"
+    },
+    "logout": "ထွက်ရန်"
+}

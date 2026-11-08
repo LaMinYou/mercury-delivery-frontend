@@ -1,0 +1,46 @@
+{
+    "admin_menus": {
+        "home": "Home",
+        "item_categories": "Item Categories",
+        "tags": "Tags",
+        "customers": "Customers",
+        "shops": "Shops",
+        "riders": "Riders",
+        "payment_methods": "Payment Methods",
+         "payment_transactions": "Payment Transactions",
+         "delivery_assigned_history": "Delivery Assigned History",
+         "invoice_history": "Invoice History",
+         "delivery_promo": "Delivery Promo",
+         "settings": "Settings"
+    },
+    "restaurant_menus": {
+        "pending_orders": "Pending Orders",
+        "products": "Products",
+        "call_rider": "Call Rider",
+        "call_rider_history": "Call Rider History",
+        "order_history": "Order History",
+        "customers": "Customers"
+    },
+    "customer_menus": {
+        "home": "Home",
+        "mercury_express": "Mercury Express",
+        "current_orders": "Current Orders",
+        "order_history": "Order History",
+        "cart": "Cart"
+    },
+    "customer_mobile_menus": {
+        "express": "Express",
+        "orders": "Orders",
+        "history": "History",
+        "cart": "cart"
+    },
+    "rider_menus": {
+        "current_orders": "Current Orders",
+        "order_history": "Order History"
+    },
+    "rider_mobile_menus": {
+        "current_orders": "current orders",
+        "history": "history"
+    },
+    "logout": "Logout"
+}

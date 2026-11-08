@@ -16,6 +16,11 @@
       <v-spacer></v-spacer>
 
       <div class="d-flex align-center cursor-pointer" @click="openProfileDrawer = true">
+
+        <!-- for language switch -->
+         <language-switch />
+
+         <!--for profile -->
         <v-avatar class="me-2" size="32" color="green-lighten-4">
           <!-- <v-img src="https://path-to-avatar.jpg"></v-img> -->
           <span class="text-red"> {{ rider?.name.charAt(0) }}</span>
@@ -37,7 +42,7 @@
           v-for="item in riderMenuItems"
           :key="item.title"
           :prepend-icon="item.icon"
-          :title="item.title"
+          :title="$t(item.title)"
           :to="item.route"
           active-color="green-darken-4"
         ></v-list-item>
@@ -73,7 +78,7 @@
         :to="item.route"
       >
         <v-icon>{{ item.icon }}</v-icon>
-        <span style="font-size: 11px;">{{ item.title }}</span>
+        <span style="font-size: 11px;">{{ $t(item.title) }}</span>
       </v-btn>
     </v-bottom-navigation>
     
@@ -101,6 +106,7 @@ import { useRouter } from "vue-router";
 import { riderMenuItems } from "@/services/menus";
 import { riderMobileMenuItems } from "@/services/menus";
 import ProfileDrawer from "./ProfileDrawer.vue";
+import LanguageSwitch from "./LanguageSwitch.vue";
 
 const router = useRouter();
 const { mdAndUp } = useDisplay();

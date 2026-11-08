@@ -32,6 +32,8 @@
         class="d-flex align-center cursor-pointer"
         @click="openProfileDrawer = true"
       >
+        <!-- for language switch -->
+         <language-switch />
         <v-avatar class="me-2" size="32" color="green-lighten-4">
           <!-- <v-img src="https://path-to-avatar.jpg"></v-img> -->
           <span class="text-red"> {{ restaurant?.name.charAt(0) }}</span>
@@ -52,7 +54,7 @@
           v-for="item in restaurantMenuItems"
           :key="item.title"
           :prepend-icon="item.icon"
-          :title="item.title"
+          :title="$t(item.title)"
           :to="item.route"
           active-color="green-darken-4"
         ></v-list-item>
@@ -67,7 +69,7 @@
             variant="tonal"
             @click="handleLogout"
           >
-            Logout
+            {{ $t('logout') }}
           </v-btn>
         </div>
       </template>
@@ -113,6 +115,7 @@ import { useRouter } from "vue-router";
 import { restaurantMenuItems } from "@/services/menus";
 import ProfileDrawer from "./ProfileDrawer.vue";
 import ShopCloseMessageDialog from "./ShopCloseMessageDialog.vue";
+import LanguageSwitch from "./LanguageSwitch.vue";
 
 const router = useRouter();
 const { mdAndUp } = useDisplay();

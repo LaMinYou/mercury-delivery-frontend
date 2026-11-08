@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import i18n from './i18n.js'
 
 import 'vuetify/styles'
 import '@mdi/font/css/materialdesignicons.css'
@@ -39,6 +40,7 @@ const vuetify = createVuetify({
 createApp(App)
   .use(router)
   .use(vuetify)
+  .use(i18n)
   .mount('#app')
 
 if ('serviceWorker' in navigator) {

@@ -1,0 +1,46 @@
+{
+    "admin_menus": {
+        "home": "首页",
+        "item_categories": "商品分类",
+        "tags": "标签",
+        "customers": "客户",
+        "shops": "店铺",
+        "riders": "骑手",
+        "payment_methods": "支付方式",
+        "payment_transactions": "支付交易记录",
+        "delivery_assigned_history": "配送分配历史",
+        "invoice_history": "账单历史",
+        "delivery_promo": "配送促销",
+        "settings": "设置"
+    },
+    "restaurant_menus": {
+        "pending_orders": "待处理订单",
+        "products": "商品",
+        "call_rider": "呼叫骑手",
+        "call_rider_history": "呼叫骑手历史",
+        "order_history": "订单历史",
+        "customers": "客户"
+    },
+    "customer_menus": {
+        "home": "首页",
+        "mercury_express": "水星快递",
+        "current_orders": "当前订单",
+        "order_history": "订单历史",
+        "cart": "购物车"
+    },
+    "customer_mobile_menus": {
+        "express": "快递",
+        "orders": "订单",
+        "history": "历史",
+        "cart": "购物车"
+    },
+    "rider_menus": {
+        "current_orders": "当前订单",
+        "order_history": "订单历史"
+    },
+    "rider_mobile_menus": {
+        "current_orders": "当前订单",
+        "history": "历史"
+    },
+    "logout": "注销"
+}
