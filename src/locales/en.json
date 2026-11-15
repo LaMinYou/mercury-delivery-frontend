@@ -7,11 +7,11 @@
         "shops": "Shops",
         "riders": "Riders",
         "payment_methods": "Payment Methods",
-         "payment_transactions": "Payment Transactions",
-         "delivery_assigned_history": "Delivery Assigned History",
-         "invoice_history": "Invoice History",
-         "delivery_promo": "Delivery Promo",
-         "settings": "Settings"
+        "payment_transactions": "Payment Transactions",
+        "delivery_assigned_history": "Delivery Assigned History",
+        "invoice_history": "Invoice History",
+        "delivery_promo": "Delivery Promo",
+        "settings": "Settings"
     },
     "restaurant_menus": {
         "pending_orders": "Pending Orders",
@@ -42,5 +42,186 @@
         "current_orders": "current orders",
         "history": "history"
     },
-    "logout": "Logout"
+    "logout": "Logout",
+    "bottom-cart-bar": {
+        "to-see-cart": "View Shopping Cart"
+    },
+    "cart-details-dialog": {
+        "details-title": "Shopping Cart",
+        "total-price": "Total Price",
+        "proceed-to-payment": "Proceed to Payment"
+    },
+    "checkout": {
+        "address": "Delivery Address",
+        "phone": "Delivery Phone Number",
+        "payment-type": "Payment Method",
+        "total-price": "Total",
+        "tax": "Inclusive of taxes and fees",
+        "confirm-button": "Confirm Order",
+        "payment-choose-button": "Add Payment Method",
+        "current-location": "Use Current Location",
+        "estimate-time": "Estimated Delivery Time",
+        "summary": {
+            "price": "Subtotal",
+            "delivery-fee": "Delivery Fee",
+            "service-fee": "Service Fee"
+        },
+        "label": {
+            "current-address": "You can enter a new address at the current address",
+            "user-note": "You can add special instructions if needed"
+        },
+        "placeholder": {
+            "current-address": "Type a location to search...",
+            "phone-number": "Enter phone number...",
+            "user-note": "Enter any order notes if needed..."
+        }
+    },
+    "express": {
+        "label": {
+            "source-address": "Source Address (Map Search)",
+            "source-address-details": "Source Address Details",
+            "source-phone": "Sender Phone Number",
+            "dest-address": "Destination Address (Map Search)",
+            "dest-address-details": "Destination Address Details",
+            "dest-phone": "Recipient Phone Number",
+            "item-type": "Item Type",
+            "user-note": "You can add special instructions if needed"
+        },
+        "placeholder": {
+            "source-address": "Type a location to search...",
+            "source-address-details": "e.g. No. 45, 3rd Floor, Bogyoke Road",
+            "dest-address": "Type a location to search...",
+            "dest-address-details": "e.g. No. 45, 3rd Floor, Bogyoke Road",
+            "item-type": "Enter item type...",
+            "user-note": "Enter any order notes if needed..."
+        },
+        "button": {
+            "payment-type": "Add Payment Method",
+            "confirm": "Confirm"
+        },
+        "summary": {
+            "delivery-fee": "Delivery Fee",
+            "service-fee": "Service Fee"
+        },
+        "destination-type": "Destination Type",
+        "destination-type-alert": "Since the delivery is to a bus terminal, the Rider will take a photo of the terminal receipt (Invoice) and upload it.",
+        "payment-type": "Payment Method",
+        "total": "Total",
+        "tax": "Inclusive of taxes and fees"
+    },
+    "cart-view": {
+        "total": "Total",
+        "see-cart": "View Your Cart",
+        "empty-item-message": "Your cart is empty"
+    },
+    "customer-home": {
+        "item-category": {
+            "food-title": "Food & Snacks",
+            "comestic-title": "Cosmetics & Personal Care",
+            "other-title": "Other Essentials"
+        }
+    },
+    "restaurant": {
+        "empty-order-message": "There are no new orders at the moment.",
+        "empty-order-history-message": "No order history is available in this section yet."
+    },
+    "call-rider": {
+        "label": {
+            "dest-address": "Destination Address (Map Search)",
+            "dest-address-details": "Destination Address Details",
+            "dest-phone": "Recipient Phone Number"
+        },
+        "placeholder": {
+            "dest-address": "Type a location to search...",
+            "dest-address-details": "e.g. No. 45, 3rd Floor, Bogyoke Road"
+        },
+        "button": {
+            "confirm": "Confirm"
+        },
+        "summary": {
+            "delivery-fee": "Delivery Fee",
+            "service-fee": "Service Fee"
+        },
+        "destination-type": "Destination Type",
+        "destination-type-alert": "Since the delivery is to a bus terminal, the Rider will take a photo of the terminal receipt (Invoice) and upload it.",
+        "total": "Total",
+        "tax": "Inclusive of taxes and fees"
+    },
+    "admin": {
+        "item-category-form": {
+            "label": {
+                "name": "category name"
+            }
+        },
+        "tag-form": {
+            "label": {
+                "name": "Tag name (eg. Spicy)",
+                "photo": "Upload Tag Photo",
+                "current-photo": "Current Photo"
+            }
+        },
+        "shop-form": {
+            "label": {
+                "name": "name",
+                "email": "email",
+                "username": "username",
+                "password": "password",
+                "phone": "phone number",
+                "address": "address",
+                "latitude": "Latitude (copy from Google)",
+                "longitude": "Longitude (copy from Google)"
+            }
+        },
+        "rider-form": {
+            "label": {
+                "name": "rider name",
+                "username": "username",
+                "password": "password",
+                "phone": "phone number",
+                "photo": "Upload Rider Photo",
+                "current-photo": "Current Photo"
+            }
+        },
+        "payment-method-form": {
+            "label": {
+                "name": "Payment method name (eg. wave)",
+                "qr-photo": "Upload Payment QR Image",
+                "current-qr-photo": "Current Payment QR",
+                "icon-photo": "Upload Payment Icon Image"
+            },
+            "status": "Payment Method Status"
+        },
+        "payment-transaction": {
+            "empty-message": "There are no pending payment transactions to review in this section yet."
+        },
+        "setting": {
+            "way-order-fee-form": {
+                "title": "Way Order Delivery Fee",
+                "label": {
+                    "way-fee": "Way Order Delivery Fee (MMK)"
+                }
+            }
+        }
+    },
+    "rider": {
+        "order-count": "Current orders to deliver",
+        "order-empty-message": "No pending orders to deliver at the moment",
+        "order-history-empty-message": "There is no order history in this section yet.",
+        "order-express-type": "Express Delivery",
+        "order-merchant-type": "Merchant Direct Order",
+        "source-address": "Pickup Address",
+        "dest-address": "Destination Address (Customer)",
+        "see-item-list": "View Ordered Item List",
+        "delivery-fee": "Delivery Fee",
+        "service-fee": "Service Fee",
+        "total": "Total",
+        "food-name": "Food Name"
+    },
+    "profile": {
+        "user-level": "User Level",
+        "name": "Name",
+        "phone": "Phone Number",
+        "email": "Email",
+        "noti": "We will notify you through this. Please ensure your information is entered correctly."
+    }
 }

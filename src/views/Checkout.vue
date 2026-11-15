@@ -20,7 +20,7 @@
         <v-col cols="12" class="pa-0">
           <v-card class="pa-4 mb-4" flat>
             <div class="font-weight-bold text-subtitle-1 mb-3">
-              ပို့ဆောင်မည့် လိပ်စာ
+              {{ $t('checkout.address') }}
             </div>
             <!-- to show map to move pin -->
             <v-expand-transition>
@@ -36,17 +36,17 @@
             <!-- to type new address for order -->
             <v-text-field
               v-model="orderLocation.address"
-              label="လက်ရှိလိပ်စာတွင် လိပ်စာအသစ် ရိုက်ထည့်နိုင်သည်"
+              :label="$t('checkout.label.current-address')"
               prepend-inner-icon="mdi-map-marker"
               variant="outlined"
               density="comfortable"
               id="address-input"
-              placeholder="ရှာဖွေရန် နေရာရိုက်ပါ..."
+              :placeholder="$t('checkout.placeholder.current-address')"
               @focus="showMap = true"
             ></v-text-field>
 
             <div class="font-weight-bold text-subtitle-1 mb-3">
-              ပို့ဆောင်မည့် ဖုန်းနံပါတ်
+              {{ $t('checkout.phone') }}
             </div>
 
             <v-text-field
@@ -55,7 +55,7 @@
               prepend-inner-icon="mdi-phone"
               variant="outlined"
               density="comfortable"
-              placeholder="ဖုန်းနံပါတ်ရိုက်ထည့်ပါ..."
+              :placeholder="$t('checkout.placeholder.phone-number')"
               class="mb-3"
               :rules="[rules.required('phone number'), rules.phone]"
             ></v-text-field>
@@ -68,7 +68,7 @@
               block
               @click="handleCurrentLocationClick"
             >
-              လက်ရှိတည်နေရာကို အသုံးပြုမည်
+              {{ $t('checkout.current-location') }}
             </v-btn>
 
             <!-- to estimate delivery time -->
@@ -84,7 +84,7 @@
               ></v-img>
               <div class="ms-3">
                 <p class="text-wrap">
-                  <span class="font-weight-bold">ခန့်မှန်းပို့ဆောင်ချိန်</span>
+                  <span class="font-weight-bold">{{ $t('checkout.estimate-time') }}</span>
                   (
                   {{
                     getDeliveryTime(
@@ -104,12 +104,12 @@
 
               <v-text-field
               v-model="userNote"
-              label="အမှာစာလိုအပ်ပါက ထည့်သွင်းနိုင်သည်"
+              :label="$t('checkout.label.user-note')"
               prepend-inner-icon="mdi-note-text-outline"
               variant="outlined"
               density="comfortable"
               id="note-input"
-              placeholder="အမှာစာလိုအပ်ပါက ထည့်သွင်းပါ..."
+              :placeholder="$t('checkout.placeholder.user-note')"
               persistent-placeholder
               class="mb-3"
             ></v-text-field>
@@ -118,7 +118,7 @@
 
             <!-- to choose payment type -->
             <div>
-              <p class="text-subtitle-1 py-2 font-weight-bold">ငွေပေးချေမှုနည်းလမ်း</p>
+              <p class="text-subtitle-1 py-2 font-weight-bold">{{ $t('checkout.payment-type') }}</p>
               <v-card
                 variant="outlined"
                 block
@@ -147,7 +147,7 @@
                 </div>
 
                 <div class="text-wrap text-subtitle-2 text-center w-100" v-else>
-                  <v-icon>mdi-plus</v-icon> ငွေပေးချေမှုနည်းလမ်းတစ်ခုထည့်သွင်းပါ
+                  <v-icon>mdi-plus</v-icon> {{ $t('checkout.payment-choose-button') }}
                 </div>
               </v-card>
             </div>
@@ -181,7 +181,7 @@
                       class="d-flex justify-space-between align-center"
                     >
                       <template v-slot:prepend>
-                        <span class="text-body-small"> စုစုပေါင်း</span>
+                        <span class="text-body-small"> {{ $t('checkout.summary.price') }}</span>
                       </template>
                       <v-list-item-title>
                         <span class="text-body-small"
@@ -195,7 +195,7 @@
                     >
                       <template v-slot:prepend>
                         <span class="text-body-small">
-                          ပို့ဆောင်ခနှုန်းထား</span
+                          {{ $t('checkout.summary.delivery-fee') }}</span
                         >
                       </template>
                       <v-list-item-title>
@@ -210,7 +210,7 @@
                       class="d-flex justify-space-between align-center"
                     >
                       <template v-slot:prepend>
-                        <span class="text-body-small"> ဝန်ဆောင်ခ</span>
+                        <span class="text-body-small"> {{ $t('checkout.summary.service-fee') }}</span>
                       </template>
                       <v-list-item-title>
                         <span class="text-body-small"
@@ -231,8 +231,8 @@
                 >
                   <v-card-subtitle class="pa-0">
                     <span class="text-subtitle-1 font-weight-bold text-black text-wrap"
-                      >စုစုပေါင်း</span
-                    >(ဝန်ဆောင်ခနှင့်အခွန်ပါဝင်ပြီး)
+                      >{{ $t('checkout.total-price') }}</span
+                    > ({{ $t('checkout.tax') }})
                   </v-card-subtitle>
                   <v-card-subtitle
                     class="font-weight-bold text-subtitle-1 text-green-darken-2"
@@ -253,7 +253,7 @@
                   :loading="loading"
                   @click="makeOrder"
                 >
-                  <p class="text-wrap text-subtitle-1 py-3">မှာယူမှုကိုအတည်ပြုပါ</p>
+                  <p class="text-wrap text-subtitle-1 py-3">{{ $t('checkout.confirm-button') }}</p>
                 </v-btn>
               </v-card>
             </div>

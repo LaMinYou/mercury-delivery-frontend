@@ -36,9 +36,7 @@
 
         <v-col cols="12" v-if="hasOrder" class="text-green-darken-2">
           <h4 class="py-3">
-            <v-icon>mdi-package-variant-closed</v-icon> သင်လက်ရှိ ပို့ဆောင်ရမည့်
-            အော်ဒါများ ({{ activeOrders.length }}
-            ခု)
+            <v-icon>mdi-package-variant-closed</v-icon> {{ $t('rider.order-count') }} ({{ activeOrders.length }})
           </h4>
 
           <v-card
@@ -65,7 +63,7 @@
               <v-card-subtitle class="text-wrap">
                 {{
                   order.order_type == "errand"
-                    ? "Express အမြန်ချောပို့"
+                    ? $t('rider.order-express-type')
                     : order.restaurant.name
                 }}</v-card-subtitle
               >
@@ -80,7 +78,7 @@
                     >mdi-storefront</v-icon
                   >
                   <div>
-                    <div class="font-weight-bold">သွားယူရန်လိပ်စာ:</div>
+                    <div class="font-weight-bold">{{ $t('rider.source-address') }}:</div>
                     <div class="text-grey-darken-1">
                       {{
                         order.order_type == "errand"
@@ -113,7 +111,7 @@
                   >
                   <div>
                     <div class="font-weight-bold text-red-darken-2">
-                      ပို့ဆောင်ရမည့် (Customer) လိပ်စာ:
+                      {{ $t('rider.dest-address') }}:
                     </div>
                     <div class="text-black font-weight-medium">
                       {{ order.dest_address }}
@@ -210,7 +208,7 @@
                       <v-icon color="green-darken-2" class="mr-2"
                         >mdi-zip-box</v-icon
                       >
-                      မှာယူထားသော ပစ္စည်းစာရင်းကို ကြည့်မည်
+                      {{ $t('rider.see-item-list') }}
                     </v-expansion-panel-title>
 
                     <v-expansion-panel-text class="pa-0 bg-grey-lighten-5">
@@ -236,7 +234,7 @@
                       >
                         <span
                           class="text-body-2 font-weight-bold text-grey-darken-2"
-                          >Delivery Fee:</span
+                          >{{ $t('rider.delivery-fee') }}:</span
                         >
                         <span class="text-body-1 font-weight-black"
                           >{{ order.delivery_fee }} MMK</span
@@ -248,7 +246,7 @@
                       >
                         <span
                           class="text-body-2 font-weight-bold text-grey-darken-2"
-                          >Service Fee:</span
+                          >{{ $t('rider.service-fee') }}:</span
                         >
                         <span class="text-body-1 font-weight-black"
                           >{{ order.service_fee }} MMK</span
@@ -262,7 +260,7 @@
                       >
                         <span
                           class="text-body-2 font-weight-bold text-grey-darken-2"
-                          >စုစုပေါင်း (Service + Delivery Fee):</span
+                          >{{ $t('rider.total') }} (Service + Delivery Fee):</span
                         >
                         <span
                           class="text-body-1 font-weight-black text-green-darken-2"
@@ -283,7 +281,7 @@
                 <v-card class="text-green-darken-2 font-weight-bold mt-3">
                   <v-card-text>
                     <v-icon>mdi-store-clock-outline</v-icon>
-                    ဆိုင်မှ တိုက်ရိုက်ခေါ်ယူသော အော်ဒါ
+                    {{ $t('rider.order-merchant-type') }}
                   </v-card-text>
                 </v-card>
               </div>
@@ -301,13 +299,13 @@
                       <v-icon color="green-darken-2" class="mr-2"
                         >mdi-food-fork-drink</v-icon
                       >
-                      မှာယူထားသော ပစ္စည်းစာရင်းကို ကြည့်မည်
+                      {{ $t('rider.see-item-list') }}
                       <v-chip
                         size="x-small"
                         color="green-darken-2"
                         class="ml-2 text-white"
                       >
-                        {{ order.order_items?.length || 0 }} မျိုး
+                        {{ order.order_items?.length || 0 }}
                       </v-chip>
                     </v-expansion-panel-title>
 
@@ -331,7 +329,7 @@
                             <div
                               class="font-weight-medium text-body-2 text-black"
                             >
-                              {{ item.menu?.subtitle || "အစားအသောက်အမည်" }}
+                              {{ item.menu?.subtitle || $t('rider.food-name') }}
                             </div>
                             <div class="text-caption text-grey">
                               {{ item.final_price }} MMK
@@ -358,7 +356,7 @@
                       >
                         <span
                           class="text-body-2 font-weight-bold text-grey-darken-2"
-                          >စုစုပေါင်း (Total Price):</span
+                          >{{ $t('rider.total') }} (All):</span
                         >
                         <span class="text-body-1 font-weight-black"
                           >{{ order.total_price }} MMK</span
@@ -370,7 +368,7 @@
                       >
                         <span
                           class="text-body-2 font-weight-bold text-grey-darken-2"
-                          >Delivery Fee:</span
+                          >{{ $t('rider.delivery-fee') }}:</span
                         >
                         <span class="text-body-1 font-weight-black"
                           >{{ order.delivery_fee }} MMK</span
@@ -382,7 +380,7 @@
                       >
                         <span
                           class="text-body-2 font-weight-bold text-grey-darken-2"
-                          >Service Fee:</span
+                          >{{ $t('rider.service-fee') }}:</span
                         >
                         <span class="text-body-1 font-weight-black"
                           >{{ order.service_fee }} MMK</span
@@ -396,7 +394,7 @@
                       >
                         <span
                           class="text-body-2 font-weight-bold text-grey-darken-2"
-                          >စုစုပေါင်း (Service + Delivery Fee):</span
+                          >{{ $t('rider.total') }} (Service + Delivery Fee):</span
                         >
                         <span
                           class="text-body-1 font-weight-black text-green-darken-2"
@@ -476,7 +474,7 @@
 
         <v-col v-else>
           <p class="text-center text-grey font-weight-bold text-body-1 py-5">
-            <v-icon>mdi-magnify</v-icon> လက်တလောပို့ဆောင်ရန်အော်ဒါများမရှိသေးပါ
+            <v-icon>mdi-magnify</v-icon> {{ $('rider.order-empty-message') }}
           </p>
         </v-col>
       </v-row>

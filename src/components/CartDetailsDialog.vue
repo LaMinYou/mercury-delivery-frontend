@@ -8,7 +8,7 @@
       <v-card class="rounded-t-xl pa-4">
         <v-card-title class="d-flex justify-space-between align-center px-2">
           <div>
-            <span class="font-weight-bold text-subtitle-1 d-block">ဈေးဝယ်ခြင်း</span>
+            <span class="font-weight-bold text-subtitle-1 d-block">{{ $t('cart-details-dialog.details-title') }}</span>
             <span class="text-body-2 text-grey">{{ restaurant.name }}</span>
           </div>
           <v-btn icon="mdi-close" variant="text" @click="$emit('closeDetailsDialog')"></v-btn>
@@ -39,7 +39,7 @@
         <v-divider></v-divider>
 
         <div class="d-flex justify-space-between align-center my-4 px-2">
-          <span class="font-weight-bold text-subtitle-1">စုစုပေါင်း ကျသင့်ငွေ:</span>
+          <span class="font-weight-bold text-subtitle-1">{{ $t('cart-details-dialog.total-price') }}:</span>
           <span class="font-weight-bold text-subtitle-1 text-secondary">MMK {{ filteredTotalPrice.toLocaleString() }}</span>
         </div>
 
@@ -50,7 +50,7 @@
           class="rounded-pill text-white font-weight-bold"
           @click="goCheckout"
         >
-          ငွေပေးချေရန် ဆက်သွားမည်
+          {{ $t('cart-details-dialog.proceed-to-payment') }}
         </v-btn>
       </v-card>
     </v-dialog>

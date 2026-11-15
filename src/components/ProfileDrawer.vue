@@ -23,7 +23,7 @@
         <!-- user level  -->
         <v-card v-if="user.role_id == 3" class="pa-5 ma-2 my-3">
           <div>
-            <p class="text-grey">အသုံးပြုသူအဆင့်</p>
+            <p class="text-grey">{{ $t('profile.user-level') }}</p>
             <p class="font-weight-bold">
               <v-icon :color="levelDetails.color">{{
                 levelDetails.icon
@@ -39,7 +39,7 @@
           class="d-flex justify-space-between align-center pa-5 ma-2 my-3"
         >
           <div>
-            <p class="text-grey pb-3">အမည်</p>
+            <p class="text-grey pb-3">{{ $t('profile.name') }}</p>
             <p class="font-weight-bold">{{ user.name }}</p>
           </div>
           <div @click="showEditSheet('name')">
@@ -55,7 +55,7 @@
           class="d-flex justify-space-between align-center pa-5 ma-2 my-3"
         >
           <div>
-            <p class="text-grey pb-3">အီးမေးလ်</p>
+            <p class="text-grey pb-3">{{ $t('profile.email') }}</p>
             <p class="font-weight-bold">{{ user?.email }}</p>
           </div>
           <div @click="showEditSheet('email')">
@@ -71,7 +71,7 @@
           class="d-flex justify-space-between align-center pa-5 ma-2 my-3"
         >
           <div>
-            <p class="text-grey pb-3">ဖုန်းနံပါတ်</p>
+            <p class="text-grey pb-3">{{ $t('profile.phone') }}</p>
             <p class="font-weight-bold">{{ user?.phone }}</p>
           </div>
           <div @click="showEditSheet('phone')">
@@ -101,8 +101,7 @@
         <v-card-title
           class="text-wrap text-blue-grey-darken-4 text-body-2 py-5"
         >
-          ဤနည်းဖြင့် ကျွန်ုပ်တို့က သင့်ကို အကြောင်းကြားပါသည်။ ကျေးဇူးပြု၍
-          အချက်လက်အားမှန်ကန်စွာဖြင့်သွင်းပါ။
+          {{ $t('profile.noti') }}
         </v-card-title>
 
         <v-text-field

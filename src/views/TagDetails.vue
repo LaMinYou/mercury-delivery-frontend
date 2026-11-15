@@ -23,7 +23,7 @@
               <v-text-field
                 v-model="tag.name"
                 :rules="[rules.required('tag name')]"
-                label="Tag name (eg. Spicy)"
+                :label="$t('admin.tag-form.label.name')"
                 prepend-inner-icon="mdi-tag-outline"
                 variant="solo"
                 bg-color="#fff"
@@ -32,7 +32,7 @@
 
             <v-col cols="12">
               <div v-if="props.id !== 'new' && !tag.image" class="mb-4">
-                <p class="text-caption">Current Photo:</p>
+                <p class="text-caption">{{ $t('admin.tag-form.label.current-photo') }}:</p>
                 <v-img
                   :src="tag.image_url"
                   width="150"
@@ -42,7 +42,7 @@
               </div>
               <v-file-input
                 v-model="tag.image"
-                label="Upload Tag Photo"
+                :label="$t('admin.tag-form.label.photo')"
                 accept="image/*"
                 variant="solo"
                 bg-color="#fff"

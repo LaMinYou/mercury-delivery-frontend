@@ -3,11 +3,11 @@
     <div v-if="errorMessage" class="my-2">
         <alert :message="errorMessage" type="error" color="red" />
     </div>
-    <v-card-title class="mb-3">Way Order Fee</v-card-title>
+    <v-card-title class="mb-3">{{ $t('admin.setting.way-order-fee-form.title') }}</v-card-title>
     <v-card-text>
       <v-text-field
         v-model="fee"
-        label="လမ်းကြုံအော်ဒါ ပို့ဆောင်ခ (MMK)"
+        :label="$t('admin.setting.way-order-fee-form.label.way-fee')"
         type="number"
         variant="outlined"
         color="green-darken-3"

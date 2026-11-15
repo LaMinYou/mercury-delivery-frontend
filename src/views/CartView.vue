@@ -49,7 +49,7 @@
             </div>
             <div class="d-flex align-center justify-space-between">
                 <div>
-                    စုစုပေါင်း
+                   {{ $t('cart-view.total') }}
                 </div>
                 <div>
                   {{ shop.totalPrice }} MMK
@@ -63,7 +63,7 @@
                 :disabled="!isOfficeHour"
                 @click="isOfficeHour ? showDetailsDialog(shop.items[0].restaurant) : null"
             >
-                သင်၏ဈေးဝယ်လှည်းကို ကြည့်ရှုပါ
+                {{ $t('cart-view.see-cart') }}
               </v-btn>
             </div>
           </v-card>
@@ -73,7 +73,7 @@
       <v-row v-else class="text-center justify-center py-12">
       <v-col cols="12">
         <v-icon size="64" color="grey-lighten-1" class="mb-3">mdi-basket-outline</v-icon>
-        <div class="text-grey font-weight-bold">ဈေးဝယ်လှည်းထဲတွင် ပစ္စည်းမရှိသေးပါ</div>
+        <div class="text-grey font-weight-bold">{{ $t('cart-view.empty-item-message') }}</div>
       </v-col>
     </v-row>
 

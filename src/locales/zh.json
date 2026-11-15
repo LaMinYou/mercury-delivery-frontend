@@ -42,5 +42,186 @@
         "current_orders": "当前订单",
         "history": "历史"
     },
-    "logout": "注销"
+    "logout": "注销",
+    "bottom-cart-bar": {
+        "to-see-cart": "查看购物车"
+    },
+    "cart-details-dialog": {
+        "details-title": "购物车详情",
+        "total-price": "总金额",
+        "proceed-to-payment": "继续付款"
+    },
+    "checkout": {
+        "address": "收货地址",
+        "phone": "收货电话号码",
+        "payment-type": "支付方式",
+        "total-price": "总计",
+        "tax": "已包含税费及服务费",
+        "confirm-button": "确认订单",
+        "payment-choose-button": "添加支付方式",
+        "current-location": "使用当前位置",
+        "estimate-time": "预计送达时间",
+        "summary": {
+            "price": "商品总价",
+            "delivery-fee": "配送费",
+            "service-fee": "服务费"
+        },
+        "label": {
+            "current-address": "您可以在当前地址输入新地址",
+            "user-note": "如有需要可添加备注"
+        },
+        "placeholder": {
+            "current-address": "输入要搜索的地点...",
+            "phone-number": "请输入电话号码...",
+            "user-note": "如有需要请输入订单备注..."
+        }
+    },
+    "express": {
+        "label": {
+            "source-address": "寄件地址（地图搜索）",
+            "source-address-details": "寄件详细地址",
+            "source-phone": "寄件人电话号码",
+            "dest-address": "收件地址（地图搜索）",
+            "dest-address-details": "收件详细地址",
+            "dest-phone": "收件人电话号码",
+            "item-type": "物品类型",
+            "user-note": "如有需要可添加备注"
+        },
+        "placeholder": {
+            "source-address": "输入要搜索的地点...",
+            "source-address-details": "例如：昂山路45号3楼",
+            "dest-address": "输入要搜索的地点...",
+            "dest-address-details": "例如：昂山路45号3楼",
+            "item-type": "请输入物品类型...",
+            "user-note": "如有需要请输入订单备注..."
+        },
+        "button": {
+            "payment-type": "添加支付方式",
+            "confirm": "确认"
+        },
+        "summary": {
+            "delivery-fee": "配送费",
+            "service-fee": "服务费"
+        },
+        "destination-type": "目的地类型",
+        "destination-type-alert": "由于需要配送至客运站，骑手将会拍摄客运站单据（Invoice）并上传。",
+        "payment-type": "支付方式",
+        "total": "总计",
+        "tax": "已包含税费及服务费"
+    },
+    "cart-view": {
+        "total": "总计",
+        "see-cart": "查看购物车",
+        "empty-item-message": "购物车为空"
+    },
+    "customer-home": {
+        "item-category": {
+            "food-title": "餐饮与零食",
+            "comestic-title": "美妆与日用品",
+            "other-title": "其他日用百货"
+        }
+    },
+    "restaurant": {
+        "empty-order-message": "目前暂无新订单。",
+        "empty-order-history-message": "此部分暂无订单历史记录。"
+    },
+    "call-rider": {
+        "label": {
+            "dest-address": "收件地址（地图搜索）",
+            "dest-address-details": "收件详细地址",
+            "dest-phone": "收件人电话号码"
+        },
+        "placeholder": {
+            "dest-address": "输入要搜索的地点...",
+            "dest-address-details": "例如：昂山路45号3楼"
+        },
+        "button": {
+            "confirm": "确认"
+        },
+        "summary": {
+            "delivery-fee": "配送费",
+            "service-fee": "服务费"
+        },
+        "destination-type": "目的地类型",
+        "destination-type-alert": "由于需要配送至客运站，骑手将会拍摄客运站单据（Invoice）并上传。",
+        "total": "总计",
+        "tax": "已包含税费及服务费"
+    },
+    "admin": {
+        "item-category-form": {
+            "label": {
+                "name": "分类名称"
+            }
+        },
+        "tag-form": {
+            "label": {
+                "name": "标签名称（例如：微辣）",
+                "photo": "上传标签图片",
+                "current-photo": "当前图片"
+            }
+        },
+        "shop-form": {
+            "label": {
+                "name": "店铺名称",
+                "email": "电子邮箱",
+                "username": "用户名",
+                "password": "密码",
+                "phone": "手机号码",
+                "address": "地址",
+                "latitude": "纬度（从谷歌地图复制）",
+                "longitude": "经度（从谷歌地图复制）"
+            }
+        },
+        "rider-form": {
+            "label": {
+                "name": "配送员姓名",
+                "username": "用户名",
+                "password": "密码",
+                "phone": "手机号码",
+                "photo": "上传配送员照片",
+                "current-photo": "当前照片"
+            }
+        },
+        "payment-method-form": {
+            "label": {
+                "name": "支付方式名称（例如：wave）",
+                "qr-photo": "上传支付二维码图片",
+                "current-qr-photo": "当前支付二维码",
+                "icon-photo": "上传支付方式图标"
+            },
+            "status": "支付方式状态"
+        },
+        "payment-transaction": {
+            "empty-message": "此部分暂无待审核的交易记录。"
+        },
+        "setting": {
+            "way-order-fee-form": {
+                "title": "顺路单配送费",
+                "label": {
+                    "way-fee": "顺路单配送费 (MMK)"
+                }
+            }
+        }
+    },
+    "rider": {
+        "order-count": "您当前待配送的订单",
+        "order-empty-message": "目前暂无待配送的订单",
+        "order-history-empty-message": "此部分暂无订单历史记录。",
+        "order-express-type": "特快专递",
+        "order-merchant-type": "商家直派订单",
+        "source-address": "取货地址",
+        "dest-address": "收货地址（客户）",
+        "see-item-list": "查看所订购的商品列表",
+        "delivery-fee": "配送费",
+        "service-fee": "服务费",
+        "total": "总计",
+        "food-name": "食品名称"
+    },
+    "profile": {
+        "user-level": "用户级别",
+        "name": "姓名",
+        "phone": "手机号码",
+        "email": "电子邮箱",
+        "noti": "我们将通过此方式向您发送通知，请确保填写的信息准确无误。"
+    }
 }

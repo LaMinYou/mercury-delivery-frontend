@@ -23,7 +23,7 @@
               <v-text-field
                 v-model="payment.name"
                 :rules="[rules.required('payment method name')]"
-                label="Payment method name (eg. wave)"
+                :label="$t('admin.payment-method-form.label.name')"
                 prepend-inner-icon="mdi-credit-card-outline"
                 variant="solo"
                 bg-color="#fff"
@@ -32,7 +32,7 @@
 
             <v-col cols="12">
               <div v-if="props.id !== 'new' && !payment.image && payment.image_url" class="mb-4">
-                <p class="text-caption">Current Payment QR:</p>
+                <p class="text-caption">{{ $t('admin.payment-method-form.label.current-qr-photo') }}:</p>
                 <v-img
                   :src="payment.image_url"
                   width="150"
@@ -42,7 +42,7 @@
               </div>
               <v-file-input
                 v-model="payment.image"
-                label="Upload Payment QR Image"
+                :label="$t('admin.payment-method-form.label.qr-photo')"
                 accept="image/*"
                 variant="solo"
                 bg-color="#fff"
@@ -54,7 +54,7 @@
             <v-col cols="12" v-if="id === 'new'">
               <v-file-input
                 v-model="payment.logo_image"
-                label="Upload Payment Icon Image"
+                :label="$t('admin.payment-method-form.label.icon-photo')"
                 accept="image/*"
                 variant="solo"
                 bg-color="#fff"
@@ -64,7 +64,7 @@
             </v-col>
 
             <v-col cols="12" md="4">
-              <h5 class="my-0">Payment Method Status</h5>
+              <h5 class="my-0">{{ $t('admin.payment-method-form.status') }}</h5>
               <v-switch
                 v-model="payment.is_active"
                 :label="payment.is_active ? 'active' : 'inactive'"

@@ -20,7 +20,7 @@
         <v-form @submit.prevent="handleSubmit">
           <div>
             <div v-if="props.id != 'new' && rider.image_url" class="mb-4">
-              <p class="text-caption">Current Photo:</p>
+              <p class="text-caption">{{ $t('admin.rider-form.label.current-photo') }}:</p>
                 <v-img
                   :src="rider.image_url"
                   width="150"
@@ -30,7 +30,7 @@
             </div>
             <v-file-input
                 v-model="rider.cover_image"
-                label="Upload Rider Photo"
+                :label="$t('admin.rider-form.label.photo')"
                 accept="image/*"
                 variant="solo"
                 bg-color="#fff"
@@ -44,7 +44,7 @@
           <v-text-field
             v-model="rider.name"
             :rules="[rules.required('rider name')]"
-            label="rider name"
+            :label="$t('admin.rider-form.label.name')"
             prepend-inner-icon="mdi-account"
             variant="solo"
             class="mt-2"
@@ -54,7 +54,7 @@
           <v-text-field
             v-model="rider.username"
             :rules="[rules.required('username')]"
-            label="username"
+            :label="$t('admin.rider-form.label.username')"
             prepend-inner-icon="mdi-account"
             variant="solo"
             class="mt-2"
@@ -68,14 +68,14 @@
             :rules="[rules.required('password'), rules.min(8)]"
             prepend-inner-icon="mdi-lock"
             variant="solo"
-            label="password"
+            :label="$t('admin.rider-form.label.password')"
             class="mt-2"
           ></v-text-field>
 
           <v-text-field
             v-model="rider.phone"
             :rules="[rules.required('phone number'), rules.phone]"
-            label="phone number"
+            :label="$t('admin.rider-form.label.phone')"
             prepend-inner-icon="mdi-phone"
             variant="solo"
             class="mt-2"

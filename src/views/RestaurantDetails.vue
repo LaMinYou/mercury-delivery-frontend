@@ -21,7 +21,7 @@
           <v-text-field
             v-model="restaurant.name"
             :rules="[rules.required('name')]"
-            label="name"
+            :label="$t('admin.shop-form.label.name')"
             prepend-inner-icon="mdi-account"
             variant="solo"
             class="mt-2"
@@ -30,7 +30,7 @@
 
           <v-text-field
             v-model="restaurant.email"
-            label="email"
+            :label="$t('admin.shop-form.label.email')"
             prepend-inner-icon="mdi-email"
             variant="solo"
             class="mt-2"
@@ -40,7 +40,7 @@
           <v-text-field
             v-model="restaurant.username"
             :rules="[rules.required('username')]"
-            label="username"
+            :label="$t('admin.shop-form.label.username')"
             prepend-inner-icon="mdi-account"
             variant="solo"
             class="mt-2"
@@ -54,14 +54,14 @@
             :rules="[rules.required('password'), rules.min(8)]"
             prepend-inner-icon="mdi-lock"
             variant="solo"
-            label="password"
+            :label="$t('admin.shop-form.label.password')"
             class="mt-2"
           ></v-text-field>
 
           <v-text-field
             v-model="restaurant.phone"
             :rules="[rules.required('phone number'), rules.phone]"
-            label="phone number"
+            :label="$t('admin.shop-form.label.phone')"
             prepend-inner-icon="mdi-phone"
             variant="solo"
             class="mt-2"
@@ -71,7 +71,7 @@
           <v-textarea
             v-model="restaurant.address"
             :rules="[rules.required('address')]"
-            label="address"
+            :label="$t('admin.shop-form.label.address')"
             prepend-inner-icon="mdi-map-marker"
             variant="solo"
             class="mt-2"
@@ -81,14 +81,14 @@
           <div class="d-flex flex-column flex-sm-column flex-md-row">
             <v-text-field
               v-model="restaurant.latitude"
-              label="Latitude (Google Maps မှ ကူးထည့်ပါ)"
+              :label="$t('admin.shop-form.label.latitude')"
               :rules="[rules.required('latitude'), rules.latitude, rules.numberOnly]"
               variant="solo"
               class="me-2"
             ></v-text-field>
             <v-text-field
               v-model="restaurant.longitude"
-              label="Longitude (Google Maps မှ ကူးထည့်ပါ)"
+              :label="$t('admin.shop-form.label.longitude')"
               :rules="[rules.required('longitude'), rules.longitude, rules.numberOnly]"
               variant="solo"
             ></v-text-field>

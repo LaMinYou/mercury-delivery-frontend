@@ -115,7 +115,7 @@
             <template v-slot:no-data>
               <div class="pa-5 text-center text-grey">
                 <v-icon size="40" class="mb-2">mdi-folder-open-outline</v-icon>
-                <div>ဤအပိုင်းတွင် အော်ဒါမှတ်တမ်း မရှိသေးပါ။</div>
+                <div>{{ $t('restaurant.empty-order-history-message') }}</div>
               </div>
             </template>
           </v-data-table>

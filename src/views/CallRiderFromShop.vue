@@ -26,12 +26,12 @@
                 <!-- to type new address for order -->
                 <v-text-field
                   v-model="orderLocation.address"
-                  label="ပစ္စည်းလက်ခံမည့် customer လိပ်စာ"
+                  :label="$t('call-rider.label.dest-address')"
                   prepend-inner-icon="mdi-map-marker"
                   variant="outlined"
                   density="comfortable"
                   id="address-input"
-                  placeholder="ရှာဖွေရန် နေရာရိုက်ပါ..."
+                  :placeholder="$t('call-rider.placeholder.dest-address')"
                   @focus="showMap = true"
                   class="mb-3"
                   :rules="[rules.required('customer address')]"
@@ -42,11 +42,11 @@
 
                 <v-textarea
                   v-model="order.dest_address"
-                  label="ပစ္စည်းလက်ခံမည့် customer လိပ်စာအသေးစိတ်"
+                  :label="$t('call-rider.label.dest-address-details')"
                   prepend-inner-icon="mdi-home-map-marker"
                   variant="outlined"
                   density="comfortable"
-                  placeholder="eg. အမှတ် (၄၅)၊ ၃ လွှာ၊ ဗိုလ်ချုပ်လမ်း"
+                  :placeholder="$t('call-rider.placeholder.dest-address-details')"
                   class="mb-3"
                   persistent-placeholder
                   :rules="[rules.required('destination address in details')]"
@@ -55,7 +55,7 @@
                 <!-- Destination Type Selection -->
                 <div class="my-3">
                   <p class="text-subtitle-2 font-weight-bold mb-2">
-                    Destination Type
+                    {{ $t('call-rider.destination-type') }}
                   </p>
                   <v-btn-toggle
                     v-model="order.dest_type"
@@ -85,14 +85,13 @@
                   class="mt-2 text-caption"
                 >
                   <v-icon size="small">mdi-information</v-icon>
-                  ကားဂိတ်သို့ ပေးပို့မည်ဖြစ်၍ Rider မှ ဂိတ်ပြေစာ (Invoice) ကို
-                  ဓာတ်ပုံရိုက်၍ တင်ပေးမည်ဖြစ်ပါသည်။
+                  {{ $t('call-rider.destination-type-alert') }}
                 </v-alert>
               </div>
 
                 <v-text-field
                   v-model="destPhone"
-                  label="ပစ္စည်းလက်ခံမည့် customer ဖုန်းနံပါတ်"
+                  :label="$t('call-rider.label.dest-phone')"
                   prepend-inner-icon="mdi-phone"
                   variant="outlined"
                   density="comfortable"
@@ -112,7 +111,7 @@
                       >
                         <template v-slot:prepend>
                           <span class="text-body-small">
-                            ပို့ဆောင်ခနှုန်းထား</span
+                            {{ $t('call-rider.summary.delivery-fee') }}</span
                           >
                         </template>
                         <v-list-item-title>
@@ -127,7 +126,7 @@
                         class="d-flex justify-space-between align-center"
                       >
                         <template v-slot:prepend>
-                          <span class="text-body-small"> ဝန်ဆောင်ခ</span>
+                          <span class="text-body-small"> {{ $t('call-rider.summary.service-fee') }}</span>
                         </template>
                         <v-list-item-title>
                           <span class="text-body-small"
@@ -148,8 +147,8 @@
                     <v-card-subtitle class="pa-0">
                       <span
                         class="text-subtitle-1 font-weight-bold text-black text-wrap"
-                        >စုစုပေါင်း</span
-                      >(ဝန်ဆောင်ခနှင့်အခွန်ပါဝင်ပြီး)
+                        >{{ $t('call-rider.total') }}</span
+                      > ({{ $t('call-rider.tax') }})
                     </v-card-subtitle>
                     <v-card-subtitle
                       class="font-weight-bold text-subtitle-1 text-green-darken-2"
@@ -168,7 +167,7 @@
                     height="auto"
                     @click="makeOrder"
                   >
-                    <p class="text-wrap text-subtitle-1 py-3">အတည်ပြုပါ</p>
+                    <p class="text-wrap text-subtitle-1 py-3">{{ $t('call-rider.button.confirm') }}</p>
                   </v-btn>
                 </v-card>
               </div>
@@ -256,11 +255,10 @@ const makeOrder = async () => {
         console.log(res.data.message);
         successMessage.value = res.data.message;
         openAlertDialog.value = true;
+         router.push('/restaurant');
     }catch(err){
         console.log(err.response.data.error);
         errorMessage.value = err.response.data.message;
-    }finally{
-      router.push('/restaurant');
     }
 
 }

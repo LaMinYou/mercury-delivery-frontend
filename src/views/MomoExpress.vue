@@ -42,12 +42,12 @@
                 <!-- to type new address for order -->
                 <v-text-field
                   v-model="order.sourceMapAddress"
-                  label="source address (Map Search)"
+                  :label="$t('express.label.source-address')"
                   prepend-inner-icon="mdi-map-marker"
                   variant="outlined"
                   density="comfortable"
                   id="address-source"
-                  placeholder="ရှာဖွေရန် နေရာရိုက်ပါ..."
+                  :placeholder="$t('express.placeholder.source-address')"
                   @focus="showSourceMap = true"
                   class="mb-3"
                   :rules="[rules.required('source address')]"
@@ -55,11 +55,11 @@
 
                 <v-textarea
                   v-model="order.source_address"
-                  label="source address in details"
+                  :label="$t('express.label.source-address-details')"
                   prepend-inner-icon="mdi-home-map-marker"
                   variant="outlined"
                   density="comfortable"
-                  placeholder="eg. အမှတ် (၄၅)၊ ၃ လွှာ၊ ဗိုလ်ချုပ်လမ်း"
+                  :placeholder="$t('express.placeholder.source-address-details')"
                   class="mb-3"
                   persistent-placeholder
                   :rules="[rules.required('source address in details')]"
@@ -68,7 +68,7 @@
 
                 <v-text-field
                   v-model="order.source_phone"
-                  label="ပစ္စည်းပို့မည့်ဖုန်းနံပါတ်"
+                  :label="$t('express.label.source-phone')"
                   prepend-inner-icon="mdi-phone"
                   variant="outlined"
                   density="comfortable"
@@ -94,12 +94,12 @@
                 <!-- to type new address for order -->
                 <v-text-field
                   v-model="order.destMapAddress"
-                  label="destination address (Map Search)"
+                  :label="$t('express.label.dest-address')"
                   prepend-inner-icon="mdi-map-marker"
                   variant="outlined"
                   density="comfortable"
                   id="address-dest"
-                  placeholder="ရှာဖွေရန် နေရာရိုက်ပါ..."
+                  :placeholder="$t('express.placeholder.dest-address')"
                   @focus="showDestMap = true"
                   class="mb-3"
                   :rules="[rules.required('destination address')]"
@@ -107,11 +107,11 @@
 
                 <v-textarea
                   v-model="order.dest_address"
-                  label="destination address in details"
+                  :label="$t('express.label.dest-address-details')"
                   prepend-inner-icon="mdi-home-map-marker"
                   variant="outlined"
                   density="comfortable"
-                  placeholder="eg. အမှတ် (၄၅)၊ ၃ လွှာ၊ ဗိုလ်ချုပ်လမ်း"
+                  :placeholder="$t('express.placeholder.dest-address-details')"
                   class="mb-3"
                   persistent-placeholder
                   :rules="[rules.required('destination address in details')]"
@@ -121,7 +121,7 @@
 
                 <v-text-field
                   v-model="order.dest_phone"
-                  label="ပစ္စည်းလက်ခံမည့်ဖုန်းနံပါတ်"
+                  :label="$t('express.label.dest-phone')"
                   prepend-inner-icon="mdi-phone"
                   variant="outlined"
                   density="comfortable"
@@ -136,7 +136,7 @@
                 <!-- Destination Type Selection -->
                 <div class="my-3">
                   <p class="text-subtitle-2 font-weight-bold mb-2">
-                    Destination Type
+                    {{ $t('express.destination-type') }}
                   </p>
                   <v-btn-toggle
                     v-model="order.dest_type"
@@ -166,19 +166,18 @@
                   class="mt-2 text-caption"
                 >
                   <v-icon size="small">mdi-information</v-icon>
-                  ကားဂိတ်သို့ ပေးပို့မည်ဖြစ်၍ Rider မှ ဂိတ်ပြေစာ (Invoice) ကို
-                  ဓာတ်ပုံရိုက်၍ တင်ပေးမည်ဖြစ်ပါသည်။
+                  {{ $t('express.destination-type-alert') }}
                 </v-alert>
               </div>
 
               <div class="item-type">
                 <v-text-field
                   v-model="order.item_type"
-                  label="ပစ္စည်းအမျိုးအစား"
+                  :label="$t('express.label.item-type')"
                   prepend-inner-icon="mdi-format-list-bulleted"
                   variant="outlined"
                   density="comfortable"
-                  placeholder="ပစ္စည်းအမျိုးအစားထည့်ပါ..."
+                  :placeholder="$t('express.placeholder.item-type')"
                   class="mb-3"
                   :rules="[rules.required('item type')]"
                 ></v-text-field>
@@ -187,12 +186,12 @@
               <div class="customer-note mt-5">
                 <v-text-field
                   v-model="order.user_note"
-                  label="အမှာစာလိုအပ်ပါက ထည့်သွင်းနိုင်သည်"
+                  :label="$t('express.label.user-note')"
                   prepend-inner-icon="mdi-note-text-outline"
                   variant="outlined"
                   density="comfortable"
                   id="note-input"
-                  placeholder="အမှာစာလိုအပ်ပါက ထည့်သွင်းပါ..."
+                  :placeholder="$t('express.placeholder.user-note')"
                   persistent-placeholder
                   class="mb-3"
                 ></v-text-field>
@@ -201,7 +200,7 @@
               <!--  payment way to choose -->
               <div class="payment-way">
                 <p class="text-subtitle-1 py-5 font-weight-bold">
-                  ငွေပေးချေမှုနည်းလမ်း
+                  {{ $t('express.payment-type') }}
                 </p>
                 <v-card
                   variant="outlined"
@@ -235,7 +234,7 @@
                     v-else
                   >
                     <v-icon>mdi-plus</v-icon>
-                    ငွေပေးချေမှုနည်းလမ်းတစ်ခုထည့်သွင်းပါ
+                    {{ $t('express.button.payment-type') }}
                   </div>
                 </v-card>
               </div>
@@ -251,7 +250,7 @@
                       >
                         <template v-slot:prepend>
                           <span class="text-body-small">
-                            ပို့ဆောင်ခနှုန်းထား</span
+                            {{ $t('express.summary.delivery-fee') }}</span
                           >
                         </template>
                         <v-list-item-title>
@@ -266,7 +265,7 @@
                         class="d-flex justify-space-between align-center"
                       >
                         <template v-slot:prepend>
-                          <span class="text-body-small"> ဝန်ဆောင်ခ</span>
+                          <span class="text-body-small"> {{ $t('express.summary.service-fee') }}</span>
                         </template>
                         <v-list-item-title>
                           <span class="text-body-small"
@@ -287,8 +286,8 @@
                     <v-card-subtitle class="pa-0">
                       <span
                         class="text-subtitle-1 font-weight-bold text-black text-wrap"
-                        >စုစုပေါင်း</span
-                      >(ဝန်ဆောင်ခနှင့်အခွန်ပါဝင်ပြီး)
+                        >{{ $t('express.total') }}</span
+                      > ({{ $t('express.tax') }})
                     </v-card-subtitle>
                     <v-card-subtitle
                       class="font-weight-bold text-subtitle-1 text-green-darken-2"
@@ -309,7 +308,7 @@
                     :loading="loading"
                     @click="makeOrder"
                   >
-                    <p class="text-wrap text-subtitle-1 py-3">အတည်ပြုပါ</p>
+                    <p class="text-wrap text-subtitle-1 py-3">{{ $t('express.button.confirm') }}</p>
                   </v-btn>
                 </v-card>
               </div>

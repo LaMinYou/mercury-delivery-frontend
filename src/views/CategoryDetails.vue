@@ -21,7 +21,7 @@
           <v-text-field
             v-model= "category.name"
             :rules="[rules.required('menu category')]"
-            label="category name"
+            :label="$t('admin.item-category-form.label.name')"
             prepend-inner-icon="mdi-layers"
             variant="solo"
             class="mt-2"

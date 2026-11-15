@@ -127,7 +127,7 @@
         <div class="pa-5 text-center text-grey w-100">
           <v-icon size="40" class="mb-2">mdi-folder-open-outline</v-icon>
           <div>
-            ဤအပိုင်းတွင် စစ်ဆေးရန်ကျန်ရှိသော ငွေလွှဲများမှတ်တမ်း မရှိသေးပါ။
+            {{ $t('admin.payment-transaction.empty-message') }}
           </div>
         </div>
       </v-row>

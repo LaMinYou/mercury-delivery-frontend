@@ -5,7 +5,7 @@
       </div>
       <div class="text-white d-flex flex-column align-center">
         <span class="text-subtitle-2 font-weight-bold">
-          ဈေးဝယ်ခြင်းအား ကြည့်ရန်
+          {{ $t('bottom-cart-bar.to-see-cart') }}
         </span>
         <span class="text-grey-lighten-2 text-body-2">{{ restaurant.name }}</span>
       </div>
